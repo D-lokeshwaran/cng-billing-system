@@ -1,0 +1,23 @@
+/* ----------------------------------------------
+    Theme Combined with bootstrap and SASS
+------------------------------------------------- */
+
+@import 'bootstrap/scss/_functions';
+@import 'theme/functions';
+
+@import 'theme/colors';
+@import 'theme/variables';
+@import 'bootstrap/scss/variables';
+ 
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+
+@import 'bootstrap/scss/utilities';
+@import 'bootstrap/scss/root';
+
+// Bootstrap default components
+// @import "bootstrap";
+
+// Customized theme
+// @import "theme/theme";

@@ -1,0 +1,32 @@
+
+
+// Global Variables;
+$prefix: "cng-";
+
+$spacer: 1rem;
+$spacer-1x: 1.25rem;
+$spacer-2x: 1.50rem;
+$spacer-3x: 2rem;
+
+$border-radius: 0.20rem !default;
+$border-radius-md: 0.256rem !default;
+$border-radius-lg: 0.355rem !default;
+
+// Specific Variables;
+
+// Card
+$card-spacer-y: 1.25rem !default;
+$card-spacer-x: $spacer-1x !default;
+$card-border-width: 0px !default;
+$card-border-radius: $border-radius-lg !default;
+$card-border-color: rgba(var(--#{$prefix}emphasis-color-rgb), 0.125) !default;
+$card-cap-bg: rgba($body-emphasis-color, 0) !default;
+$card-cap-padding-y: $spacer !default;
+$card-cap-padding-x: 1.25rem !default;
+$card-bg: $white !default;
+
+// Form Inputs
+$input-btn-border-width: 2px;
+$input-btn-focus-box-shadow: none;
+$input-box-shadow: vaR(--#{$prefix}box-shadow-insert);
+$input-transition: border-color .10s ease-in-out;

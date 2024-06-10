@@ -1,0 +1,9 @@
+// Card 
+
+.card {
+    --#{$prefix}card-bg: $white;
+    box-shadow: var(--#{$prefix}box-shadow);
+}
+.card-title {
+    font-weight: $font-weight-semibold;
+}
