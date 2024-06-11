@@ -6,15 +6,17 @@ import ROLES from "src/constants/ROLES";
 
 type user = {
     name: string,
-    role: number,
+    roles: number[],
     isAuthenticated: boolean
 }
 
 interface AuthContextType {
     user: user;
     logIn: (username: string, password: string) => Promise<boolean>;
+    verifyRole: (allowedRoles: number[]) => boolean | null
     logOut: (callback: VoidFunction) => void;
 }
+
 
 interface CustormAxiosRequestConfig extends InternalAxiosRequestConfig {
     _retry?: boolean
@@ -23,9 +25,15 @@ interface CustormAxiosRequestConfig extends InternalAxiosRequestConfig {
 const AuthContext = createContext<AuthContextType>(null!);
 export const useAuth = () => useContext(AuthContext);
 
+let initialUser = { 
+    name: "", 
+    roles: [ROLES.Admin], 
+    isAuthenticated: false 
+};
+
+
 function AuthContextPovider({ children }: {children: React.ReactNode}) {
 
-    let initialUser = { name: "", role: ROLES.Admin, isAuthenticated: false };
     const [ user, setUser ] = useState<user>(initialUser);
     const [ token, setToken ] = useState<any>(null);
 
@@ -33,7 +41,6 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
     useEffect(() => {
         const fetchMe = async () => {
             try {
-                setUser({...user, isAuthenticated: true})
                 const response = await supportApi.get('/refresh', { withCredentials: true });
                 setToken(response?.data.accessToken);
             } catch {
@@ -107,6 +114,13 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
         }
     }
 
+    const verifyRole = (allowedRoles: number[]) => {
+        if (!allowedRoles || !user.isAuthenticated) {
+            return null
+        }
+        return user.roles.some(role => allowedRoles.includes(role));
+    }
+
     const logOut = async (callback: VoidFunction) => {
         try {
             await supportApi.get('/logout');
@@ -121,7 +135,8 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
     let values = {
         user,
         logIn,
-        logOut
+        verifyRole,
+        logOut,
     };
 
     return (
