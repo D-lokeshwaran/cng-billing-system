@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-const Bill: FC = props => {
+const Bill: FC = () => {
     return (
         <div>Bill Page</div>
     )

@@ -14,43 +14,43 @@ export type NavigationTypes = {
      name: string,        
      element: React.LazyExoticComponent<any>,  
      allowedRoles: number[],     
-     isPrivate: boolean
+     active: boolean
 }
 
 export const navigation: NavigationTypes[] = [
      {    
-          path: "/dashboard",    
-          name: "Dashboard",       
-          element: Dashboard,      
-          allowedRoles: [ROLES.Admin, ROLES.Operator],     
-          isPrivate: true  
+          path: "/dashboard",
+          name: "Dashboard",
+          element: Dashboard,
+          allowedRoles: [ROLES.Admin, ROLES.Operator],
+          active: true
      },
      { 
-          path: "/bills",   
-          name: "Bills",       
-          element: Bill,      
-          allowedRoles: [ROLES.Admin, ROLES.Operator, ROLES.Customer],    
-          isPrivate: false  
+          path: "/bills",
+          name: "Bills",
+          element: Bill,
+          allowedRoles: [ROLES.Admin, ROLES.Operator, ROLES.Customer],
+          active: false
      },
      { 
-          path: "/customers",  
-          name: "Customers",     
-          element: Customer,   
-          allowedRoles: [ROLES.Admin, ROLES.Operator, ROLES.Customer],    
-          isPrivate: true  
+          path: "/customers",
+          name: "Customers",
+          element: Customer,
+          allowedRoles: [ROLES.Operator, ROLES.Customer],
+          active: true
      },
      { 
-          path: "/tariffs",  
-          name: "Tariffs",     
-          element: Tariff,    
-          allowedRoles: [ROLES.Admin, ROLES.Operator],  
-          isPrivate: true  
+          path: "/tariffs",
+          name: "Tariffs",
+          element: Tariff,
+          allowedRoles: [ROLES.Admin, ROLES.Operator],
+          active: true
      },
      { 
-          path:"/documents",  
-          name: "Documents",     
-          element: Document,    
-          allowedRoles: [ROLES.Admin, ROLES.Operator],  
-          isPrivate: true  
+          path:"/documents",
+          name: "Documents",
+          element: Document,
+          allowedRoles: [ROLES.Admin, ROLES.Operator],
+          active: true
      }
 ]
