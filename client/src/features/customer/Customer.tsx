@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-const Customer: FC = props => {
+const Customer: FC = () => {
     return (
         <div>Customer Page</div>
     )

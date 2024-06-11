@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-const Document: FC = props => {
+const Document: FC = () => {
     return (
         <div>Document Page</div>
     )

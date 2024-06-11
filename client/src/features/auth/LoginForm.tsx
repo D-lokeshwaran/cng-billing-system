@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Link, NavigateProps, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from 'src/context/AuthContext';
 
 type LoginInputs = {
@@ -16,7 +16,7 @@ export const LoginForm: React.FC = () => {
   const { 
     register, 
     handleSubmit,
-    formState: { isValid, errors }
+    formState: { isValid }
   } = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {

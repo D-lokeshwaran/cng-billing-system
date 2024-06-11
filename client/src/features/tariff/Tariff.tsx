@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-const Tariff: FC = props => {
+const Tariff: FC = () => {
     return (
         <div>Tariff Page</div>
     )
