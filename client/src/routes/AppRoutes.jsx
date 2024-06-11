@@ -4,7 +4,7 @@ import { lazy } from "react";
 import ROLES from "src/constants/ROLES";
 import { navigation } from "./navigation";
 import { useAuth } from "src/context/AuthContext";
-import Login from "src/features/auth/Login";
+import Login from "src/pages/Login";
 
 const AppRoutes = () => {
 
