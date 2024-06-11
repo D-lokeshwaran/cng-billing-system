@@ -3,8 +3,6 @@ import ROLES from 'src/constants/ROLES';
 
 
 // public routes 
-const Error404 = lazy(() => import('src/components/error/Error404'))
-
 const Dashboard = lazy(() => import('src/features/dashboard/Dashboard'));
 const Bill = lazy(() => import('src/features/bill/Bill'));
 const Customer = lazy(() => import('src/features/customer/Customer'));
@@ -54,11 +52,5 @@ export const navigation: NavigationOptions[] = [
           element: Document,    
           allowedRoles: [ROLES.Admin, ROLES.Operator],  
           isPrivate: true  
-     },
-     { 
-          path: "*",         
-          name: "error",        
-          element: Error404,       
-          isPrivate: false  
      }
 ]

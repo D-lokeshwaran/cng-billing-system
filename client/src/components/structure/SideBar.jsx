@@ -5,9 +5,9 @@ import { useAuth } from 'src/context/AuthContext';
 // ------------------------------------
 
 const SideBar = () => {
-  const { user } = useAuth();
+  const { user, verifyRole } = useAuth();
   let filteredItems = navigation
-    .filter(nav => nav.allowedRoles?.includes(user.role))
+    .filter(nav => verifyRole(nav.allowedRoles))
 
   if (!user.isAuthenticated) {
     return false;
