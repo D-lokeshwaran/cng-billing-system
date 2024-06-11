@@ -1,13 +1,13 @@
 import React from 'react'; 
+import { navigation } from 'src/routes/navigation';
 import NavItem from './NavItem';
 import { useAuth } from 'src/context/AuthContext';
-import { sideBarMenu } from './sideBarMenu';
 // ------------------------------------
 
 const SideBar = () => {
-  const { user, verifyRole } = useAuth();
-
-  const validItems = sideBarMenu.filter(item => verifyRole(item.allowedRoles));
+  const { user } = useAuth();
+  let filteredItems = navigation
+    .filter(nav => nav.allowedRoles?.includes(user.role))
 
   if (!user.isAuthenticated) {
     return false;
@@ -17,12 +17,11 @@ const SideBar = () => {
     <aside>
       <nav>
         <ul>
-          {
-            validItems.map((nav, i) => 
+          { filteredItems.map((nav, i) => 
               <NavItem
+                key={i} 
                 path={nav.path}
                 title={nav.name}
-                icon={nav.icon}
               />
             )
           }
