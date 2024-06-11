@@ -5,11 +5,11 @@ import ROLES from 'src/constants/ROLES';
 // public routes 
 const Error404 = lazy(() => import('src/components/error/Error404'))
 
-const Dashboard = lazy(() => import('src/pages/Dashboard'));
-const Bill = lazy(() => import('src/pages/Bill'));
-const Customer = lazy(() => import('src/pages/Customer'));
-const Tariff = lazy(() => import('src/pages/Tariff'));
-const Document = lazy(() => import('src/pages/Documents'));
+const Dashboard = lazy(() => import('src/features/dashboard/Dashboard'));
+const Bill = lazy(() => import('src/features/bill/Bill'));
+const Customer = lazy(() => import('src/features/customer/Customer'));
+const Tariff = lazy(() => import('src/features/tariff/Tariff'));
+const Document = lazy(() => import('src/features/document/Documents'));
 
 type NavigationOptions = {
      path: string,         
