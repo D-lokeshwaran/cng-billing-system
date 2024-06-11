@@ -9,15 +9,15 @@ const Customer = lazy(() => import('src/features/customer/Customer'));
 const Tariff = lazy(() => import('src/features/tariff/Tariff'));
 const Document = lazy(() => import('src/features/document/Documents'));
 
-type NavigationOptions = {
+export type NavigationTypes = {
      path: string,         
      name: string,        
      element: React.LazyExoticComponent<any>,  
-     allowedRoles?: number[],     
+     allowedRoles: number[],     
      isPrivate: boolean
 }
 
-export const navigation: NavigationOptions[] = [
+export const navigation: NavigationTypes[] = [
      {    
           path: "/dashboard",    
           name: "Dashboard",       

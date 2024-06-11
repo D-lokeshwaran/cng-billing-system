@@ -3,28 +3,12 @@ import { lazy } from "react";
 
 import ROLES from "src/constants/ROLES";
 import { navigation } from "./navigation";
-import { useAuth } from "src/context/AuthContext";
 import MainLayout from "src/layouts/MainLayout";
 import Login from "src/features/auth/Login";
 import Error404 from "src/components/error/Error404";
+import AuthRoute from "./AuthRoute";
 
 const AppRoutes = () => {
-
-     const { user, verifyRole } = useAuth();
-
-     const renderProtectedRoutes =  navigation.map((route, i) => {
-          let Component = route.element;
-          if (
-               route.isPrivate 
-               && user.isAuthenticated
-               && verifyRole(route.allowedRoles)
-          ) {
-               return <Route key={i} path={route.path} element={<Component/>}/>
-          } else if (!route.isPrivate) {
-               return <Route key={i} path={route.path} element={<Component/>}/>
-          } else return false
-     })
-
      return (
           <Routes>
                {/* Initial Route */}
@@ -33,7 +17,13 @@ const AppRoutes = () => {
 
                {/* Protected routes */}
                <Route element={<MainLayout/>}>
-                    {renderProtectedRoutes}
+                    {navigation.map((route, i) =>
+                        <Route
+                            key={i}
+                            path={route.path}
+                            element={<AuthRoute route={route}/>}
+                        />
+                    )}
                </Route>
                
                {/* Catch all */}
