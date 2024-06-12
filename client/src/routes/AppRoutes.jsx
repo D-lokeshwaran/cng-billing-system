@@ -2,37 +2,50 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import ROLES from "src/constants/ROLES";
 import { navigation } from "./navigation";
 import { useAuth } from "src/context/AuthContext";
-import MainLayout from "src/layouts/MainLayout";
+import DashboardLayout from "src/layouts/DashboardLayout";
 import Login from "src/features/auth/Login";
 import Error404 from "src/features/error/Error404";
+import Layout from "src/layouts/Layout";
 
 const AppRoutes = () => {
 
      const { user, verifyRole } = useAuth();
 
-     const renderProtectedRoutes =  navigation.map((route, i) => {
-          let Component = route.element;
-          if (
-               user.isAuthenticated
-               && verifyRole(route.allowedRoles)
-          ) {
-               return <Route key={i} path={route.path} element={<Component/>}/>
-          } else return false
-     })
+     const ProtectedRoute = ({ element: Component, allowedRoles }) => {
+          const { user, verifyRole } = useAuth();
+   
+          if (user.isAuthenticated && verifyRole(allowedRoles)) {
+              return <Component />;
+          } else {
+              return <Navigate to="/login" replace />;
+          }
+     };
+   
+     const renderProtectedRoutes = navigation.map((route, i) => (
+          <Route
+              key={i}
+              path={route.path}
+              element={<ProtectedRoute element={route.element} allowedRoles={route.allowedRoles} />}
+          />
+     ));
 
      return (
           <Routes>
-               {/* Initial Route */}
-               <Route path="/" element={<Navigate to="/login" replace/>} />
-               <Route path="/login" element={<Login/>} />
 
-               {/* Protected routes */}
-               <Route element={<MainLayout/>}>
-                    {renderProtectedRoutes}
+               <Route path="/" element={<Layout/>}>
+                    {/* Public Route */}
+                    <Route path="/login" element={<Login/>} />
+
+                    {/* Protected routes */}
+                    <Route element={<DashboardLayout/>}>
+                         {renderProtectedRoutes}
+                    </Route>
+                    
+                    {/* Catch all */}
+                    <Route path="/404" element={<Error404/>} />
+                    <Route path="/*" element={<Navigate to="/login"/>} />
                </Route>
-               
-               {/* Catch all */}
-               <Route path="*" element={<Error404/>} />
+
           </Routes>
      )
 }

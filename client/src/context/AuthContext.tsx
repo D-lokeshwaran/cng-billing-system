@@ -116,7 +116,7 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
 
     const verifyRole = (allowedRoles: number[]) => {
         if (!allowedRoles || !user.isAuthenticated) {
-            return null;
+            return false;
         }
         return user.roles.some(role => allowedRoles.includes(role));
     }

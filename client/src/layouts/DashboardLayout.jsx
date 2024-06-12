@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import SideBar from 'src/components/structure/SideBar';
 
-const MainLayout = () => {
+const DashboardLayout = () => {
 
     return (
         <div>
@@ -12,4 +12,4 @@ const MainLayout = () => {
     )
 }
 
-export default MainLayout;
+export default DashboardLayout;
