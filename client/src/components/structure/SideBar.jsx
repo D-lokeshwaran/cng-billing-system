@@ -7,11 +7,7 @@ import { useAuth } from 'src/context/AuthContext';
 const SideBar = () => {
   const { user, verifyRole } = useAuth();
   let filteredItems = navigation
-    .filter(nav => verifyRole(nav.allowedRoles))
-
-  if (!user.isAuthenticated) {
-    return false;
-  }
+    .filter(nav => nav.inMenu && verifyRole(nav.allowedRoles))
 
   return (
     <aside>

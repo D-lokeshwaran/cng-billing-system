@@ -14,7 +14,7 @@ export type NavigationTypes = {
      name: string,        
      element: React.LazyExoticComponent<any>,  
      allowedRoles: number[],     
-     active: boolean
+     inMenu: boolean
 }
 
 export const navigation: NavigationTypes[] = [
@@ -23,34 +23,34 @@ export const navigation: NavigationTypes[] = [
           name: "Dashboard",
           element: Dashboard,
           allowedRoles: [ROLES.Admin, ROLES.Operator],
-          active: true
+          inMenu: true
      },
      { 
           path: "/bills",
           name: "Bills",
           element: Bill,
           allowedRoles: [ROLES.Admin, ROLES.Operator, ROLES.Customer],
-          active: false
+          inMenu: true
      },
      { 
           path: "/customers",
           name: "Customers",
           element: Customer,
           allowedRoles: [ROLES.Operator, ROLES.Customer],
-          active: true
+          inMenu: true
      },
      { 
           path: "/tariffs",
           name: "Tariffs",
           element: Tariff,
           allowedRoles: [ROLES.Admin, ROLES.Operator],
-          active: true
+          inMenu: true
      },
      { 
           path:"/documents",
           name: "Documents",
           element: Document,
           allowedRoles: [ROLES.Admin, ROLES.Operator],
-          active: true
+          inMenu: true
      }
 ]
