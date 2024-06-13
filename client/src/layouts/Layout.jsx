@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import ROLES from "src/constants/ROLES";
 import { useAuth } from "src/context/AuthContext";
-import { getDefaultRoute } from "src/routes/navigation";
+import useRouter from "src/hooks/useRouter";
+import { getDefaultRoute } from "src/utils/navigation";
 
 export default function Layout() {
     const { user } = useAuth();
-    const navigateTo = useNavigate();
+    const router = useRouter();
 
     useEffect(() => {
         if (user.isAuthenticated) {
-            navigateTo(getDefaultRoute(ROLES.Admin))
+            router.push(getDefaultRoute(ROLES.Admin))
         } else {
-            navigateTo('/login');
+            router.push('/login');
         }
     }, [user])
 

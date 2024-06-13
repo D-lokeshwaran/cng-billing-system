@@ -1,13 +1,13 @@
 import React from 'react'; 
-import { navigation } from 'src/routes/navigation';
+import { sideBarMenu } from './sideBarMenu';
 import NavItem from './NavItem';
 import { useAuth } from 'src/context/AuthContext';
 // ------------------------------------
 
 const SideBar = () => {
   const { user, verifyRole } = useAuth();
-  let filteredItems = navigation
-    .filter(nav => nav.inMenu && verifyRole(nav.allowedRoles))
+  let filteredItems = sideBarMenu
+    .filter(nav => verifyRole(nav.allowedRoles))
 
   return (
     <aside>
@@ -17,7 +17,7 @@ const SideBar = () => {
               <NavItem
                 key={i} 
                 path={nav.path}
-                title={nav.name}
+                title={nav.title}
               />
             )
           }
