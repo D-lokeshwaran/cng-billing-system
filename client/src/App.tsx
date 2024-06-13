@@ -9,9 +9,7 @@ const App: React.FC = () => {
     <HelmetProvider>
       <Router basename={import.meta.env.BASE_URL}>
         <AuthContextPovider>
-          <Suspense fallback={<>Loading...</>}>
-            <AppRoutes/>
-          </Suspense>
+          <AppRoutes/>
         </AuthContextPovider>
       </Router>
     </HelmetProvider>

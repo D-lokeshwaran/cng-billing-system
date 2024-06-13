@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import ROLES from "src/constants/ROLES";
 import { useAuth } from "src/context/AuthContext";
@@ -17,5 +17,9 @@ export default function Layout() {
         }
     }, [user])
 
-    return <Outlet/>
+    return (
+        <Suspense fallback={<>Loading...</>}>
+            <Outlet/>
+        </Suspense>
+    )
 }
