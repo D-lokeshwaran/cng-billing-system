@@ -5,10 +5,10 @@ export const supportApi = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
-    withCredentials: true
+    withCredentials: true,
+    credentials: "include"
 });
 
 export const coreApi = axios.create({
     baseURL: "http://localhost:8008",
-    withCredentials: true,
 });

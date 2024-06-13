@@ -1,20 +1,22 @@
 import { FC } from 'react';
-import useTableAdapter from 'src/components/table/hooks/useTableAdapter';
-import { Person, columns, defaultData } from './customerSlice';
-import { url } from 'inspector';
+import useTableAdapter from 'src/hooks/useTableAdapter';
+import TanStackTable from 'src/components/table/TanStackTable'
+import { Customer, columns } from './customerSlice';
 
 const CustomerList: FC = () => {
 
-    const table = useTableAdapter<Person>({
-        data: defaultData, columns, params: {
-            url: '/customers',
-            method: "GET"
+    const table = useTableAdapter<Customer>({
+         columns, params: {
+            url: '/cng/customers',
+            name: "customers"
         }
     })
 
     return (
-        <div>Customer Page</div>
-    )
+        <div>
+            <TanStackTable table={table}/>
+        </div>
+    );
 
 }
 export default CustomerList

@@ -1,59 +1,37 @@
 import { createColumnHelper } from "@tanstack/react-table"
 
-export type Person = {
-    firstName: string
-    lastName: string
-    age: number
-    visits: number
-    status: string
-    progress: number
+export type Customer = {
+    accountNumber: number,
+    addressLine1: string,
+    addressLine2: string,
+    city: string,
+    contactNumber: string,
+    fullName: string,
+    id: number,
+    pin: number,
+    state: string
+    _links: any
 }
-  
-export const defaultData: Person[] = [
-    {
-      firstName: 'tanner',
-      lastName: 'linsley',
-      age: 24,
-      visits: 100,
-      status: 'In Relationship',
-      progress: 50,
-    },
-    {
-      firstName: 'tandy',
-      lastName: 'miller',
-      age: 40,
-      visits: 40,
-      status: 'Single',
-      progress: 80,
-    },
-    {
-      firstName: 'joe',
-      lastName: 'dirte',
-      age: 45,
-      visits: 20,
-      status: 'Complicated',
-      progress: 10,
-    },
-]
-  
-const columnHelper = createColumnHelper<Person>()
+
+const columnHelper = createColumnHelper<Customer>()
   
 export const columns = [
-    columnHelper.accessor('firstName', {
+    columnHelper.accessor('accountNumber', {
+      header: () => 'Account Number',
       cell: info => info.getValue(),
       footer: info => info.column.id,
     }),
-    columnHelper.accessor('age', {
-      header: () => 'Age',
+    columnHelper.accessor('fullName', {
+      header: () => 'Full Name',
       cell: info => info.renderValue(),
       footer: info => info.column.id,
     }),
-    columnHelper.accessor('status', {
-      header: 'Status',
+    columnHelper.accessor('contactNumber', {
+      header: 'Contact Number',
       footer: info => info.column.id,
     }),
-    columnHelper.accessor('progress', {
-      header: 'Profile Progress',
+    columnHelper.accessor('addressLine1', {
+      header: 'Address',
       footer: info => info.column.id,
     }),
 ]

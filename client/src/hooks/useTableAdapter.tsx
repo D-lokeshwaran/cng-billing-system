@@ -11,7 +11,8 @@ import { ColumnDef } from "@tanstack/react-table";
 
 interface Params {
     url: string;
-    method: string;
+    method?: string;
+    name: string
 }
 
 export interface UseTableAdapterProps<T> {
@@ -28,12 +29,14 @@ const useTableAdapter = <T,>({
 
     useEffect(() => {
         if (params && data.length === 0) {
-            coreApi({
-                url: params.url,
-                method: params.method
-            }).then(
+            trackPromise(
+                coreApi({
+                    url: params.url,
+                    method: params.method || "GET"
+                })
+            ).then(
                 res => {
-                    const result = res.data?._embedded.customers
+                    const result = res.data?._embedded[params.name]
                     setData(result);
                 }
             ).catch(
