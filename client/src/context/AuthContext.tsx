@@ -1,6 +1,6 @@
 import { InternalAxiosRequestConfig } from "axios";
 import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
-import { supportApi } from "src/api";
+import { supportApi } from "src/utils/api";
 import { loginMethod } from "src/config";
 import ROLES from "src/constants/ROLES";
 

@@ -24,6 +24,7 @@
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.51.5",
+    "react-promise-tracker": "^2.1.1",
     "react-router-dom": "^6.23.1",
     "universal-cookie": "^7.1.4",
     "uuid": "^9.0.1",
