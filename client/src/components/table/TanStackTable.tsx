@@ -2,16 +2,11 @@ import React from "react";
 import { Table as BSTable } from "react-bootstrap";
 import { Table, flexRender } from '@tanstack/react-table';
 
-type options = {
-    rowSelectionEnabled: boolean
-}
-
 interface TanStackTableProps {
     table: Table<unknown|never|any>;
-    options?: options
 }
 
-export const TanStackTable: React.FC<TanStackTableProps> = ({ table, options }) => {
+export const TanStackTable: React.FC<TanStackTableProps> = ({ table }) => {
 
     const { 
         getHeaderGroups, 

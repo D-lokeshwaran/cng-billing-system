@@ -1,5 +1,5 @@
 import TanStackTable from './TanStackTable';
-import { Button, Card, FormSelect } from 'react-bootstrap';
+import { Button, Card, Dropdown, FormCheck, FormSelect } from 'react-bootstrap';
 import TableSearchBox from './SearchBox';
 import useTableAdapter from 'src/hooks/useTableAdapter';
 import { useEffect } from 'react';
@@ -66,6 +66,36 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
                     onChange={(value) => table.setGlobalFilter(String(value))}
                     debounce={200}
                 />}
+                <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        Columns
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Header>
+                            <FormCheck
+                                {...{
+                                    checked: table.getIsAllColumnsVisible(),
+                                    onChange: table.getToggleAllColumnsVisibilityHandler()
+                                }}
+                            /> show/hide All
+                            <Button 
+                                variant='link'
+                                onClick={() => table.resetColumnVisibility()}    
+                            >
+                                Reset
+                            </Button>
+                        </Dropdown.Header>
+                        {table.getAllLeafColumns().map(column => 
+                            <Dropdown.Item key={column.id}>
+                                <FormCheck
+                                    checked={column.getIsVisible()}
+                                    disabled={!column.getCanHide()} 
+                                    onChange={column.getToggleVisibilityHandler()}
+                                />{column.id}
+                            </Dropdown.Item>
+                        )}
+                    </Dropdown.Menu>
+                </Dropdown>
             </Card.Header>
             <Card.Body>
                 <TanStackTable table={table} />

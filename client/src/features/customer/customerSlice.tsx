@@ -1,4 +1,4 @@
-import { ColumnDef } from "@tanstack/react-table"
+import { createColumnHelper } from "@tanstack/react-table"
 import IndeterminateCheckbox from "src/components/table/IntermediateCheckbox"
 
 export type Customer = {
@@ -14,10 +14,12 @@ export type Customer = {
     _links: any
 }
 
+const columnHelper = createColumnHelper<Customer>()
+
 class CustomerSlice {
 
-  columns: ColumnDef<Customer>[] = [
-    {
+  columns = [
+    columnHelper.display({
       id:"select",
       header: ({ table }) => (
         <IndeterminateCheckbox
@@ -38,23 +40,20 @@ class CustomerSlice {
           }}
         />
       ),
-    },
-    {
+    }),
+    columnHelper.accessor('accountNumber', {
       header: "Account Number",
-      accessorKey: "accountNumber"
-    },
-    {
-      header: "Full Name",
-      accessorKey: "fullName"
-    },
-    {
-      header: "Contact Number",
-      accessorKey: "contactNumber"
-    },
-    {
-      header: "Address",
-      accessorKey: "addressLine1"
-    }
+      enableHiding: false
+    }),
+    columnHelper.accessor('fullName', {
+      header: "Full Name"
+    }),
+    columnHelper.accessor('contactNumber', {
+      header: "Contact Number"
+    }),
+    columnHelper.accessor('addressLine1', {
+      header: "Address"
+    })
   ]
 
   _mock = [

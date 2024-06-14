@@ -1,4 +1,4 @@
-import React, { HTMLProps } from 'react';
+import React from 'react';
 import { FormCheck, FormCheckProps } from 'react-bootstrap';
 
 // To connect intermdate checkbox to group checkbox
