@@ -1,8 +1,10 @@
 import TanStackTable from './TanStackTable';
-import { Button, Card, Dropdown, FormCheck, FormSelect } from 'react-bootstrap';
+import { Button, Card, Dropdown, DropdownButton, FormCheck, FormSelect } from 'react-bootstrap';
 import TableSearchBox from './SearchBox';
 import useTableAdapter from 'src/hooks/useTableAdapter';
-import { useEffect } from 'react';
+import { CSVLink } from 'react-csv';
+import { useEffect, useState, useRef } from 'react';
+import { Customer } from 'src/features/customer/customerSlice';
 
 interface Params {
     url: string;
@@ -28,8 +30,9 @@ const defaultAlterOptions = {
 type SliceProps = {
     columns: any,
     params?: Params,
-    _mock: any,
+    _mock: Customer[],
     alterOptions?: AlterOptions
+    columnVisibility?: {[int:string]: boolean},
     [int:string]: any
 }
 
@@ -39,16 +42,25 @@ interface ReadyMadeTableProps {
 
 const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
 
+    const [exportColumns, setExportColumns] = useState<string[]>([]);
+    const exportRef = useRef<
+        CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }
+    >(null!);
+
+
     const { 
         columns, 
         params,
         _mock, 
-        alterOptions:options=defaultAlterOptions } = slice;
+        alterOptions:options=defaultAlterOptions,
+        columnVisibility
+    } = slice;
 
     const table = useTableAdapter({
-        columns: columns,
-        params: params,
-        _mock: _mock
+        columns,
+        params,
+        columnVisibility,
+        _mock
     });
 
     useEffect(() => {
@@ -56,6 +68,12 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
             table.setPageSize(options.initPageSize)
         }
     }, [options])
+
+    useEffect(() => {
+        if (exportColumns.length > 0) {
+            exportRef?.current.link.click();
+        }
+    }, [exportRef, exportColumns])
 
   return (
     <section>
@@ -78,7 +96,7 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
                 >
                     Reset
                 </Button>
-                {table.getAllLeafColumns().map(column =>
+                {table.getAllColumns().map(column =>
                     <>
                         <FormCheck
                             checked={column.getIsVisible()}
@@ -87,6 +105,28 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
                         />{column.id}
                     </>
                 )}
+                <DropdownButton title="Export">
+                    <Dropdown.Item 
+                        eventKey="visible-cols"
+                        onClick={() => {
+                            setExportColumns(table.getVisibleLeafColumns().map(col => col.id))
+                        }}
+                    >
+                        Visible Columns
+                    </Dropdown.Item>
+                    <Dropdown.Item 
+                        eventKey="all-cols"
+                        onClick={() => {
+                            setExportColumns(table.getAllLeafColumns().map(col => col.id));
+                        }}
+                    >
+                        All columns
+                    </Dropdown.Item>
+                </DropdownButton>
+                {exportColumns}
+                <CSVLink headers={exportColumns} data={_mock} filename='customer.csv' ref={exportRef}>
+                    export
+                </CSVLink>
             </Card.Header>
             <Card.Body>
                 <TanStackTable table={table} />

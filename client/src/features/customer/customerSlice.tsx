@@ -14,6 +14,7 @@ export type Customer = {
     _links: any
 }
 
+// TODO: Later all this data should turn in db
 const columnHelper = createColumnHelper<Customer>()
 
 class CustomerSlice {
@@ -52,9 +53,16 @@ class CustomerSlice {
       header: "Contact Number"
     }),
     columnHelper.accessor('addressLine1', {
-      header: "Address"
+      header: "Address l1"
+    }),
+    columnHelper.accessor('addressLine2', {
+      header: "Address l2",
     })
   ]
+
+  columnVisibility = {
+    addressLine2: false,
+  }
 
   _mock = [
     {

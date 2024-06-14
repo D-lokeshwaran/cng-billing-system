@@ -20,12 +20,14 @@ interface Params {
 export interface UseTableAdapterProps<T> {
     columns: ColumnDef<T, any>[];
     params?: Params;
+    columnVisibility?: {[int:string]:boolean}
     _mock?: any;
 }
 
 const useTableAdapter = <T,>({
     columns,
     params,
+    columnVisibility,
     _mock
 }: UseTableAdapterProps<T>): Table<T> => {
 
@@ -54,6 +56,9 @@ const useTableAdapter = <T,>({
     const table = useReactTable({
         data,
         columns,
+        initialState: {
+            columnVisibility
+        },
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
