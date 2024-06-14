@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
-    flexRender,
-    getCoreRowModel,
     useReactTable,
-    Table
+    getCoreRowModel,
+    Table,
+    getSortedRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel
 } from '@tanstack/react-table';
 import { trackPromise } from 'react-promise-tracker';
 import { coreApi } from 'src/utils/api';
-import { ColumnDef } from "@tanstack/react-table";
 
 interface Params {
     url: string;
@@ -15,17 +16,28 @@ interface Params {
     name: string
 }
 
-export interface UseTableAdapterProps<T> {
-    columns: ColumnDef<T, any>[];
+interface TableOptions {
+    disableRowSelection?: boolean;
+    disableSorting?: boolean;
+    disableGlobalFilter?: boolean;
+    [key:string]: any;
+}
+
+export interface UseTableAdapterProps {
+    columns: any;
     params?: Params;
+    options?: TableOptions;
+    _mock?: any;
 }
 
 const useTableAdapter = <T,>({
     columns,
-    params
-}: UseTableAdapterProps<T>): Table<T> => {
+    params,
+    _mock
+}: UseTableAdapterProps): Table<T> => {
 
-    const [data, setData] = useState<T[]>([]);
+    const [ data, setData ] = useState<T[]>(_mock || []);
+    const memorizedColumns = useMemo(() => columns, []);
 
     useEffect(() => {
         if (params && data.length === 0) {
@@ -49,8 +61,15 @@ const useTableAdapter = <T,>({
 
     const table = useReactTable({
         data,
-        columns,
-        getCoreRowModel: getCoreRowModel()
+        columns: memorizedColumns,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        globalFilterFn: "auto",
+        debugTable: true,
+        debugHeaders: true,
+        debugColumns: false,
     });
 
     return table;
