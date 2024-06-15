@@ -1,5 +1,4 @@
 import { createColumnHelper } from "@tanstack/react-table"
-import IndeterminateCheckbox from "src/components/table/IntermediateCheckbox"
 
 export type Customer = {
     accountNumber: number,
@@ -19,29 +18,8 @@ const columnHelper = createColumnHelper<Customer>()
 
 class CustomerSlice {
 
+  name = "customers"
   columns = [
-    columnHelper.display({
-      id:"select",
-      header: ({ table }) => (
-        <IndeterminateCheckbox
-          {...{
-            checked: table.getIsAllRowsSelected(),
-            indeterminate: table.getIsSomeRowsSelected(),
-            onChange: table.getToggleAllRowsSelectedHandler(),
-          }}
-        />
-      ),
-      cell: ({ row }) => (
-        <IndeterminateCheckbox
-          {...{
-            checked: row.getIsSelected(),
-            disabled: !row.getCanSelect(),
-            indeterminate: row.getIsSomeSelected(),
-            onChange: row.getToggleSelectedHandler(),
-          }}
-        />
-      ),
-    }),
     columnHelper.accessor('accountNumber', {
       header: "Account Number",
       enableHiding: false

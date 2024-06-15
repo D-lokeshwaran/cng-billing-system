@@ -1,20 +1,19 @@
 import TanStackTable from './TanStackTable';
-import { Button, Card, Dropdown, DropdownButton, FormCheck, FormSelect } from 'react-bootstrap';
+import { Button, Card, FormCheck, FormSelect } from 'react-bootstrap';
 import TableSearchBox from './SearchBox';
 import useTableAdapter from 'src/hooks/useTableAdapter';
-import { CSVLink } from 'react-csv';
-import { useEffect, useState, useRef } from 'react';
-import { Customer } from 'src/features/customer/customerSlice';
+import { useEffect } from 'react';
+import ExportData from '../common/ExportData';
 
 interface Params {
     url: string;
     method?: string;
-    name: string
 }
 
 interface AlterOptions {
     globelFilter: boolean,
     columnChooser: boolean,
+    rowSelection: boolean,
     export: boolean,
     pagination: boolean,
     initPageSize: number
@@ -22,15 +21,17 @@ interface AlterOptions {
 const defaultAlterOptions = {
     globelFilter: true,
     columnChooser: true,
+    rowSelection: true,
     export: true,
     pagination: true,
     initPageSize: 10
 }
 
 type SliceProps = {
+    name: string,
     columns: any,
     params?: Params,
-    _mock: Customer[],
+    _mock?: any[],
     alterOptions?: AlterOptions
     columnVisibility?: {[int:string]: boolean},
     [int:string]: any
@@ -42,13 +43,9 @@ interface ReadyMadeTableProps {
 
 const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
 
-    const [exportColumns, setExportColumns] = useState<string[]>([]);
-    const exportRef = useRef<
-        CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }
-    >(null!);
-
 
     const { 
+        name,
         columns, 
         params,
         _mock, 
@@ -58,6 +55,7 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
 
     const table = useTableAdapter({
         columns,
+        name,
         params,
         columnVisibility,
         _mock
@@ -68,12 +66,6 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
             table.setPageSize(options.initPageSize)
         }
     }, [options])
-
-    useEffect(() => {
-        if (exportColumns.length > 0) {
-            exportRef?.current.link.click();
-        }
-    }, [exportRef, exportColumns])
 
   return (
     <section>
@@ -105,28 +97,7 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
                         />{column.id}
                     </>
                 )}
-                <DropdownButton title="Export">
-                    <Dropdown.Item 
-                        eventKey="visible-cols"
-                        onClick={() => {
-                            setExportColumns(table.getVisibleLeafColumns().map(col => col.id))
-                        }}
-                    >
-                        Visible Columns
-                    </Dropdown.Item>
-                    <Dropdown.Item 
-                        eventKey="all-cols"
-                        onClick={() => {
-                            setExportColumns(table.getAllLeafColumns().map(col => col.id));
-                        }}
-                    >
-                        All columns
-                    </Dropdown.Item>
-                </DropdownButton>
-                {exportColumns}
-                <CSVLink headers={exportColumns} data={_mock} filename='customer.csv' ref={exportRef}>
-                    export
-                </CSVLink>
+                <ExportData filename={name} table={table}/>
             </Card.Header>
             <Card.Body>
                 <TanStackTable table={table} />

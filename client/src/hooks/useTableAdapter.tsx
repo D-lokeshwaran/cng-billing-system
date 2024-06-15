@@ -14,11 +14,11 @@ import { ColumnDef } from "@tanstack/react-table";
 interface Params {
     url: string;
     method?: string;
-    name: string
 }
 
 export interface UseTableAdapterProps<T> {
     columns: ColumnDef<T, any>[];
+    name: string;
     params?: Params;
     columnVisibility?: {[int:string]:boolean}
     _mock?: any;
@@ -26,6 +26,7 @@ export interface UseTableAdapterProps<T> {
 
 const useTableAdapter = <T,>({
     columns,
+    name,
     params,
     columnVisibility,
     _mock
@@ -42,7 +43,7 @@ const useTableAdapter = <T,>({
                 })
             ).then(
                 res => {
-                    const result = res.data?._embedded[params.name]
+                    const result = res.data?._embedded[name]
                     setData(result);
                 }
             ).catch(
