@@ -64,9 +64,9 @@ const useTableAdapter = <T,>({
         getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
-        debugTable: true,
-        debugRows: true,
-        debugColumns: false
+        // debugTable: process.env.NODE_ENV === "development",
+        // debugRows: process.env.NODE_ENV === "development",
+        // debugColumns: false
     });
 
     return table;

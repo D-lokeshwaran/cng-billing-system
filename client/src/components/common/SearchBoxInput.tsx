@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import { FormControl, FormControlProps } from 'react-bootstrap';
 
-type GlobalFilterProps = {
+type SearchBoxInputProps = {
     value: string,
     onChange: (value: string | number) => void,
     debounce?: number,
     [int:string]: any
 }
 
-const TableSearchBox = ({ 
+const SearchBoxInput = ({ 
     value: initialValue, 
     onChange, 
     debounce = 300, 
     ...rest 
-}: GlobalFilterProps & FormControlProps) => {
+}: SearchBoxInputProps & FormControlProps) => {
     const [ value, setValue ] = useState<string>(initialValue);
 
     useEffect(() => {
@@ -39,4 +39,4 @@ const TableSearchBox = ({
     )
 }
 
-export default TableSearchBox;
+export default SearchBoxInput;
