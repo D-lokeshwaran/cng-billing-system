@@ -25,13 +25,13 @@ const ColumnChooser: React.FC<ColumnChooserProps> = ({
                     Reset
                 </Button>
                 {table.getAllColumns().map(column =>
-                    <>
+                    <React.Fragment key={column.id}>
                         <FormCheck
                             checked={column.getIsVisible()}
                             disabled={!column.getCanHide()}
                             onChange={column.getToggleVisibilityHandler()}
                         />{column.id}
-                    </>
+                    </React.Fragment>
                 )}
         </div>
     )

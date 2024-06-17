@@ -9,6 +9,7 @@ const Login = lazy(() => import('src/features/auth/Login'));
 const Dashboard = lazy(() => import('src/features/dashboard/Dashboard'));
 const Bill = lazy(() => import('src/features/bill/Bill'));
 const CustomerList = lazy(() => import('src/features/customer/CustomerList'));
+const CustomerDetail = lazy(() => import('src/features/customer/CustomerDetail'));
 const Tariff = lazy(() => import('src/features/tariff/Tariff'));
 const Document = lazy(() => import('src/features/document/Documents'));
 const Error404 = lazy(() => import("src/features/error/Error404"));
@@ -24,14 +25,17 @@ const AppRoutes = () => {
                     {/* Dashboard routes */}
                     <Route element={<DashboardLayout/>}>
                          <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Operator]}/> }>
-                              <Route path="/dashboard" element={<Dashboard/>}/>
-                              <Route path="/documents" element={<Document/>}/>
-                              <Route path="/tariffs" element={<Tariff/>}/>
+                              <Route path="dashboard" element={<Dashboard/>}/>
+                              <Route path="documents" element={<Document/>}/>
+                              <Route path="tariffs" element={<Tariff/>}/>
                          </Route>
 
                          <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Customer]}/> }>
-                              <Route path="/customers" element={<CustomerList/>}/>
-                              <Route path="/bills" element={<Bill/>}/>
+                              <Route path="customers">
+                                   <Route index element={<CustomerList/>} />
+                                   <Route path="new" element={<CustomerDetail/>} />
+                              </Route>
+                              <Route path="bills" element={<Bill/>}/>
                          </Route>
                     </Route>
                     

@@ -1,18 +1,17 @@
 import classNames from 'classnames';
-import React, { Children } from 'react';
+import React from 'react';
 
 interface FlexBoxProps {
     as?: string,
     className?: string,
-    inline: boolean,
-    chilren: React.ReactNode,
+    inline?: boolean,
+    children: any,
 }
 
 const FlexBox: React.FC<FlexBoxProps> = ({
     className,
-    inline,
-    chilren,
-    constrains,
+    inline=false,
+    children,
     ...rest
 }) => {
     return (
@@ -24,7 +23,9 @@ const FlexBox: React.FC<FlexBoxProps> = ({
         )}
         {...rest}
         >
-            {chilren}
+            {children}
         </div>
     )
 }
+
+export default FlexBox;

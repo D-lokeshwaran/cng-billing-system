@@ -7,10 +7,8 @@ export type Customer = {
     city: string,
     contactNumber: string,
     fullName: string,
-    id: number,
     pin: number,
     state: string
-    _links: any
 }
 
 // TODO: Later all this data should turn in db
