@@ -17,10 +17,9 @@ const CustomerForm = () => {
         formState: { isValid, errors },
         reset 
     } = useForm<Customer>({
-        defaultValues
+        defaultValues,
+        mode: "all"
     });
-
-    console.log(errors);
 
     const onSubmitCustomer: SubmitHandler<Customer> = (data) => {
         console.log(data);

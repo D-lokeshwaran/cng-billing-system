@@ -1,6 +1,5 @@
-import { Card, FormControl, FormGroup, FormLabel } from "react-bootstrap"
-import { Control, UseFormRegister, UseFormReturn, useFormState } from "react-hook-form"
-import FlexBox from "src/components/common/FlexBox"
+import { Card, Col, FormControl, FormGroup, FormLabel, Row } from "react-bootstrap"
+import { Control, UseFormRegister, useFormState } from "react-hook-form"
 import { Customer } from "../customerSlice"
 
 interface AccountDetailsProps { register: UseFormRegister<Customer>, control: Control<Customer, any> }
@@ -8,35 +7,58 @@ interface AccountDetailsProps { register: UseFormRegister<Customer>, control: Co
 
 const AccountDetails: React.FC<AccountDetailsProps> = ({ register, control }) => {
 
-    const { errors } = useFormState({ control });
-
+    const { errors, touchedFields } = useFormState({ control });
+    
     return (
         <Card>
             <Card.Header>
                 Account Details
             </Card.Header>
             <Card.Body>
-                <FlexBox>
-                    <FormGroup>
-                        <FormLabel>Account Number</FormLabel>
+                <Row className="gx-5">
+                    <Col as={FormGroup}>
+                        <FormLabel>Account Number*</FormLabel>
                         <FormControl
-                            isValid={errors?.accountNumber === undefined}
-                            {...register("accountNumber", { required: true, min: 11, max:16 })}
+                            {...register(
+                                "accountNumber", 
+                                { required: true, pattern: /^[a-zA-Z0-9]{11,16}$/g }
+                            )}
+                            isInvalid={
+                                touchedFields.accountNumber && errors.accountNumber !== undefined
+                            }
                         />
-                    </FormGroup>
-                    <FormGroup>
-                        <FormLabel>Contact Number</FormLabel>
+                        <FormControl.Feedback type="invalid">
+                            Please, provide valid account number
+                        </FormControl.Feedback>
+                    </Col>
+                    <Col as={FormGroup}>
+                        <FormLabel>Contact Number*</FormLabel>
                         <FormControl
-                            {...register("contactNumber", { required: true, pattern: /^[0-9]{10}/ })}
+                            {...register(
+                                "contactNumber", 
+                                { required: true, pattern: /^[0-9]{10}/ }
+                            )}
+                            isInvalid={
+                                touchedFields.contactNumber && errors.contactNumber !== undefined
+                            }
                         />
-                    </FormGroup>
-                </FlexBox>
+                        <FormControl.Feedback type="invalid">
+                            Please, provide valid contact number
+                        </FormControl.Feedback>
+                    </Col>
+                </Row>
                 <FormGroup>
-                    <FormLabel>Full Name</FormLabel>
+                    <FormLabel>Full Name*</FormLabel>
                     <FormControl
                         placeholder="firstname & lastname"
                         {...register("fullName", { required: true })}
+                        isInvalid={
+                            touchedFields.fullName && errors.fullName !== undefined
+                        }
                     />
+                    <FormControl.Feedback type="invalid">
+                        Enter your full name
+                    </FormControl.Feedback>
                 </FormGroup>
             </Card.Body>
         </Card>
