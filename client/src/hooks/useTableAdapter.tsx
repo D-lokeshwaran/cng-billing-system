@@ -24,7 +24,7 @@ export interface UseTableAdapterProps<T> {
     _mock?: any;
 }
 
-const useTableAdapter = <T,>({
+export const useTableAdapter = <T,>({
     columns,
     name,
     params,
@@ -71,5 +71,3 @@ const useTableAdapter = <T,>({
 
     return table;
 }
-
-export default useTableAdapter;

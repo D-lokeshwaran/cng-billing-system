@@ -1,7 +1,7 @@
 import TanStackTable from './TanStackTable';
 import { Card } from 'react-bootstrap';
 import SearchBoxInput from '../common/SearchBoxInput';
-import useTableAdapter from 'src/hooks/useTableAdapter';
+import { useTableAdapter } from 'src/hooks';
 import { useEffect } from 'react';
 import ExportData from '../common/ExportData';
 import ColumnChooser from './ColumnChooser';

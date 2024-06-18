@@ -1,12 +1,12 @@
 import { Card, Col, Row } from "react-bootstrap"
 import Input from "src/components/form/Input"
 
-const BillingInfo = () => {
+const ContactDetails = () => {
 
     return (
         <Card>
             <Card.Header>
-                Billing Details
+                Contact Details
             </Card.Header>
             <Card.Body>
                  <Input 
@@ -40,4 +40,4 @@ const BillingInfo = () => {
 
 }
 
-export default BillingInfo;
+export default ContactDetails;

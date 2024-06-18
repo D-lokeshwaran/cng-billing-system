@@ -5,7 +5,8 @@ import FlexBox from "src/components/common/FlexBox";
 import AccountDetails from "./components/AccountDetails";
 import FeatureHeader from "src/components/structure/FeatureHeader";
 import HookForm from "src/components/form/HookForm";
-import BillingInfo from "./components/BillingInfo";
+import ContactDetails from "./components/ContactDetails";
+import DocumentList from "./components/DocumentList";
 
 
 const CustomerForm = () => {
@@ -24,9 +25,10 @@ const CustomerForm = () => {
             <FlexBox>
                 <div>
                     <AccountDetails />
+                    <DocumentList/>
                 </div>
                 <div>
-                    <BillingInfo/>
+                    <ContactDetails/>
                 </div>
             </FlexBox>
         </HookForm>

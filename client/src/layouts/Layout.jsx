@@ -2,7 +2,7 @@ import React, { useEffect, Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import ROLES from "src/constants/ROLES";
 import { useAuth } from "src/context/AuthContext";
-import useRouter from "src/hooks/useRouter";
+import { useRouter } from "src/hooks";
 import { getDefaultRoute } from "src/utils/navigation";
 
 export default function Layout() {

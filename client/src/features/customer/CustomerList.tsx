@@ -2,7 +2,7 @@ import { FC } from 'react';
 import customerSlice from './customerSlice';
 import ReadyMadeTable from 'src/components/table/ReadyMadeTable';
 import { Button } from 'react-bootstrap';
-import useRouter from 'src/hooks/useRouter';
+import { useRouter } from 'src/hooks';
 
 const CustomerList: FC = () => {
 
