@@ -15,7 +15,7 @@ const HookForm: React.FC<HookFormProps> = ({
     ...props
 }) => {
     const methods = useForm({
-        mode: "onChange",
+        mode: "all",
         defaultValues: defaultValues
     });
 
