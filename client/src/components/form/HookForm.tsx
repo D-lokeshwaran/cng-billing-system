@@ -15,13 +15,18 @@ const HookForm: React.FC<HookFormProps> = ({
     ...props
 }) => {
     const methods = useForm({
-        mode: "all",
+        mode: "onSubmit",
         defaultValues: defaultValues
     });
 
+    const handleOnSubmit: SubmitHandler<any> = (data, event) => {
+        event?.stopPropagation();
+        onSubmit(data);
+    }
+
     return (
         <FormProvider {...methods}>
-            <Form onSubmit={methods.handleSubmit(onSubmit)} {...props}>
+            <Form onSubmit={methods.handleSubmit(handleOnSubmit)} {...props}>
                 {children}
             </Form>
         </FormProvider>
