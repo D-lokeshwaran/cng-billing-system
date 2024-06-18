@@ -1,32 +1,20 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form";
 import { Customer } from "./customerSlice";
-import { Button, Card, Form, FormGroup } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import FlexBox from "src/components/common/FlexBox";
 import AccountDetails from "./components/AccountDetails";
 import FeatureHeader from "src/components/structure/FeatureHeader";
+import HookForm from "src/components/form/HookForm";
 
 
 const CustomerForm = () => {
-
-    const defaultValues = {
-    };
-    const { 
-        register, 
-        handleSubmit, 
-        control, 
-        formState: { isValid, errors },
-        reset 
-    } = useForm<Customer>({
-        defaultValues,
-        mode: "all"
-    });
 
     const onSubmitCustomer: SubmitHandler<Customer> = (data) => {
         console.log(data);
     }
 
     return (
-        <Form onSubmit={handleSubmit(onSubmitCustomer)}>
+        <HookForm onSubmit={onSubmitCustomer}>
             <FeatureHeader title="Create Customer" className="justify-content-between">
                 <Button variant="primary" type="submit">
                     Create
@@ -34,13 +22,13 @@ const CustomerForm = () => {
             </FeatureHeader>
             <FlexBox>
                 <div>
-                    <AccountDetails register={register} control={control}/>
+                    <AccountDetails />
                 </div>
                 <div>
-
+                    
                 </div>
             </FlexBox>
-        </Form>
+        </HookForm>
     )
 }
 
