@@ -1,18 +1,8 @@
+import { AlertCircleIcon } from 'hugeicons-react';
 import React from 'react';
-import { FormControl, FormControlProps, FormGroup, FormGroupProps, FormLabel } from 'react-bootstrap';
+import { FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
-
-type FieldType = {
-    title: string,
-    state: string,
-}
-
-interface InputProps extends FormGroupProps {
-    field: FieldType;
-    required?: boolean;
-    validate?: Record<string, (v: any) => string | undefined>;
-    control?: FormControlProps;
-}
+import { FieldType, InputProps } from './type';
 
 const defaultValidate = (
     required: boolean, 
@@ -36,7 +26,7 @@ const Input: React.FC<InputProps> = ({
     ...props
  }) => {
 
-    const { register, formState: { errors, dirtyFields }} = useFormContext();
+    const { register, formState: { errors }} = useFormContext();
 
     const errorMessage = errors[field.state]?.message;
 
@@ -44,7 +34,11 @@ const Input: React.FC<InputProps> = ({
         <FormGroup {...props} className="mb-3">
             <FormLabel className="mb-1">{field.title}<span style={{color:"#dc3545"}}>{required && ' *'}</span></FormLabel>
             {errorMessage && <div style={{fontSize: ".80rem"}} className='mb-1 d-flex align-items-center'>
-                <svg xmlns="http://www.w3.org/2000/svg"  width="17"  height="17"  viewBox="0 0 24 24"  fill="none"  stroke="#dc3545"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-exclamation-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 9v4" /><path d="M12 16v.01" /></svg>
+                <AlertCircleIcon 
+                    size={14} 
+                    color="#dc3545"
+                    strokeWidth='2.5'    
+                />
                 <span className='ps-1'>{`${errorMessage}`}</span>
             </div>}
             <FormControl
@@ -55,7 +49,8 @@ const Input: React.FC<InputProps> = ({
                         ...validate
                     } }
                 )}
-                isInvalid={errorMessage ?? undefined}
+                type={field.type}
+                isInvalid={errorMessage !== undefined}
                 {...control}
             />
         </FormGroup>

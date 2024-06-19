@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table"
 
 export type Customer = {
-    accountNumber: number,
+    accountNumber: string,
     addressLine1: string,
     addressLine2: string,
     city: string,

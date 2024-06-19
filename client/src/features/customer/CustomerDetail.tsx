@@ -19,19 +19,14 @@ const CustomerForm = () => {
         console.log(data);
     }
 
+    const handleUploadDocument = (data, event) => {
+        console.log(data, event);
+        toggleDocumentModal();
+    }
+    
     return (
         <div>
-            <DocumentModalForm show={documenModal} onHide={toggleDocumentModal}>
-                <Button 
-                    variant="secondary"
-                    onClick={toggleDocumentModal}
-                >
-                    Cancel
-                </Button>
-                <Button type="submit">
-                    Upload
-                </Button>
-            </DocumentModalForm>
+            <DocumentModalForm show={documenModal} onHide={toggleDocumentModal} onSubmit={handleUploadDocument} />
             <HookForm onSubmit={onSubmitCustomer}>
                 <FeatureHeader title="Create Customer" className="justify-content-between">
                     <Button variant="primary" type="submit">
