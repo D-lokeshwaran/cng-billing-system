@@ -22,8 +22,8 @@ public class Customer {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "account_number")
-    private Long accountNumber;
+    @Column(name = "account_number", length = 16)
+    private String accountNumber;
 
     @Column(length = 10)
     private String contactNumber;
