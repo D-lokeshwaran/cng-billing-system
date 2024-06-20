@@ -25,25 +25,22 @@ public class Customer {
     @Column(name = "account_number", length = 16)
     private String accountNumber;
 
-    @Column(length = 10)
-    private String contactNumber;
-
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "address_line_1")
-    private String addressLine1;
+    @Column(length = 10)
+    private String contactNumber;
 
-    @Column(name = "address_line_2")
-    private String addressLine2;
+    @Enumerated(EnumType.STRING)
+    private States state;
+
+    @Column(name = "full_address")
+    private String fullAddress;
 
     private String city;
 
     @Column(length = 6)
     private Integer pin;
-
-    @Enumerated(EnumType.STRING)
-    private States state;
 
     @OneToMany(mappedBy = "customer", cascade = REMOVE)
     private List<Bill> bills;

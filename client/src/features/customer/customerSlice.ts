@@ -2,13 +2,12 @@ import { createColumnHelper } from "@tanstack/react-table"
 
 export type Customer = {
     accountNumber: string,
-    addressLine1: string,
-    addressLine2: string,
-    city: string,
-    contactNumber: string,
     fullName: string,
+    contactNumber: string,
+    state: string,
+    fullAddress: string,
+    city: string,
     pin: number,
-    state: string
 }
 
 // TODO: Later all this data should turn in db
@@ -28,11 +27,11 @@ class CustomerSlice {
     columnHelper.accessor('contactNumber', {
       header: "Contact Number"
     }),
-    columnHelper.accessor('addressLine1', {
-      header: "Address l1"
+    columnHelper.accessor('fullAddress', {
+      header: "Address"
     }),
-    columnHelper.accessor('addressLine2', {
-      header: "Address l2",
+    columnHelper.accessor('state', {
+      header: "state",
     })
   ]
 
