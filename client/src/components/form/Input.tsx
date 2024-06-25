@@ -9,7 +9,7 @@ const defaultValidate = (
     field: FieldType
 ): Record<string, (v: any) => string | undefined> => {
     return {
-        required: (v) => required && v.toString().trim().length === 0
+        required: (v) => required && v?.toString().trim().length === 0
             ? `Enter your ${field.title.toLowerCase()}`
             : undefined,
         positive: (v) => parseInt(v, 10) < 0
@@ -33,14 +33,6 @@ const Input: React.FC<InputProps> = ({
     return (
         <FormGroup {...props} className="mb-3">
             <FormLabel className="mb-1">{field.title}<span style={{color:"#dc3545"}}>{required && ' *'}</span></FormLabel>
-            {errorMessage && <div style={{fontSize: ".80rem"}} className='mb-1 d-flex align-items-center'>
-                <AlertCircleIcon 
-                    size={14} 
-                    color="#dc3545"
-                    strokeWidth='2.5'    
-                />
-                <span className='ps-1'>{`${errorMessage}`}</span>
-            </div>}
             <FormControl
                 {...register(
                     field.state, 
@@ -53,6 +45,14 @@ const Input: React.FC<InputProps> = ({
                 isInvalid={errorMessage !== undefined}
                 {...control}
             />
+            {errorMessage && <div style={{fontSize: ".80rem"}} className='mt-1 d-flex align-items-center'>
+                <AlertCircleIcon 
+                    size={14} 
+                    color="#dc3545"
+                    strokeWidth='2.5'    
+                />
+                <span className='ps-1 text-secondary'>{`${errorMessage}`}</span>
+            </div>}
         </FormGroup>
     )
 

@@ -8,6 +8,10 @@ export type Customer = {
     fullAddress: string,
     city: string,
     pin: number,
+    Documents: {
+      documentId: string;
+      file: File;
+    }[];
 }
 
 // TODO: Later all this data should turn in db

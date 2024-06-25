@@ -1,9 +1,6 @@
-import { FC } from 'react';
-
-const Document: FC = () => {
+const Documents = () => {
     return (
-        <div>Document Page</div>
+        <>Doc list</>
     )
-
 }
-export default Document
+export default Documents;
