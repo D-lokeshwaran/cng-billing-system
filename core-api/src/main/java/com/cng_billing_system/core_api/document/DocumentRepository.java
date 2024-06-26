@@ -10,6 +10,8 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     List<Document> findAllByIdIn(List<Long> ids);
 
+    List<Document> findAllByCustomerId(Long id);
+
     void deleteByIdIn(List<Long> ids);
 
 }

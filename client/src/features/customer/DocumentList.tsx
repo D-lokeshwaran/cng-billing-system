@@ -5,15 +5,14 @@ import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { Cancel01Icon, DocumentValidationIcon, Upload02Icon, AlertCircleIcon } from "hugeicons-react";
 import { getReadableFileSize } from "src/utils/common";
 import { Customer } from './customerSlice';
-import classNames from 'classnames';
 
 const DocumentList = () => {
 
     const { control, formState: { errors } } = useFormContext<Customer>();
     const { fields, append, remove } = useFieldArray<Customer>({
         control,
-        name: "Documents",
-        keyName: "id"
+        name: "documents",
+        keyName: "documentId"
     });
 
     const hiddenFileInput = useRef<HTMLInputElement>(null!);
@@ -32,8 +31,6 @@ const DocumentList = () => {
         hiddenFileInput.current.value = "";
     };
 
-    const errorMessage = errors["Documents"]?.message;
-
     return (
         <FormGroup>
             <FormLabel>Documents</FormLabel>
@@ -49,9 +46,7 @@ const DocumentList = () => {
                 <Card.Header className='p-0'>
                     <div 
                         style={{ backgroundColor: "#CCC !important" }} 
-                        className={classNames("p-4 rounded bg-light border border-2 text-center cursor-pointer", {
-                            "border-danger": errorMessage
-                        })}
+                        className="p-4 rounded bg-light border border-2 text-center cursor-pointer"
                         onClick={onAddDocument}
                     >
                         <Upload02Icon 
@@ -60,14 +55,6 @@ const DocumentList = () => {
                         /> 
                         <p className="mb-0 mt-1" style={{ fontSize: ".90rem" }}>Click to browse or Drag and drop.</p>
                     </div>
-                    {errorMessage && <div style={{ fontSize: ".80rem" }} className='mt-1 d-flex align-items-center'>
-                        <AlertCircleIcon 
-                            size={14} 
-                            color="#dc3545"
-                            strokeWidth='2.5'    
-                        />
-                        <span className='ps-1 text-secondary'>{`${errorMessage}`}</span>
-                    </div>}
                 </Card.Header>
                 <Card.Body className='p-0'>
                     <ListGroup variant="flush">
@@ -75,24 +62,18 @@ const DocumentList = () => {
                             <Controller
                                 key={field.documentId}
                                 control={control}
-                                name={`Documents.${index}`}
+                                name={`documents.${index}`}
                                 render={() => (
                                     <ListGroup.Item className="mt-2 border rounded-3 p-3 px-4">
-                                        <FlexBox className="justify-content-between">
-                                            <FlexBox>
-                                                <DocumentValidationIcon className="me-3" />
-                                                <div>
-                                                    <div className="text-truncate">{(field as any).file.name}</div>
-                                                    <small className="text-secondary">{getReadableFileSize((field as any).file.size)}</small>
-                                                </div>
-                                            </FlexBox>
-                                            <FlexBox>
-                                                <div className="me-5">12/2/2024</div>
-                                                <Cancel01Icon
-                                                    className="cursor-pointer"
-                                                    onClick={() => remove(index)}
-                                                />
-                                            </FlexBox>
+                                        <FlexBox>
+                                            <DocumentValidationIcon className="me-3" />
+                                            <div className="text-truncate">{field.name || (field as any).file?.name}</div>
+                                            <small className="text-secondary">{getReadableFileSize(field.size ||(field as any).file?.size)}</small>
+                                            <div className="me-5">12/2/2024</div>
+                                            <Cancel01Icon
+                                                className="cursor-pointer"
+                                                onClick={() => remove(index)}
+                                            />
                                         </FlexBox>
                                     </ListGroup.Item>
                                 )}

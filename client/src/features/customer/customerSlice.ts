@@ -8,7 +8,7 @@ export type Customer = {
     fullAddress: string,
     city: string,
     pin: number,
-    Documents: {
+    documents: {
       documentId: string;
       file: File;
     }[];

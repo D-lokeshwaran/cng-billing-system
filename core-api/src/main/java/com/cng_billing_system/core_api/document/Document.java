@@ -19,16 +19,18 @@ public class Document extends AuditModel {
 
     private String name;
 
-    private String document;
+    private Long size;
 
     @ManyToOne
     private Customer customer;
 
     public Document() {
-    }
-    public Document(String name, String document) {
+    };
+
+    public Document(String name, Long size, Customer customer) {
         this.name = name;
-        this.document = document;
+        this.size = size;
+        this.customer = customer;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class Document extends AuditModel {
         return "Document{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", document='" + document + '\'' +
+                ", size=" + size +
                 ", customer=" + customer +
                 '}';
     }

@@ -32,6 +32,7 @@ const AppRoutes = () => {
                               <Route path="customers">
                                    <Route index element={<CustomerList/>} />
                                    <Route path="new" element={<CustomerDetail/>} />
+                                   <Route path=":customerId" element={<CustomerDetail/>} />
                               </Route>
                               <Route path="bills" element={<Bill/>}/>
                          </Route>

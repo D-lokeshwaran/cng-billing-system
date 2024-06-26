@@ -1,23 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, FormProps } from "react-bootstrap";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form"
 
 interface HookFormProps extends FormProps {
     children: React.ReactNode;
     onSubmit: SubmitHandler<any>;
-    defaultValues?: object;
+    initialValues?: object;
 }
 
 const HookForm: React.FC<HookFormProps> = ({ 
     children, 
     onSubmit,
-    defaultValues={},
+    initialValues=null,
     ...props
 }) => {
     const methods = useForm({
         mode: "all",
-        defaultValues: defaultValues
     });
+
+    useEffect(() => {
+        if (initialValues) {
+            methods.reset(initialValues);
+        }
+    }, [initialValues])
 
     const handleOnSubmit: SubmitHandler<any> = (data, event) => {
         event?.stopPropagation();

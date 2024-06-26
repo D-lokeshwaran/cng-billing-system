@@ -1,5 +1,7 @@
 package com.cng_billing_system.core_api.document;
 
+import com.cng_billing_system.core_api.customer.Customer;
+import com.cng_billing_system.core_api.customer.CustomerRepository;
 import com.cng_billing_system.core_api.fileStorage.StorageService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,8 @@ public class DocumentController {
 
     private final DocumentRepository documentRepository;
 
+    private final CustomerRepository customerRepository;
+
     @GetMapping()
     public List<Document> retrieveAllDocuments() {
         return documentRepository.findAll();
@@ -31,11 +35,12 @@ public class DocumentController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadDocument(
-            @RequestParam String fileName,
-            @RequestParam MultipartFile file
-    ) {
+            @RequestParam MultipartFile file,
+            @RequestParam Long customerId
+        ) {
         storageService.uploadFile(file.getOriginalFilename(), file);
-        Document document = new Document(fileName, file.getOriginalFilename());
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        Document document = new Document(file.getOriginalFilename(), file.getSize(), customer);
         documentRepository.save(document);
 
         URI documentLocation = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -49,7 +54,7 @@ public class DocumentController {
     public ResponseEntity<Resource> retrieveDocument(@PathVariable Long id) {
         Optional<Document> document = documentRepository.findById(id);
         if (document.isPresent()) {
-            Resource file = storageService.downloadFile(document.get().getDocument());
+            Resource file = storageService.downloadFile(document.get().getName());
             if (file != null) {
                 return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"" + file.getFilename() + "\"").body(file);
@@ -58,12 +63,17 @@ public class DocumentController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/{customerId}")
+    public List<Document> retrieveDocumentsByCustomerId(@PathVariable Long customerId) {
+        return documentRepository.findAllByCustomerId(customerId);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDocument(@PathVariable Long id) {
         Optional<Document> document = documentRepository.findById(id);
         if (document.isPresent()) {
             documentRepository.deleteById(id);
-            storageService.deleteFile(document.get().getDocument());
+            storageService.deleteFile(document.get().getName());
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.notFound().build();
@@ -76,7 +86,7 @@ public class DocumentController {
 
         List<Document> documents = documentRepository.findAllByIdIn(ids);
         for (Document document : documents) {
-            storageService.deleteFile(document.getDocument());
+            storageService.deleteFile(document.getName());
             documentRepository.deleteById(document.getId());
             deletedIds.add(document.getId());
         }
@@ -90,7 +100,7 @@ public class DocumentController {
         List<Long> ids = (List<Long>) body.get("ids");
         List<Document> documents = documentRepository.findAllByIdIn(ids);
         List<String> fileNames = documents.stream()
-                .map(Document::getDocument)
+                .map(Document::getName)
                 .toList();
 
         if (!fileNames.isEmpty()) {

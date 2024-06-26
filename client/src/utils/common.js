@@ -9,5 +9,5 @@ export const getReadableFileSize = (bytes) => {
         unitIndex++;
     }
 
-    return `${bytes.toFixed(2)} ${units[unitIndex]}`;
+    return `${bytes?.toFixed(2) || 0} ${units[unitIndex]}`;
 }

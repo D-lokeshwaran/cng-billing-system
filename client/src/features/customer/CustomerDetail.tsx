@@ -1,10 +1,13 @@
+import { useState, useEffect } from 'react';
 import { SubmitHandler } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import { Customer } from "./customerSlice";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import FeatureHeader from "src/components/structure/FeatureHeader";
 import HookForm from "src/components/form/HookForm";
 import Input from "src/components/form/Input";
 import DocumentList from "./DocumentList";
+import { coreApi } from 'src/utils/api';
 
 const CONTACT_NUMBER_REGEX = /^[0-9]{10}$/;
 const EMAIL_ADDRESS_REGEX = /^[^\s@]+@[^\s@]+\.com$/;
@@ -12,13 +15,40 @@ const PINCODE_REGEX = /^[0-9]{6}$/;
 
 const CustomerForm = () => {
 
-    const onSubmitCustomer: SubmitHandler<Customer> = (data) => {
-        console.log(data);
+    const [ customerDetails, setCustomerDetails ] = useState<Customer>();
+    const { customerId } = useParams();
+
+    useEffect(() => {
+        //retrieveCustomers(1); // simple
+    }, [])
+
+    const retrieveCustomers = async (customerId) => {
+        const retrievedCustomer = await coreApi.get(`/cng/customers/${customerId}`);
+        const customer = retrievedCustomer.data;
+        const customerDocuments = await coreApi.get(`/cng/customers/${customerId}/documents`);
+        const documents = customerDocuments.data._embedded.documents;
+        customer["documents"] = documents;
+        setCustomerDetails(customer);
+    }
+
+    const onSubmitCustomer: SubmitHandler<Customer> = async (customer) => {
+        const customerDocuments = customer.documents;
+        delete customer.documents;
+        const newCustomer = await coreApi.post("/cng/customers", customer)
+        const customerId = newCustomer.data.id;
+
+        for (const document of customerDocuments) {
+            const formData = new FormData();
+            formData.append("file", document.file);
+            formData.append("customerId", customerId);
+            await coreApi.post("/cng/documents", formData);
+        }
     }
 
     return (
         <div>
-            <HookForm onSubmit={onSubmitCustomer}>
+            <HookForm onSubmit={onSubmitCustomer} initialValues={customerDetails}>
+                <pre>{JSON.stringify(customerDetails, null, 2) }</pre>
                 <FeatureHeader title="Create Customer" className="justify-content-between">
                     <Button variant="primary" type="submit">
                         Create
@@ -34,7 +64,7 @@ const CustomerForm = () => {
                         />
                         <Input
                             as={Col}
-                            field={{ title:"Fullname", state:"fullname" }}
+                            field={{ title:"Full name", state:"fullName" }}
                         />
                     </Row>
                     <Row>
@@ -72,7 +102,7 @@ const CustomerForm = () => {
                             as={Col} 
                             field={{ title: "pincode", state: "pincode"}}
                             validate={{
-                                pinCodeFormat: (v: any) => v.match(PINCODE_REGEX) ? undefined : "Must be 6 digits long"
+                                pinCodeFormat: (v: any) => v.toString().match(PINCODE_REGEX) ? undefined : "Must be 6 digits long"
                             }}
                         />
                     </Row>

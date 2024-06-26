@@ -28,24 +28,32 @@ public class Customer {
     @Column(name = "full_name")
     private String fullName;
 
+    @Column(name = "email_address")
+    private String emailAddress;
+
     @Column(length = 10)
     private String contactNumber;
 
     @Enumerated(EnumType.STRING)
     private States state;
 
-    @Column(name = "full_address")
-    private String fullAddress;
+    @Column(name = "billing_address")
+    private String billingAddress;
 
     private String city;
 
     @Column(length = 6)
-    private Integer pin;
+    private Integer pincode;
 
     @OneToMany(mappedBy = "customer", cascade = REMOVE)
     private List<Bill> bills;
 
     @OneToMany(mappedBy = "customer", cascade = REMOVE)
     private List<Document> documents;
+
+    @PrePersist
+    private void generateAccountNumber() {
+        System.out.println(this);
+    }
 
 }
