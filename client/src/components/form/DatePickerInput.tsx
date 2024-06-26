@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import { FormGroup, FormLabel } from 'react-bootstrap';
 import { AlertCircleIcon } from 'hugeicons-react';
 import classNames from 'classnames';
+import { DATE_FORMATS } from 'src/config';
 
 interface DatePickerInputProps {
     field: FieldType;
@@ -44,9 +45,11 @@ const DatePickerInput = ({
                         onChange={(date) => onChange(date)}
                         selected={value}
                         isClearable
+                        showDateSelect
                         className={classNames("form-control", {
                             'is-invalid': errorMessage
                         })}
+                        dateFormat={DATE_FORMATS}
                         wrapperClassName='w-100'
                         {...props}
                     />

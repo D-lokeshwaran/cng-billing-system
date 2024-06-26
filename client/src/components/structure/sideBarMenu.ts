@@ -32,11 +32,5 @@ export const sideBarMenu: sideBarMenu[] = [
         path: "/tariffs",
         icon: DashboardIcon,
         allowedRoles: [ROLES.Admin, ROLES.Operator]
-    },
-    {
-        title: "Documents",
-        path: "/documents",
-        icon: DashboardIcon,
-        allowedRoles: [ROLES.Admin, ROLES.Operator]
-    },
+    }
 ]

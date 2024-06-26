@@ -1,8 +1,9 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router } from 'react-router-dom';
 import AuthContextPovider from './context/AuthContext';
 import AppRoutes from './routes/AppRoutes';
+import "react-datepicker/dist/react-datepicker.css";
 
 const App: React.FC = () => {
   return (

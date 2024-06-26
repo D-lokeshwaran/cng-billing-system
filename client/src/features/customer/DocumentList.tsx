@@ -76,14 +76,6 @@ const DocumentList = () => {
                                 key={field.documentId}
                                 control={control}
                                 name={`Documents.${index}`}
-                                rules={{
-                                    validate: {
-                                        required: (v: any) => {
-                                            console.log(v)
-                                            return "Invalid";
-                                        }
-                                    }
-                                }}
                                 render={() => (
                                     <ListGroup.Item className="mt-2 border rounded-3 p-3 px-4">
                                         <FlexBox className="justify-content-between">
