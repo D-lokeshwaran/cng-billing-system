@@ -19,10 +19,10 @@ const CustomerForm = () => {
     const { customerId } = useParams();
 
     useEffect(() => {
-        //retrieveCustomers(1); // simple
+        //retrieveCustomers(customerId); // simple
     }, [])
 
-    const retrieveCustomers = async (customerId) => {
+    const retrieveCustomers = async (customerId: number) => {
         const retrievedCustomer = await coreApi.get(`/cng/customers/${customerId}`);
         const customer = retrievedCustomer.data;
         const customerDocuments = await coreApi.get(`/cng/customers/${customerId}/documents`);
@@ -31,13 +31,12 @@ const CustomerForm = () => {
         setCustomerDetails(customer);
     }
 
-    const onSubmitCustomer: SubmitHandler<Customer> = async (customer) => {
-        const customerDocuments = customer.documents;
-        delete customer.documents;
+    const onSubmitCustomer: SubmitHandler<Customer> = async (data) => {
+        const { documents, ...customer} = data;
         const newCustomer = await coreApi.post("/cng/customers", customer)
         const customerId = newCustomer.data.id;
 
-        for (const document of customerDocuments) {
+        for (const document of documents) {
             const formData = new FormData();
             formData.append("file", document.file);
             formData.append("customerId", customerId);

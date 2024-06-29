@@ -2,10 +2,11 @@ import TanStackTable from './TanStackTable';
 import { Card } from 'react-bootstrap';
 import SearchBoxInput from '../common/SearchBoxInput';
 import { useTableAdapter } from 'src/hooks';
-import { useEffect } from 'react';
+import { HTMLAttributes, useEffect } from 'react';
 import ExportData from '../common/ExportData';
 import ColumnChooser from './ColumnChooser';
 import Pagination from './Pagination';
+import { RowData } from '@tanstack/react-table';
 
 interface Params {
     url: string;
@@ -32,7 +33,8 @@ type SliceProps = {
 }
 
 interface ReadyMadeTableProps {
-    slice: SliceProps
+    slice: SliceProps,
+    rowProps: (row:RowData) => HTMLAttributes<HTMLTableRowElement>
 }
 
 const defaultAlterOptions = {
@@ -45,7 +47,6 @@ const defaultAlterOptions = {
 }
 
 const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
-
 
     const { 
         name,
