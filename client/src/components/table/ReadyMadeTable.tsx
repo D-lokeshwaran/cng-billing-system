@@ -34,7 +34,7 @@ type SliceProps = {
 
 interface ReadyMadeTableProps {
     slice: SliceProps,
-    rowProps: (row:RowData) => HTMLAttributes<HTMLTableRowElement>
+    rowProps?: (row:RowData) => HTMLAttributes<HTMLTableRowElement>
 }
 
 const defaultAlterOptions = {
@@ -46,7 +46,7 @@ const defaultAlterOptions = {
     initPageSize: 10
 }
 
-const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
+const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice, rowProps }) => {
 
     const { 
         name,
@@ -84,7 +84,7 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice }) => {
                 {options?.export && <ExportData filename={name} table={table}/>}
             </Card.Header>
             <Card.Body>
-                <TanStackTable table={table} />
+                <TanStackTable table={table} rowProps={rowProps}/>
             </Card.Body>
             <Card.Footer>
                 {options?.pagination && <Pagination table={table}/>}

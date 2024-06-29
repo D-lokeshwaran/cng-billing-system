@@ -1,13 +1,17 @@
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import { Table as BSTable } from "react-bootstrap";
-import { Table, flexRender } from '@tanstack/react-table';
+import { RowData, Table, flexRender } from '@tanstack/react-table';
 import IndeterminateCheckbox from "./IntermediateCheckbox";
 
 interface TanStackTableProps {
     table: Table<unknown|never|any>;
+    rowProps?: (row?:RowData) => HTMLAttributes<HTMLTableRowElement>;
 }
 
-export const TanStackTable: React.FC<TanStackTableProps> = ({ table }) => {
+export const TanStackTable: React.FC<TanStackTableProps> = ({ 
+    table, 
+    rowProps= () => {} 
+}) => {
 
     const { 
         getHeaderGroups, 
@@ -55,7 +59,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({ table }) => {
             </thead>
             <tbody>
                 {getRowModel().rows.map(row => (
-                    <tr key={row.id}>
+                    <tr key={row.id} {...rowProps(row)}>
                         <>
                             <td>
                                 <IndeterminateCheckbox
