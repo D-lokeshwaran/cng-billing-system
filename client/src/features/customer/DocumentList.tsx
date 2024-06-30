@@ -2,17 +2,16 @@ import React, { useRef } from 'react';
 import { Card, FormControl, FormGroup, FormLabel, ListGroup } from "react-bootstrap";
 import FlexBox from "src/components/common/FlexBox";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { Cancel01Icon, DocumentValidationIcon, Upload02Icon, AlertCircleIcon } from "hugeicons-react";
+import { Cancel01Icon, DocumentValidationIcon, Upload02Icon } from "hugeicons-react";
 import { getReadableFileSize } from "src/utils/common";
 import { Customer } from './customerSlice';
+import ErrorMessage from 'src/components/form/ErrorMessage';
 
 const DocumentList = () => {
-
-    const { control, formState: { errors } } = useFormContext<Customer>();
+    const { control, setError, clearErrors } = useFormContext<Customer>();
     const { fields, append, remove } = useFieldArray<Customer>({
         control,
         name: "documents",
-        keyName: "documentId"
     });
 
     const hiddenFileInput = useRef<HTMLInputElement>(null!);
@@ -23,6 +22,14 @@ const DocumentList = () => {
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const uploadedFiles = Array.from(event.target.files || []);
+        const hasEmptyFile = uploadedFiles.some(file => file.size === 0);
+        
+        if (hasEmptyFile) {
+            setError("documents", { type: "manual", message: "File(s) should not be empty" });
+        } else {
+            clearErrors("documents");
+        }
+
         if (uploadedFiles.length > 0) {
             const wrappedFiles = uploadedFiles.map(file => ({ file }));
             append(wrappedFiles as any);
@@ -60,21 +67,27 @@ const DocumentList = () => {
                     <ListGroup variant="flush">
                         {fields.map((field, index) => (
                             <Controller
-                                key={field.documentId}
+                                key={field.id}
                                 control={control}
                                 name={`documents.${index}`}
-                                render={() => (
+                                rules={{
+                                    validate: {
+                                        emptyFile: value => value.file.size === 0 ? "File should not be empty" :  undefined
+                                    }
+                                }}
+                                render={({ field }) => (
                                     <ListGroup.Item className="mt-2 border rounded-3 p-3 px-4">
                                         <FlexBox>
                                             <DocumentValidationIcon className="me-3" />
-                                            <div className="text-truncate">{field.name || (field as any).file?.name}</div>
-                                            <small className="text-secondary">{getReadableFileSize(field.size ||(field as any).file?.size)}</small>
+                                            <div className="text-truncate">{field.value.file.name || (field.value as any).file?.name}</div>
+                                            <small className="text-secondary">{getReadableFileSize(field.value.file.size || (field.value as any).file?.size)}</small>
                                             <div className="me-5">12/2/2024</div>
                                             <Cancel01Icon
                                                 className="cursor-pointer"
                                                 onClick={() => remove(index)}
                                             />
                                         </FlexBox>
+                                        {field.value.file.size === 0 && <ErrorMessage errorMessage="File is empty"/>}
                                     </ListGroup.Item>
                                 )}
                             />
