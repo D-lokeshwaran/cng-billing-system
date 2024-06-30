@@ -8,10 +8,12 @@ import { Customer } from './customerSlice';
 import ErrorMessage from 'src/components/form/ErrorMessage';
 
 const DocumentList = () => {
+
     const { control, setError, clearErrors } = useFormContext<Customer>();
     const { fields, append, remove } = useFieldArray<Customer>({
         control,
         name: "documents",
+        keyName: "id"
     });
 
     const hiddenFileInput = useRef<HTMLInputElement>(null!);
@@ -29,7 +31,6 @@ const DocumentList = () => {
         } else {
             clearErrors("documents");
         }
-
         if (uploadedFiles.length > 0) {
             const wrappedFiles = uploadedFiles.map(file => ({ file }));
             append(wrappedFiles as any);
@@ -67,27 +68,24 @@ const DocumentList = () => {
                     <ListGroup variant="flush">
                         {fields.map((field, index) => (
                             <Controller
-                                key={field.id}
+                                key={field.documentId}
                                 control={control}
                                 name={`documents.${index}`}
-                                rules={{
-                                    validate: {
-                                        emptyFile: value => value.file.size === 0 ? "File should not be empty" :  undefined
-                                    }
-                                }}
-                                render={({ field }) => (
-                                    <ListGroup.Item className="mt-2 border rounded-3 p-3 px-4">
-                                        <FlexBox>
+                                render={() => (
+                                    <ListGroup.Item className="mt-2 border rounded-3 p-3 px-4" key={index}>
+                                        <FlexBox className="justify-content-between">
                                             <DocumentValidationIcon className="me-3" />
-                                            <div className="text-truncate">{field.value.file.name || (field.value as any).file?.name}</div>
-                                            <small className="text-secondary">{getReadableFileSize(field.value.file.size || (field.value as any).file?.size)}</small>
+                                            <div>
+                                                <div className="text-truncate">{(field as any).file.name}</div>
+                                                <small className="text-secondary">{getReadableFileSize((field as any).file.size)}</small>
+                                            </div>
                                             <div className="me-5">12/2/2024</div>
                                             <Cancel01Icon
                                                 className="cursor-pointer"
                                                 onClick={() => remove(index)}
                                             />
+                                            {(field as any).file.size === 0 && <ErrorMessage errorMessage="File is empty" />}
                                         </FlexBox>
-                                        {field.value.file.size === 0 && <ErrorMessage errorMessage="File is empty"/>}
                                     </ListGroup.Item>
                                 )}
                             />
