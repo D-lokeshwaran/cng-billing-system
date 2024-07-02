@@ -76,15 +76,15 @@ const DocumentList = () => {
                                         <FlexBox className="justify-content-between">
                                             <DocumentValidationIcon className="me-3" />
                                             <div>
-                                                <div className="text-truncate">{(field as any).file.name}</div>
-                                                <small className="text-secondary">{getReadableFileSize((field as any).file.size)}</small>
+                                                <div className="text-truncate">{(field as any).file?.name || field.name}</div>
+                                                <small className="text-secondary">{getReadableFileSize((field as any).file?.size || field.size)}</small>
                                             </div>
                                             <div className="me-5">12/2/2024</div>
                                             <Cancel01Icon
                                                 className="cursor-pointer"
                                                 onClick={() => remove(index)}
                                             />
-                                            {(field as any).file.size === 0 && <ErrorMessage errorMessage="File is empty" />}
+                                            {(field as any).file?.size === 0 && <ErrorMessage errorMessage="File is empty" />}
                                         </FlexBox>
                                     </ListGroup.Item>
                                 )}

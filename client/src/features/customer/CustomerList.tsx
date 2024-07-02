@@ -16,7 +16,8 @@ const CustomerList: FC = () => {
     const getRowProps = (row: RowData) => {
         return {
             onDoubleClick: (event: MouseEvent<HTMLTableRowElement>) => {
-                console.log(row, event);
+                const customerId = row.original.id;
+                router.push(`/customers/${customerId}`)
             }
         }
     }

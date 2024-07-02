@@ -19,7 +19,7 @@ const CustomerForm = () => {
     const { customerId } = useParams();
 
     useEffect(() => {
-        //retrieveCustomers(customerId); // simple
+        retrieveCustomers(customerId);
     }, [])
 
     const retrieveCustomers = async (customerId: number) => {
@@ -37,10 +37,12 @@ const CustomerForm = () => {
         const customerId = newCustomer.data.id;
 
         for (const document of documents) {
-            const formData = new FormData();
-            formData.append("file", document.file);
-            formData.append("customerId", customerId);
-            await coreApi.post("/cng/documents", formData);
+            if (document.file) {
+                const formData = new FormData();
+                formData.append("file", document.file);
+                formData.append("customerId", customerId);
+                await coreApi.post("/cng/documents", formData);
+            }
         }
     }
 

@@ -43,7 +43,11 @@ class CustomerSlice {
     addressLine2: false,
   }
 
-  _mock = [
+  params = {
+    url: "/cng/customers"
+  }
+
+  /* _mock = [
     {
         accountNumber: 12345,
         fullName: "LOKM",
@@ -116,7 +120,7 @@ class CustomerSlice {
         contactNumber: 2222,
         addressLine1: "add2"
     }
-  ]
+  ] */
 
 }
 

@@ -2,11 +2,13 @@ package com.cng_billing_system.core_api.document;
 
 import com.cng_billing_system.core_api.customer.Customer;
 import com.cng_billing_system.core_api.customer.CustomerRepository;
+import com.cng_billing_system.core_api.fileStorage.StorageException;
 import com.cng_billing_system.core_api.fileStorage.StorageService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,16 +40,23 @@ public class DocumentController {
             @RequestParam MultipartFile file,
             @RequestParam Long customerId
         ) {
-        storageService.uploadFile(file.getOriginalFilename(), file);
-        Customer customer = customerRepository.findById(customerId).orElse(null);
-        Document document = new Document(file.getOriginalFilename(), file.getSize(), customer);
-        documentRepository.save(document);
+        try {
 
-        URI documentLocation = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(document.getId())
-                .toUri();
-        return ResponseEntity.created(documentLocation).build();
+            storageService.uploadFile(file.getOriginalFilename(), file);
+            Customer customer = customerRepository.findById(customerId).orElse(null);
+            Document document = new Document(file.getOriginalFilename(), file.getSize(), customer);
+            documentRepository.save(document);
+
+            URI documentLocation = ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(document.getId())
+                    .toUri();
+            return ResponseEntity.created(documentLocation).build();
+
+        } catch (StorageException storeEx) {
+            storeEx.printStackTrace();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(storeEx.getMessage());
+        }
     }
 
     @GetMapping("/{id}")

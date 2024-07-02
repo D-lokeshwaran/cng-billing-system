@@ -53,6 +53,7 @@ public class Customer {
 
     @PrePersist
     private void generateAccountNumber() {
+        
         System.out.println(this);
     }
 

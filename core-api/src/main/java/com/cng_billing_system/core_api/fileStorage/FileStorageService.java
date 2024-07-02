@@ -53,7 +53,7 @@ public class FileStorageService implements StorageService {
     public void uploadFile(String fileName, MultipartFile multipartFile) {
         try {
             if (multipartFile.isEmpty()) {
-                throw new SocketException("Failed to upload empty file.");
+                throw new StorageException("Failed to upload empty file \"" + fileName + "\"");
             }
             Path targetPath = Path.of(basePath +"/"+ fileName);
 
