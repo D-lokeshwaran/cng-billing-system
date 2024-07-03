@@ -27,6 +27,5 @@ const conversionFactor = 1048576; // 1 MB in bytes
 export const validateFileSize = (fileSizeInBytes) => {
     const fileSizeInMB = fileSizeInBytes / conversionFactor;
     const maxSizeSplit = splitSizeAndUnit(MAX_FILE_SIZE);
-    console.log(fileSizeInMB, maxSizeSplit)
     return fileSizeInMB.toFixed(2) > Number(maxSizeSplit.size).toFixed(2);
 };

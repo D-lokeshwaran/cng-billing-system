@@ -7,6 +7,7 @@ import { getReadableFileSize, validateFileSize } from "src/utils/common";
 import { Customer } from './customerSlice';
 import ErrorMessage from 'src/components/form/ErrorMessage';
 import { MAX_FILE_SIZE } from 'src/config';
+import { CUSTOMER_DETAILS } from 'src/constants/labels';
 
 const DocumentList = () => {
 
@@ -48,7 +49,7 @@ const DocumentList = () => {
 
     return (
         <FormGroup>
-            <FormLabel>Documents</FormLabel>
+            <FormLabel>{CUSTOMER_DETAILS.DOCUMENTS}</FormLabel>
             <FormControl
                 type="file"
                 hidden
@@ -75,9 +76,9 @@ const DocumentList = () => {
                     <ListGroup variant="flush">
                         {fields.map((field, index) => (
                             <Controller
-                                key={field.documentId}
+                                key={field.id}
                                 control={control}
-                                name={`documents.${index}`}
+                                name={`${CUSTOMER_DETAILS.DOCUMENTS}.${index}`}
                                 render={() => (
                                     <ListGroup.Item className="mt-2 border rounded-3 p-3 px-4" key={index}>
                                         <FlexBox className="justify-content-between">

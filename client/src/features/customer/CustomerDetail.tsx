@@ -8,6 +8,7 @@ import HookForm from "src/components/form/HookForm";
 import Input from "src/components/form/Input";
 import DocumentList from "./DocumentList";
 import { coreApi } from 'src/utils/api';
+import { ACTIONS, CUSTOMER_DETAILS } from 'src/constants/labels';
 
 const CONTACT_NUMBER_REGEX = /^[0-9]{10}$/;
 const EMAIL_ADDRESS_REGEX = /^[^\s@]+@[^\s@]+\.com$/;
@@ -54,7 +55,7 @@ const CustomerForm = () => {
                 <pre>{JSON.stringify(customerDetails, null, 2) }</pre>
                 <FeatureHeader title="Create Customer" className="justify-content-between">
                     <Button variant="primary" type="submit">
-                        Create
+                        {customerId ? ACTIONS.UPDATE : ACTIONS.CREATE}
                     </Button>
                 </FeatureHeader>
                 <Card body >
@@ -62,25 +63,25 @@ const CustomerForm = () => {
                         <Input
                             as={Col}
                             required={false}
-                            field={{ title:"Account Number", state:"accountNumber" }}
+                            field={{ title:CUSTOMER_DETAILS.ACCOUNT_NUMBER, state:"accountNumber" }}
                             control={{ disabled:true }}
                         />
                         <Input
                             as={Col}
-                            field={{ title:"Full name", state:"fullName" }}
+                            field={{ title:CUSTOMER_DETAILS.FULL_NAME, state:"fullName" }}
                         />
                     </Row>
                     <Row>
                         <Input
                             as={Col}
-                            field={{ title:"Email address", state:"emailAddress" }}
+                            field={{ title:CUSTOMER_DETAILS.EMAIL_ADDRESS, state:"emailAddress" }}
                             validate={{
                                 format: (v: any) => v.match(EMAIL_ADDRESS_REGEX) ? undefined : "Invalid Email address"
                             }}
                         />
                          <Input
                             as={Col}
-                            field={{title: "Contact number", state: "contactNumber"}}
+                            field={{title: CUSTOMER_DETAILS.CONTACT_NUMBER, state: "contactNumber"}}
                             validate={{
                                 format: (v: any) => v.match(CONTACT_NUMBER_REGEX) ? undefined : "Must be 10 digits long"
                             }}
@@ -89,21 +90,21 @@ const CustomerForm = () => {
                     <Row>
                         <Input
                             as={Col}
-                            field={{ title:"State", state:"state" }}
+                            field={{ title:CUSTOMER_DETAILS.STATE, state:"state" }}
                         />
                         <Input
                             as={Col}
-                            field={{ title:"City", state:"city" }}
+                            field={{ title:CUSTOMER_DETAILS.CITY, state:"city" }}
                         />
                     </Row>
                     <Row>
                         <Input
                             as={Col}
-                            field={{ title:"Billing address", state:"billingAddress" }}
+                            field={{ title:CUSTOMER_DETAILS.BILLING_ADDRESS, state:"billingAddress" }}
                         />
                         <Input
                             as={Col} 
-                            field={{ title: "pincode", state: "pincode"}}
+                            field={{ title: CUSTOMER_DETAILS.PINCODE, state: "pincode"}}
                             validate={{
                                 pinCodeFormat: (v: any) => v.toString().match(PINCODE_REGEX) ? undefined : "Must be 6 digits long"
                             }}
