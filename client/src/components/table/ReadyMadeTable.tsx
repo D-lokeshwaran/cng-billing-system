@@ -6,35 +6,11 @@ import { HTMLAttributes, useEffect } from 'react';
 import ExportData from '../common/ExportData';
 import ColumnChooser from './ColumnChooser';
 import Pagination from './Pagination';
-import { RowData } from '@tanstack/react-table';
-
-interface Params {
-    url: string;
-    method?: string;
-}
-
-interface AlterOptions {
-    globelFilter: boolean,
-    columnChooser: boolean,
-    rowSelection: boolean,
-    export: boolean,
-    pagination: boolean,
-    initPageSize: number
-}
-
-type SliceProps = {
-    name: string,
-    columns: any,
-    params?: Params,
-    _mock?: any[],
-    alterOptions?: AlterOptions
-    columnVisibility?: {[int:string]: boolean},
-    [int:string]: any
-}
+import { SliceProps } from './types';
 
 interface ReadyMadeTableProps {
     slice: SliceProps,
-    rowProps?: (row:RowData) => HTMLAttributes<HTMLTableRowElement>
+    rowProps?: (row:any) => HTMLAttributes<HTMLTableRowElement>
 }
 
 const defaultAlterOptions = {

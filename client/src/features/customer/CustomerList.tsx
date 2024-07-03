@@ -1,9 +1,8 @@
-import { FC, MouseEvent } from 'react';
+import { FC } from 'react';
 import customerSlice from './customerSlice';
 import ReadyMadeTable from 'src/components/table/ReadyMadeTable';
 import { Button } from 'react-bootstrap';
 import { useRouter } from 'src/hooks';
-import { RowData } from '@tanstack/react-table';
 
 const CustomerList: FC = () => {
 
@@ -13,9 +12,9 @@ const CustomerList: FC = () => {
         router.push('/customers/new')
     }
 
-    const getRowProps = (row: RowData) => {
+    const getRowProps = (row: any) => {
         return {
-            onDoubleClick: (event: MouseEvent<HTMLTableRowElement>) => {
+            onDoubleClick: () => {
                 const customerId = row.original.id;
                 router.push(`/customers/${customerId}`)
             }

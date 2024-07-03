@@ -7,9 +7,12 @@ import { lazy } from "react";
 
 const Login = lazy(() => import('src/features/auth/Login'));
 const Dashboard = lazy(() => import('src/features/dashboard/Dashboard'));
-const Bill = lazy(() => import('src/features/bill/Bill'));
+const BillList = lazy(() => import('src/features/bill/BillList'));
+const BillDetail = lazy(() => import('src/features/bill/BillDetail'));
+
 const CustomerList = lazy(() => import('src/features/customer/CustomerList'));
 const CustomerDetail = lazy(() => import('src/features/customer/CustomerDetail'));
+
 const Tariff = lazy(() => import('src/features/tariff/Tariff'));
 const Error404 = lazy(() => import("src/features/error/Error404"));
 
@@ -34,7 +37,10 @@ const AppRoutes = () => {
                                    <Route path="new" element={<CustomerDetail/>} />
                                    <Route path=":customerId" element={<CustomerDetail/>} />
                               </Route>
-                              <Route path="bills" element={<Bill/>}/>
+                              <Route path="bills">
+                                   <Route index element={<BillList/>} />
+                                   <Route path="new" element={<BillDetail/>} />
+                              </Route>
                          </Route>
                     </Route>
                     

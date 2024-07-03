@@ -2,6 +2,16 @@ export const ACTIONS = {
     CREATE: "Create",
     UPDATE: "Update",
     EXPORT: "Export",
+    CUSTOMER: "Customer",
+    BILL: "Bill"
+}
+
+export const CUSTOMER_LIST = {
+    ACCOUNT_NUMBER: "Account number",
+    FULL_NAME: "Full name",
+    CONTACT_NUMBER: "Contact number",
+    ADDRESS: "Address",
+    STATE: "State",
 }
 
 export const CUSTOMER_DETAILS = {
@@ -14,4 +24,13 @@ export const CUSTOMER_DETAILS = {
     BILLING_ADDRESS: "Billing address",
     PINCODE: "Pincode",
     DOCUMENTS: "Documents"
+}
+
+export const BILL_LIST = {
+    CUSTOMER: "Customer",
+    UNITS: "Units",
+    CREATED_DATE: "Created Date",
+    DUE_DATE: "Due Date",
+    STATUS: "Status",
+    AMOUNT: "Amount"
 }

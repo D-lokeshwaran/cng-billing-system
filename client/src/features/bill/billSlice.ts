@@ -1,51 +1,53 @@
 import { createColumnHelper } from "@tanstack/react-table"
 import { SliceProps } from "src/components/table/types";
-import { CUSTOMER_LIST } from "src/constants/labels";
+import { BILL_LIST } from "src/constants/labels"
 
-export type Customer = {
-    accountNumber: string,
-    fullName: string,
-    contactNumber: string,
-    state: string,
-    fullAddress: string,
-    city: string,
-    pin: number,
-    documents: {
-      documentId: string;
-      file: File;
-    }[];
+export type Bill = {
+    customer: string,
+    units: number,
+    createdDate: Date,
+    dueDate: Date,
+    status: string,
+    amount: string,
 }
 
 // TODO: Later all this data should turn in db
-const columnHelper = createColumnHelper<Customer>()
+const columnHelper = createColumnHelper<Bill>()
 
-const customerSlice: SliceProps = {
+const billSlice: SliceProps = {
   name: "customers",
   columns: [
-    columnHelper.accessor('accountNumber', {
-      header: CUSTOMER_LIST.ACCOUNT_NUMBER,
+    columnHelper.accessor('customer', {
+      header: BILL_LIST.CUSTOMER,
       enableHiding: false
     }),
-    columnHelper.accessor('fullName', {
-      header: CUSTOMER_LIST.FULL_NAME
+    columnHelper.accessor('units', {
+      header: BILL_LIST.UNITS
     }),
-    columnHelper.accessor('contactNumber', {
-      header: CUSTOMER_LIST.CONTACT_NUMBER
+    columnHelper.accessor('createdDate', {
+      header: BILL_LIST.CREATED_DATE
     }),
-    columnHelper.accessor('fullAddress', {
-      header: CUSTOMER_LIST.ADDRESS
+    columnHelper.accessor('dueDate', {
+      header: BILL_LIST.DUE_DATE
     }),
-    columnHelper.accessor('state', {
-      header: CUSTOMER_LIST.STATE,
+    columnHelper.accessor('status', {
+      header: BILL_LIST.STATUS,
+    }),
+    columnHelper.accessor('amount', {
+      header: BILL_LIST.AMOUNT,
     })
   ],
   columnVisibility: {
     addressLine2: false,
   },
-  params: {
-    url: "/cng/customers"
+  alterOptions: {
+    globelFilter: false
   },
-  /* _mock: [
+  params: {
+    url: "/cng/bills"
+  }
+
+  /* _mock = [
     {
         accountNumber: 12345,
         fullName: "LOKM",
@@ -121,5 +123,4 @@ const customerSlice: SliceProps = {
   ] */
 
 }
-
-export default customerSlice;
+export default billSlice;
