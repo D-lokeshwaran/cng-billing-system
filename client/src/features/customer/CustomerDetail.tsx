@@ -19,8 +19,10 @@ const CustomerForm = () => {
     const { customerId } = useParams();
 
     useEffect(() => {
-        retrieveCustomers(customerId);
-    }, [])
+        if (customerId) {
+            retrieveCustomers(customerId);
+        }
+    }, [customerId])
 
     const retrieveCustomers = async (customerId: number) => {
         const retrievedCustomer = await coreApi.get(`/cng/customers/${customerId}`);

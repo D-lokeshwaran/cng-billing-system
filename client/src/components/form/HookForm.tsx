@@ -6,6 +6,7 @@ interface HookFormProps extends FormProps {
     children: React.ReactNode;
     onSubmit: SubmitHandler<any>;
     initialValues?: object;
+    debug?: boolean;
 }
 
 const HookForm: React.FC<HookFormProps> = ({ 
@@ -20,13 +21,23 @@ const HookForm: React.FC<HookFormProps> = ({
 
     useEffect(() => {
         if (initialValues) {
+            debug(`Initial values: ${initialValues}`)
             methods.reset(initialValues);
         }
     }, [initialValues])
 
     const handleOnSubmit: SubmitHandler<any> = (data, event) => {
         event?.stopPropagation();
-        onSubmit(data);
+        if (methods.formState.errors.length === 0) {
+            debug(`Form data: ${data}`)
+            onSubmit(data);
+        }
+    }
+
+    const debug = (message: any, type?: string = "log") => {
+        if (props.debug == true) {
+            console[type](message);
+        }
     }
 
     return (

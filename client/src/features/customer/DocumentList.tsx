@@ -3,9 +3,10 @@ import { Card, FormControl, FormGroup, FormLabel, ListGroup } from "react-bootst
 import FlexBox from "src/components/common/FlexBox";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { Cancel01Icon, DocumentValidationIcon, Upload02Icon } from "hugeicons-react";
-import { getReadableFileSize } from "src/utils/common";
+import { getReadableFileSize, validateFileSize } from "src/utils/common";
 import { Customer } from './customerSlice';
 import ErrorMessage from 'src/components/form/ErrorMessage';
+import { MAX_FILE_SIZE } from 'src/config';
 
 const DocumentList = () => {
 
@@ -24,13 +25,19 @@ const DocumentList = () => {
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const uploadedFiles = Array.from(event.target.files || []);
+
+        // validate empty file and max file size
         const hasEmptyFile = uploadedFiles.some(file => file.size === 0);
-        
+        const hasLargeFile = uploadedFiles.some(file => validateFileSize(file.size));
         if (hasEmptyFile) {
             setError("documents", { type: "manual", message: "File(s) should not be empty" });
-        } else {
+        } else if (hasLargeFile) {
+            setError("documents", { type: "manual", message: `File(s) size should be under ${MAX_FILE_SIZE}` });
+        }else {
             clearErrors("documents");
         }
+
+        // append files to the hook form
         if (uploadedFiles.length > 0) {
             const wrappedFiles = uploadedFiles.map(file => ({ file }));
             append(wrappedFiles as any);
@@ -85,6 +92,8 @@ const DocumentList = () => {
                                                 onClick={() => remove(index)}
                                             />
                                             {(field as any).file?.size === 0 && <ErrorMessage errorMessage="File is empty" />}
+                                            {validateFileSize((field as any).file?.size || field.size)
+                                                && <ErrorMessage errorMessage={`File size should be under ${MAX_FILE_SIZE}`} />}
                                         </FlexBox>
                                     </ListGroup.Item>
                                 )}

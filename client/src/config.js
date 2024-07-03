@@ -5,3 +5,4 @@ export const settings = {
 export const permissions = {
     admin: 'all',
 }
+export const MAX_FILE_SIZE = '128MB';
