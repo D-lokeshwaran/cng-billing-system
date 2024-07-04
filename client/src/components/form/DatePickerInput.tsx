@@ -4,18 +4,22 @@ import DatePicker from 'react-datepicker';
 import { FormGroup, FormLabel } from 'react-bootstrap';
 import { AlertCircleIcon } from 'hugeicons-react';
 import classNames from 'classnames';
-import { DATE_FORMATS } from 'src/config';
+import { DATE_FORMATS } from 'src/utils/date';
 
 interface DatePickerInputProps {
     field: FieldType;
     required?: boolean;
+    showLabel?: boolean;
     validate?: Record<string, (v: any) => string | undefined>;
+    [int:string]: any;
 }
 
 const DatePickerInput = ({
     field,
     required=true,
+    showLabel=true,
     validate,
+    className,
     ...props
 }: DatePickerInputProps) => {
 
@@ -24,9 +28,9 @@ const DatePickerInput = ({
 
     return (
         <FormGroup>
-            <FormLabel className="mb-1 d-block">
+            {showLabel && <FormLabel className="mb-1 d-block">
                 {field.title}<span style={{color:"#dc3545"}}>{required && ' *'}</span>
-            </FormLabel>
+            </FormLabel>}
             {errorMessage && <div style={{fontSize: ".80rem"}} className='mb-1 d-flex align-items-center'>
                 <AlertCircleIcon 
                     size={14} 
@@ -46,7 +50,7 @@ const DatePickerInput = ({
                         selected={value}
                         isClearable
                         showDateSelect
-                        className={classNames("form-control", {
+                        className={classNames(`form-control ${className}`, {
                             'is-invalid': errorMessage
                         })}
                         dateFormat={DATE_FORMATS}
@@ -56,7 +60,12 @@ const DatePickerInput = ({
                 )}  
                 rules={{
                     validate: {
-                        required: (v: any) => v !== null || "Please, pick one date"
+                        required: (v: any) => {
+                            if (required) {
+                                return v !== null ? "Please, pick one date" : true
+                            }
+                            return true;
+                        }
                     }
                 }} 
             />

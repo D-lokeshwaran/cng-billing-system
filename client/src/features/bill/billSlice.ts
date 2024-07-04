@@ -4,11 +4,11 @@ import { BILL_LIST } from "src/constants/labels"
 
 export type Bill = {
     customer: string,
-    units: number,
-    createdDate: Date,
+    unitsConsumed: number,
+    billingDate: Date,
     dueDate: Date,
     status: string,
-    amount: string,
+    amount: number,
 }
 
 // TODO: Later all this data should turn in db
@@ -21,11 +21,11 @@ const billSlice: SliceProps = {
       header: BILL_LIST.CUSTOMER,
       enableHiding: false
     }),
-    columnHelper.accessor('units', {
+    columnHelper.accessor('unitsConsumed', {
       header: BILL_LIST.UNITS
     }),
-    columnHelper.accessor('createdDate', {
-      header: BILL_LIST.CREATED_DATE
+    columnHelper.accessor('billingDate', {
+      header: BILL_LIST.BILLING_DATE
     }),
     columnHelper.accessor('dueDate', {
       header: BILL_LIST.DUE_DATE

@@ -1,3 +1,7 @@
+export const COMMON = {
+    NO_DATA: "--"
+}
+
 export const ACTIONS = {
     CREATE: "Create",
     UPDATE: "Update",
@@ -29,7 +33,7 @@ export const CUSTOMER_DETAILS = {
 export const BILL_LIST = {
     CUSTOMER: "Customer",
     UNITS: "Units",
-    CREATED_DATE: "Created Date",
+    BILLING_DATE: "Billed Date",
     DUE_DATE: "Due Date",
     STATUS: "Status",
     AMOUNT: "Amount"
