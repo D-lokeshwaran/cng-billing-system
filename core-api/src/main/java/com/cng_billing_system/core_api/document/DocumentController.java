@@ -20,6 +20,7 @@ import java.net.URI;
 import java.util.*;
 
 @RestController
+@CrossOrigin
 @AllArgsConstructor
 @RequestMapping("/cng/documents")
 public class DocumentController {

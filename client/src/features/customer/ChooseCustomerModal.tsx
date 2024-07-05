@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 import { coreApi } from 'src/utils/api';
 import customerSlice, { Customer } from './customerSlice';
+import { useTableAdapter } from 'src/hooks/useTableAdapter'
+import { flexRender } from '@tanstack/react-table';
 
 interface ChooseCustomerModelProps {
     show: boolean;
@@ -15,24 +17,14 @@ const ChooseCustomerModal: React.FC<ChooseCustomerModelProps> = ({
     onClose
 }) => {
 
-    const [customers, setCustomers] = useState<Customer[]>();
-
-    useEffect(() => {
-        retrieveAllCustomers();
-    }, [])
-
-    const retrieveAllCustomers = async () => {
-        const customersData = await coreApi.get(customerSlice.params?.url || '/cng/customers');        
-        if (customersData.data.length > 0) {
-            setCustomers(customersData.data);
-        } else {
-            alert("No customer ui and add button")
-        }
-    }
-
-    const renderCustomerList = customers?.forEach(customer => (
-        <div onClick={() => handleSelect(customer.id)}>
-            {customer.accountNumber}
+    const table = useTableAdapter({
+        name: customerSlice.name,
+        columns: customerSlice.columns,
+        params: customerSlice.params
+    })
+    const renderCustomer = table.getRowModel().rows.map(row => (
+        <div key={row.id}>
+            
         </div>
     ))
 
@@ -46,7 +38,7 @@ const ChooseCustomerModal: React.FC<ChooseCustomerModelProps> = ({
                 />
             </Modal.Header>
             <Modal.Body>
-                <>{renderCustomerList}</>
+                {renderCustomer}
             </Modal.Body>
             <Modal.Footer>
                 <Button variant='secondary' size='sm' onClick={onClose}>

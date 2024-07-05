@@ -13,17 +13,4 @@ public class CoreApiApplication {
 		SpringApplication.run(CoreApiApplication.class, args);
 	}
 
-	@Bean
-	public WebMvcConfigurer webMvcConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-						.allowedMethods("*")
-						.allowedOrigins("http://localhost:3003");
-			}
-
-		};
-	}
-
 }

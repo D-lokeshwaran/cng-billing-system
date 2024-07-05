@@ -2,7 +2,7 @@ import TanStackTable from './TanStackTable';
 import { Card } from 'react-bootstrap';
 import SearchBoxInput from '../common/SearchBoxInput';
 import { useTableAdapter } from 'src/hooks';
-import { HTMLAttributes, useEffect, useMemo } from 'react';
+import { HTMLAttributes, useEffect } from 'react';
 import ExportData from '../common/ExportData';
 import ColumnChooser from './ColumnChooser';
 import Pagination from './Pagination';
@@ -37,7 +37,7 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice, rowProps }) => {
 
     const columnHelper = createColumnHelper<any>();
 
-    useMemo(() => {
+    useEffect(() => {
         if (options.rowSelection === true && columns[0].id !== 'rowSelect') {
             columns.unshift(
                 columnHelper.display({

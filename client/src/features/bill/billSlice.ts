@@ -15,7 +15,7 @@ export type Bill = {
 const columnHelper = createColumnHelper<Bill>()
 
 const billSlice: SliceProps = {
-  name: "customers",
+  name: "bills",
   columns: [
     columnHelper.accessor('customerId', {
       header: BILL_LIST.CUSTOMER,

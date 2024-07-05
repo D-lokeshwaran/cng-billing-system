@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class RepositoryRestConfig {
@@ -27,6 +28,11 @@ public class RepositoryRestConfig {
                     RepositoryRestConfiguration config,
                     CorsRegistry cors
             ) {
+
+                cors.addMapping("/**")
+                    .allowedMethods("*")
+                    .allowedOrigins("http://localhost:3003");
+
                 config.setBasePath(baseURL);
                 config.exposeIdsFor(
                     Customer.class,
@@ -34,6 +40,7 @@ public class RepositoryRestConfig {
                     Tariff.class,
                     Document.class
                 );
+
             }
 
         };
