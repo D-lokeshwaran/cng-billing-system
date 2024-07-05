@@ -6,6 +6,7 @@ export type Customer = {
     id: number,
     accountNumber: string,
     fullName: string,
+    emailAddress: string,
     contactNumber: string,
     state: string,
     fullAddress: string,
@@ -43,10 +44,10 @@ const customerSlice: SliceProps = {
   columnVisibility: {
     addressLine2: false,
   },
-  params: {
-    url: "/cng/customers"
-  },
-  /* _mock: [
+  // params: {
+  //   url: "/cng/customers"
+  // },
+  _mock: [
     {
         accountNumber: 12345,
         fullName: "LOKM",
@@ -119,7 +120,7 @@ const customerSlice: SliceProps = {
         contactNumber: 2222,
         addressLine1: "add2"
     }
-  ] */
+  ]
 
 }
 
