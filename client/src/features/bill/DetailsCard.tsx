@@ -20,38 +20,35 @@ const DetailsCard = () => {
         <Card body>
             <FlexBox justify="between">
                 <h3>Details</h3>
-                {editDetails ? 
-                    <FloppyDiskIcon
-                        onClick={toggleEditDetails}
-                    />
-                    : <PencilEdit01Icon
-                        onClick={toggleEditDetails}
-                    />
-                }
+                <div onClick={toggleEditDetails}>
+                    {editDetails ? <FloppyDiskIcon /> : <PencilEdit01Icon />}
+                </div>
             </FlexBox>
             <FlexBox justify="between">
                 <span>
                     Units consumed
                 </span>
                 <span>
-                    {editDetails ?
-                        <FormControl
-                            {...register("unitsConsumed")}
+                    {editDetails 
+                        ? <FormControl
+                            {...register("unitsConsumed", {
+                                valueAsNumber: true
+                            })}
                             size="sm"
                             type="number"
                         />
-                        : watchUnitsConsumed
+                        : watchUnitsConsumed || COMMON.NO_DATA
                     }
                 </span>
             </FlexBox>
             <hr className="border-style-dotted"/>
             <FlexBox justify="end">
-                <div className="w-50">
+                <div className="w-75">
                     <Row className="justify-content-between mb-2">
                         <Col className="text-end">Billing Date:</Col>
                         <Col className="text-end">
-                            {editDetails ?
-                                <DatePickerInput
+                            {editDetails 
+                                ? <DatePickerInput
                                     field={{ title: "Billing Date", state: "billingDate"}}
                                     required={false}
                                     showLabel={false}
@@ -76,8 +73,8 @@ const DetailsCard = () => {
                                 })} 
                                 hidden
                             />
-                            {watchBillingDate ? 
-                                formateDate(moment(watchBillingDate).add(10, 'days'))
+                            {watchBillingDate 
+                                ? formateDate(moment(watchBillingDate).add(10, 'days'))
                                 : COMMON.NO_DATA
                             }
                         </Col>

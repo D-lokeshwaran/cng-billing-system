@@ -3,12 +3,12 @@ import { SliceProps } from "src/components/table/types";
 import { BILL_LIST } from "src/constants/labels"
 
 export type Bill = {
-    customer: string,
-    unitsConsumed: number,
-    billingDate: Date,
-    dueDate: Date,
-    status: string,
-    amount: number,
+  customerId: number,
+  unitsConsumed: number,
+  billingDate: Date,
+  dueDate: Date,
+  status: string,
+  amount: number,
 }
 
 // TODO: Later all this data should turn in db
@@ -17,7 +17,7 @@ const columnHelper = createColumnHelper<Bill>()
 const billSlice: SliceProps = {
   name: "customers",
   columns: [
-    columnHelper.accessor('customer', {
+    columnHelper.accessor('customerId', {
       header: BILL_LIST.CUSTOMER,
       enableHiding: false
     }),

@@ -3,6 +3,7 @@ import { SliceProps } from "src/components/table/types";
 import { CUSTOMER_LIST } from "src/constants/labels";
 
 export type Customer = {
+    id: number,
     accountNumber: string,
     fullName: string,
     contactNumber: string,

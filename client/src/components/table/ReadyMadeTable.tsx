@@ -2,11 +2,13 @@ import TanStackTable from './TanStackTable';
 import { Card } from 'react-bootstrap';
 import SearchBoxInput from '../common/SearchBoxInput';
 import { useTableAdapter } from 'src/hooks';
-import { HTMLAttributes, useEffect } from 'react';
+import { HTMLAttributes, useEffect, useMemo } from 'react';
 import ExportData from '../common/ExportData';
 import ColumnChooser from './ColumnChooser';
 import Pagination from './Pagination';
 import { SliceProps } from './types';
+import { createColumnHelper } from '@tanstack/react-table';
+import IndeterminateCheckbox from './IntermediateCheckbox';
 
 interface ReadyMadeTableProps {
     slice: SliceProps,
@@ -32,6 +34,34 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice, rowProps }) => {
         alterOptions:options=defaultAlterOptions,
         columnVisibility
     } = slice;
+
+    const columnHelper = createColumnHelper<any>();
+
+    useMemo(() => {
+        if (options.rowSelection === true && columns[0].id !== 'rowSelect') {
+            columns.unshift(
+                columnHelper.display({
+                    id: 'rowSelect',
+                    header: ({ table }) => <IndeterminateCheckbox
+                        {...{
+                            checked: table.getIsAllRowsSelected(),
+                            indeterminate: table.getIsSomeRowsSelected(),
+                            onChange: table.getToggleAllRowsSelectedHandler(),
+                        }}
+                    />,
+                    cell: ({ row }) => <IndeterminateCheckbox
+                            {...{
+                                checked: row.getIsSelected(),
+                                disabled: !row.getCanSelect(),
+                                indeterminate: row.getIsSomeSelected(),
+                                onChange: row.getToggleSelectedHandler(),
+                            }}
+                        />
+
+                })
+            )
+        }
+    }, [options.rowSelection])
 
     const table = useTableAdapter({
         columns,

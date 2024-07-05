@@ -1,3 +1,5 @@
+import { ColumnDef } from "@tanstack/react-table";
+
 interface Params {
     url: string;
     method?: string;
@@ -14,7 +16,7 @@ export interface AlterOptions {
 
 export type SliceProps = {
     name: string,
-    columns: any,
+    columns: ColumnDef<any, any>[],
     params?: Params,
     _mock?: any[],
     alterOptions?: AlterOptions

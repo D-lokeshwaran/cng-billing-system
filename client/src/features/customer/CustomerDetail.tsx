@@ -25,7 +25,7 @@ const CustomerForm = () => {
         }
     }, [customerId])
 
-    const retrieveCustomers = async (customerId: number) => {
+    const retrieveCustomers = async (customerId: string) => {
         const retrievedCustomer = await coreApi.get(`/cng/customers/${customerId}`);
         const customer = retrievedCustomer.data;
         const customerDocuments = await coreApi.get(`/cng/customers/${customerId}/documents`);

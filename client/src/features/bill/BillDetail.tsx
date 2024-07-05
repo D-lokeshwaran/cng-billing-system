@@ -6,11 +6,13 @@ import FeatureHeader from "src/components/structure/FeatureHeader";
 import { Bill } from "./billSlice";
 import { coreApi } from "src/utils/api";
 import DetailsCard from "./DetailsCard";
+import BillCustomerInfo from "./BillCustomerInfo";
+import CurrentTariffList from "./CurrentTariffList";
 
 const BillDetail = () => {
 
     const onSubmitBill: SubmitHandler<Bill> = async (data) => {
-        const { customer, ...bill} = data;
+        const { customerId, ...bill} = data;
         console.log(data);
     }
 
@@ -30,9 +32,10 @@ const BillDetail = () => {
                 <Row>
                     <Col>
                         <DetailsCard/>
+                        <CurrentTariffList/>
                     </Col>
                     <Col>
-                        "customer details"
+                        <BillCustomerInfo/>
                     </Col>
                 </Row>
             </HookForm>
