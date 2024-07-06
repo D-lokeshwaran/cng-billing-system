@@ -3,6 +3,7 @@ import ROLES from "src/constants/ROLES";
 import DashboardLayout from "src/layouts/DashboardLayout";
 import Layout from "src/layouts/Layout";
 import RequireAuth from "src/features/auth/RequireAuth";
+import BillContextProvider from "src/context/BillContext";
 import { lazy } from "react";
 
 const Login = lazy(() => import('src/features/auth/Login'));
@@ -35,15 +36,17 @@ const AppRoutes = () => {
                               <Route path="customers">
                                    <Route index element={<CustomerList/>} />
                                    <Route path="new" element={<CustomerDetail/>} />
-                                   <Route path=":customerId" element={<CustomerDetail/>} />
                               </Route>
                               <Route path="bills">
                                    <Route index element={<BillList/>} />
-                                   <Route path="new" element={<BillDetail/>} />
+                              </Route>
+                              <Route element={<BillContextProvider />}>
+                                   <Route path="bills/new" element={<BillDetail/>} />
+                                   <Route path="customers/:customerId" element={<CustomerDetail/>} />
                               </Route>
                          </Route>
                     </Route>
-                    
+
                     {/* Catch all */}
                     <Route path="/404" element={<Error404/>} />
                     <Route path="/*" element={<Navigate to="/login"/>} />

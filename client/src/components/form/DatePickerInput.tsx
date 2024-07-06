@@ -42,7 +42,7 @@ const DatePickerInput = ({
             <Controller
                 control={control}
                 name={field.state}
-                defaultValue={field.defaultValue || new Date()}
+                defaultValue={field.defaultValue}
                 render={({ field: { value, onChange } }) => (
                     <DatePicker
                         placeholderText='Pick date'

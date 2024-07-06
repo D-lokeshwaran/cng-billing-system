@@ -1,0 +1,8 @@
+.btn-reveal {
+    display: none;
+    transition: .2s all
+}
+
+.btn-reveal-trigger:hover .btn-reveal {
+    display: block;
+}

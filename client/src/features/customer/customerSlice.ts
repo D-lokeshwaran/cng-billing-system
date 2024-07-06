@@ -44,10 +44,10 @@ const customerSlice: SliceProps = {
   columnVisibility: {
     addressLine2: false,
   },
-  // params: {
-  //   url: "/cng/customers"
-  // },
-  _mock: [
+  params: {
+    url: "/cng/customers"
+  },
+  /* _mock: [
     {
         accountNumber: 12345,
         fullName: "LOKM",
@@ -121,7 +121,7 @@ const customerSlice: SliceProps = {
         addressLine1: "add2"
     }
   ]
-
+ */
 }
 
 export default customerSlice;

@@ -18,7 +18,8 @@ import static jakarta.persistence.CascadeType.REMOVE;
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_seq")
+    @SequenceGenerator(name = "customer_id_seq", sequenceName = "customer_id_seq", allocationSize = 1, initialValue = 1200)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -53,8 +54,8 @@ public class Customer {
 
     @PrePersist
     private void generateAccountNumber() {
-        
-        System.out.println(this);
+        String PREFIX = "CG";
+        this.setAccountNumber(PREFIX + id);
     }
 
 }

@@ -3,18 +3,36 @@ import FlexBox from "src/components/common/FlexBox";
 import { FloppyDiskIcon, HelpCircleIcon, PencilEdit01Icon } from "hugeicons-react";
 import DatePickerInput from "src/components/form/DatePickerInput";
 import { useToggle } from "src/hooks";
+import { useEffect } from "react";
 import { Bill } from "./billSlice";
 import { useFormContext } from "react-hook-form";
+import { useBillContext } from "src/context/BillContext"
 import { formateDate } from "src/utils/date";
 import moment from "moment";
 import { COMMON } from "src/constants/labels";
 
 const DetailsCard = () => {
-    const [ editDetails, toggleEditDetails ] = useToggle();
-    const { register, watch } = useFormContext<Bill>();
+    const { register, watch, setValue } = useFormContext<Bill>();
+    const { billDetails, setBillDetails } = useBillContext()
+    const [ editDetails, toggleEditDetails ] = useToggle(billDetails?.editDetails);
 
     const watchUnitsConsumed = watch("unitsConsumed");
     const watchBillingDate = watch("billingDate");
+
+    useEffect(() => {
+        setValue("unitsConsumed", billDetails?.unitsConsumed);
+        setValue("billingDate", billDetails?.billingDate || new Date());
+    }, [])
+
+    // handle state restoration when navigate;
+    useEffect(() => {
+        setBillDetails({
+            ...billDetails,
+            unitsConsumed: watchUnitsConsumed,
+            billingDate: watchBillingDate,
+            editDetails: editDetails,
+        })
+    }, [watchUnitsConsumed, watchBillingDate, editDetails])
 
     return (
         <Card body>
@@ -36,6 +54,7 @@ const DetailsCard = () => {
                             })}
                             size="sm"
                             type="number"
+                            autoFocus
                         />
                         : watchUnitsConsumed || COMMON.NO_DATA
                     }
@@ -49,7 +68,7 @@ const DetailsCard = () => {
                         <Col className="text-end">
                             {editDetails 
                                 ? <DatePickerInput
-                                    field={{ title: "Billing Date", state: "billingDate"}}
+                                    field={{ title: "Billing Date", state: "billingDate", defaultValue: new Date()}}
                                     required={false}
                                     showLabel={false}
                                     className="form-control-sm"

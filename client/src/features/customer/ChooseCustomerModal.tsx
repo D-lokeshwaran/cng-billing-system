@@ -4,13 +4,13 @@ import customerSlice, { Customer } from './customerSlice';
 import { useTableAdapter } from 'src/hooks/useTableAdapter'
 import SearchBoxInput from 'src/components/common/SearchBoxInput';
 import Pagination from 'src/components/table/Pagination';
-import { ArrowLeft01Icon, ArrowRight01Icon, PencilEdit01Icon } from 'hugeicons-react';
+import { ArrowLeft01Icon, ArrowRight01Icon, PencilEdit01Icon, ArrowMoveDownLeftIcon } from 'hugeicons-react';
 import classNames from 'classnames';
 import FlexBox from 'src/components/common/FlexBox';
 
 interface ChooseCustomerModelProps {
     show: boolean;
-    handleSelect: (customerId: number) => void;
+    handleSelect: (customer: Customer) => void;
     onClose: () => void;
 }
 
@@ -26,27 +26,36 @@ const ChooseCustomerModal: React.FC<ChooseCustomerModelProps> = ({
         name: customerSlice.name,
         columns: customerSlice.columns,
         params: customerSlice.params,
-        _mock: customerSlice._mock
     })
+
     useEffect(() => {
         table.setPageSize(DEFAULT_PAGE_SIZE);
     }, [])
-    const renderCustomer = <ListGroup aria-details=''>
+
+    const renderCustomer = <ListGroup aria-details='' as="ul">
         {table.getRowModel().rows.map((row) => {
             const customer = row.original as Customer;
             return (
-                <ListGroupItem key={row.id} action className='text-dark'>
+                <ListGroupItem
+                    key={row.id}
+                    as="li"
+                    action
+                    className='text-dark btn-reveal-trigger cursor-pointer'
+                    onClick={() => {
+                        handleSelect(customer)
+                        onClose()
+                    }}
+                >
                     <Row className='align-items-center'>
                         <Col style={{fontSize: "0.8rem"}}>
-                            <div className="fs-6">#{customer.accountNumber} . John Deep </div> 
+                            <div className="fs-6">#{customer.accountNumber} . {customer.fullName} </div>
                             <div className='text-secondary'>{customer.emailAddress || "demouser@gmail.com"}</div>
                             <div className='text-secondary'>{"99415787856"}</div>
                         </Col>
                         <Col sm="auto">
-                            <Row className="g-1">
-                                <Col as={PencilEdit01Icon}/>
-                                <Col as={ArrowLeft01Icon}/>
-                            </Row>
+                            <Button size="sm" variant="reveal">
+                                <ArrowMoveDownLeftIcon className="cursor-pointer"/>
+                            </Button>
                         </Col>
                     </Row>
                 </ListGroupItem>
@@ -64,6 +73,7 @@ const ChooseCustomerModal: React.FC<ChooseCustomerModelProps> = ({
                             onChange={(value) => table.setGlobalFilter(String(value))}
                             debounce={200}
                             placeholder='Search customers...'
+                            autoFocus
                         />
                     </Col>
                     <Col sm={3} className="p-0 d-flex align-items-center justify-content-end">
