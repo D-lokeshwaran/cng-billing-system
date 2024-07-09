@@ -51,7 +51,7 @@ const CustomerForm = () => {
 
     return (
         <div>
-            <HookForm onSubmit={onSubmitCustomer} initialValues={customerDetails}>
+            <HookForm onSubmit={onSubmitCustomer} defaultValues={customerDetails}>
                 <pre>{JSON.stringify(customerDetails, null, 2) }</pre>
                 <FeatureHeader title="Create Customer" className="justify-content-between">
                     <Button variant="primary" type="submit">

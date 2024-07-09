@@ -1,19 +1,24 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
-type BillContextType = {
-    unitsConsumed: number,
-    billingDate: Date,
-    editDetails: boolean,
-    customerId: number
+type BillDetailsType = {
+    unitsConsumed?: number | undefined,
+    billingDate?: Date,
+    editDetails?: boolean,
+    customerId?: number
 }
 
-const BillContext = createContext<BillContextType>();
+type BillContextType = {
+    billDetails: BillDetailsType | null | undefined,
+    setBillDetails: (billDetails: BillDetailsType) => void;
+}
+
+const BillContext = createContext<BillContextType>(null!);
 export const useBillContext = () => useContext(BillContext);
 
 function BillContextProvider() {
 
-    const [billDetails, setBillDetails] = useState<BillContextType>();
+    const [billDetails, setBillDetails] = useState<BillDetailsType | null>();
 
     useEffect(() => {
         return () => setBillDetails(null);

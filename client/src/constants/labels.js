@@ -38,3 +38,10 @@ export const BILL_LIST = {
     STATUS: "Status",
     AMOUNT: "Amount"
 }
+
+export const TARIFF_LIST = {
+    FROM_DATE: "From date",
+    TO_DATE: "To date",
+    MAX_UNIT: "Max unit",
+    UNIT_RATE_ABOVE_MAX: "Unit rate above max",
+}

@@ -20,7 +20,7 @@ const DetailsCard = () => {
     const watchBillingDate = watch("billingDate");
 
     useEffect(() => {
-        setValue("unitsConsumed", billDetails?.unitsConsumed);
+        setValue("unitsConsumed", billDetails?.unitsConsumed!);
         setValue("billingDate", billDetails?.billingDate || new Date());
     }, [])
 
@@ -31,7 +31,7 @@ const DetailsCard = () => {
             unitsConsumed: watchUnitsConsumed,
             billingDate: watchBillingDate,
             editDetails: editDetails,
-        })
+        });
     }, [watchUnitsConsumed, watchBillingDate, editDetails])
 
     return (

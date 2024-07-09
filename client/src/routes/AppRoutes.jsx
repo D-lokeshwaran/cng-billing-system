@@ -8,13 +8,13 @@ import { lazy } from "react";
 
 const Login = lazy(() => import('src/features/auth/Login'));
 const Dashboard = lazy(() => import('src/features/dashboard/Dashboard'));
+
 const BillList = lazy(() => import('src/features/bill/BillList'));
 const BillDetail = lazy(() => import('src/features/bill/BillDetail'));
-
 const CustomerList = lazy(() => import('src/features/customer/CustomerList'));
 const CustomerDetail = lazy(() => import('src/features/customer/CustomerDetail'));
+const TariffList = lazy(() => import('src/features/tariff/TariffList'));
 
-const Tariff = lazy(() => import('src/features/tariff/Tariff'));
 const Error404 = lazy(() => import("src/features/error/Error404"));
 
 
@@ -29,7 +29,7 @@ const AppRoutes = () => {
                     <Route element={<DashboardLayout/>}>
                          <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Operator]}/> }>
                               <Route path="dashboard" element={<Dashboard/>}/>
-                              <Route path="tariffs" element={<Tariff/>}/>
+                              <Route path="tariffs" element={<TariffList/>}/>
                          </Route>
 
                          <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Customer]}/> }>
