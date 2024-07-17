@@ -8,7 +8,7 @@ export type Tariff = {
     toDate: Date,
     unitsAndRate: {
         fromUnit: number,
-        toUnit: number,
+        toUnit: number, 
         ratePerUnit: number
     }[],
     maxUnit: number,

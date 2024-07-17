@@ -4,7 +4,7 @@ import { SubmitHandler } from "react-hook-form";
 import HookForm from "src/components/form/HookForm";
 import { Tariff } from "./tariffSlice";
 import DatePickerInput from "src/components/form/DatePickerInput";
-import UnitAndRateList from "./UnitAndRateList";
+import UnitsAndRate from "./UnitsAndRate";
 
 interface TariffDetailModalProps extends ModalProps {
 
@@ -23,11 +23,21 @@ const TariffDetailModal: React.FC<TariffDetailModalProps> = ({ ...props }) => {
             </Modal.Header>
             <Modal.Body>
                 <HookForm onSubmit={handleTariffSubmit} defaultValues={{
-                    unitsAndRate: [{
-                        fromUnit: 1,
-                        toUnit: '100',
-                        ratePerUnit: 0
-                    }]
+                    unitsAndRate: [
+                        {
+                            fromUnit: 1,
+                            toUnit: 100,
+                            ratePerUnit: 200
+                        }, {
+                            fromUnit: 100,
+                            toUnit: 200,
+                            ratePerUnit: 300
+                        }, {
+                            fromUnit: 200,
+                            toUnit: 300,
+                            ratePerUnit: 400
+                        }, 
+                    ]
                 }}>
                     <Row className="mb-3">
                         <Col>
@@ -41,9 +51,9 @@ const TariffDetailModal: React.FC<TariffDetailModalProps> = ({ ...props }) => {
                             />
                         </Col>
                     </Row>
-                    <UnitAndRateList/>
+                    <UnitsAndRate/>
                     <Modal.Footer className="px-0 pb-0">
-                        <Button>Create</Button>
+                        <Button type="submit">Create</Button>
                     </Modal.Footer>
                 </HookForm>
             </Modal.Body>
