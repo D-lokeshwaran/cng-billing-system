@@ -5,13 +5,14 @@ import ErrorMessage from "src/components/form/ErrorMessage";
 
 const UnitsAndRate = () => {
 
-    const { register, formState: { errors }, watch, setError, clearErrors } = useFormContext();
+    const { register, formState: { errors }, watch, trigger } = useFormContext();
     const { fields, append, remove} = useFieldArray({
         name: "unitsAndRate",
         keyName: "id"
     })
     const watchUnitsAndRate = watch("unitsAndRate");
     const maxUnit = watchUnitsAndRate.map(field => field.toUnit).sort().reverse()[0];
+    const fieldError = errors?.unitsAndRate?.filter(field => field.toUnit !== null)?.[0];
 
     return (
         <table>
@@ -26,11 +27,6 @@ const UnitsAndRate = () => {
                     const currentField = watchUnitsAndRate[index];
                     const nextField = watchUnitsAndRate[index +1];
 
-                    const isInvalidToUnit = parseInt(previosField?.toUnit) +1 > currentField?.toUnit
-                        || nextField?.toUnit && currentField?.toUnit > nextField?.toUnit;
-                    const isInvalidRatePerUnit = Number(previosField?.ratePerUnit) > Number(currentField?.ratePerUnit)
-                        || nextField?.ratePerUnit && currentField?.ratePerUnit > nextField?.ratePerUnit;
-                    
                     return (
                         <tr>
                             <td>
@@ -38,26 +34,28 @@ const UnitsAndRate = () => {
                                     {...register(`unitsAndRate.${index}.fromUnit`)}
                                     value={previosField?.toUnit}
                                     disabled
-                                />                             
+                                />
                             </td>
                             <td>
                                 <FormControl
-                                    {...register(`unitsAndRate.${index}.toUnit`, { 
+                                    {...register(`unitsAndRate.${index}.toUnit`, {
+                                        required: {value: true, message: "To unit(s) are required."},
                                         min: {value: parseInt(previosField?.toUnit) +1, message: "To unit should be greater than from unit."},
                                     })}
-                                    isInvalid={isInvalidToUnit}
-                                />                             
+                                    isInvalid={errors?.unitsAndRate?.[index]?.toUnit?.message}
+                                />
                             </td>
                             <td>
                                 <FormControl
-                                    {...register(`unitsAndRate.${index}.ratePerUnit`, { 
-                                        min: {value: previosField?.ratePerUnit, message: "Should be above 200"},
+                                    {...register(`unitsAndRate.${index}.ratePerUnit`, {
+                                        required: {value: true, message: "Rate per Unit(s) are required."},
+                                        min: {value: previosField?.ratePerUnit, message: "Rate per unit should be greater than previos rate per unit"},
                                     })}
-                                    isInvalid={isInvalidRatePerUnit}
-                                />                             
+                                    isInvalid={errors?.unitsAndRate?.[index]?.ratePerUnit?.message}
+                                />
                             </td>
                             {index > 2 && <td className="ps-3 pe-2">
-                                <Delete02Icon 
+                                <Delete02Icon
                                     size={18}
                                     onClick={() => remove(index)}
                                 />
@@ -68,27 +66,21 @@ const UnitsAndRate = () => {
             </tbody>
             <tfoot>
                 <tr><td colSpan={4}>
-                    <ErrorMessage errorMessage={errors?.unitsAndRate?.validate?.message}/>
-                    <ErrorMessage errorMessage={errors?.unitsAndRate?.[3]?.toUnit?.message}/>
+                    <ErrorMessage errorMessage={fieldError?.toUnit?.message}/>
+                    <ErrorMessage errorMessage={fieldError?.ratePerUnit?.message}/>
                 </td></tr>
                 <tr>
                     <td>
-                        <Button 
-                            size="sm" 
+                        <Button
+                            size="sm"
                             variant="light"
                             onClick={() => {
                                 const lastField = watchUnitsAndRate[fields.length -1];
-                                if(!lastField.toUnit || !lastField.ratePerUnit) {
-                                    // setError("unitsAndRate.validate", {
-                                    //     type: "required",
-                                    //     message: "To unit and Rate per Unit is required to add another field."
-                                    // })
+                                if (fieldError || !lastField.toUnit || !lastField.ratePerUnit) {
+                                    trigger("unitsAndRate")
                                     return;
                                 }
-                                if (errors.unitsAndRate) {
-
-                                }
-                                append({ fromUnit: lastField.toUnit, toUnit: 0, ratePerUnit: 0})
+                                append({ fromUnit: lastField.toUnit})
                             }}
                         >
                             + Add Item

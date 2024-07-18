@@ -62,7 +62,8 @@ const DatePickerInput = ({
                     validate: {
                         required: (v: any) => {
                             if (required) {
-                                return v === null ? "Please, pick one date" : true
+                                console.log(v)
+                                return !v ? "Please, pick one date" : true
                             }
                             return true;
                         }
