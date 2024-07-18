@@ -12,7 +12,7 @@ const UnitsAndRate = () => {
     })
     const watchUnitsAndRate = watch("unitsAndRate");
     const maxUnit = watchUnitsAndRate.map(field => field.toUnit).sort().reverse()[0];
-    const fieldError = errors?.unitsAndRate?.filter(field => field.toUnit !== null)?.[0];
+    const fieldError = errors?.unitsAndRate?.filter(field => field?.toUnit !== null)?.[0];
 
     return (
         <table>
@@ -76,8 +76,8 @@ const UnitsAndRate = () => {
                             variant="light"
                             onClick={() => {
                                 const lastField = watchUnitsAndRate[fields.length -1];
+                                trigger("unitsAndRate")
                                 if (fieldError || !lastField.toUnit || !lastField.ratePerUnit) {
-                                    trigger("unitsAndRate")
                                     return;
                                 }
                                 append({ fromUnit: lastField.toUnit})
