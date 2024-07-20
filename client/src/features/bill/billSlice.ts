@@ -6,9 +6,9 @@ export type Bill = {
   customerId: number,
   unitsConsumed: number,
   billingDate: Date,
-  dueDate: Date,
+  paymentDueDate: Date,
   status: string,
-  amount: number,
+  billAmount: number | string,
 }
 
 // TODO: Later all this data should turn in db
@@ -33,7 +33,7 @@ const billSlice: SliceProps = {
     columnHelper.accessor('status', {
       header: BILL_LIST.STATUS,
     }),
-    columnHelper.accessor('amount', {
+    columnHelper.accessor('billAmount', {
       header: BILL_LIST.AMOUNT,
     })
   ],

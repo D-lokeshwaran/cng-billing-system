@@ -25,9 +25,8 @@ public class Bill {
 
     @Enumerated(value = EnumType.STRING)
 //    @Column(columnDefinition = "ENUM('Pending', 'Paid', 'Overdue', 'Not_Billed') default 'Not_Billed'")
-    private PaymentStatus paymentStatus;
+    private PaymentStatus paymentStatus = PaymentStatus.Pending;
 
-    @Column(precision = 6, scale = 2)
     private BigDecimal billAmount;
 
     private Date billingDate;

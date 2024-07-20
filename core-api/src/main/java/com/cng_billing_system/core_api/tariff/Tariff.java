@@ -4,6 +4,8 @@ import com.cng_billing_system.core_api.bill.Bill;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -18,9 +20,9 @@ public class Tariff {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    public Date fromDate;
+    private Date fromDate;
 
-    public Date toDate;
+    private Date toDate;
 
     @ElementCollection
     private List<UnitsAndRate> unitsAndRates;

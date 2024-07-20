@@ -43,7 +43,11 @@ export const useTableAdapter = <T,>({
                 })
             ).then(
                 res => {
-                    const result = res.data?._embedded[name]
+                    const result = res.data?._embedded[name];
+                    if (!result) {
+                        console.log("Server response: ", res.data)
+                        throw new Error("Invalid attribute: ");
+                    }
                     setData(result);
                 }
             ).catch(

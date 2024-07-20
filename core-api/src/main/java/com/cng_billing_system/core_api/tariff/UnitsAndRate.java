@@ -11,10 +11,8 @@ import java.math.BigDecimal;
 @Embeddable
 public class UnitsAndRate {
 
-    @Column(precision = 6, scale = 2)
-    private BigDecimal fromUnit;
+    private Integer fromUnit;
 
-    @Column(precision = 6, scale = 2)
     private String toUnit;
 
     private BigDecimal ratePerUnit;

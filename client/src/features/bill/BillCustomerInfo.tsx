@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 
 const BillCustomerInfo = () => {
 
-    const { register, watch } = useFormContext<Bill>();
+    const { register, watch, setValue } = useFormContext<Bill>();
     const watchCustomerId = watch("customerId");
     const [ customerModal, toggleCustomerModal ] = useToggle();
     const { billDetails, setBillDetails } = useBillContext();
@@ -23,6 +23,7 @@ const BillCustomerInfo = () => {
     useEffect(() => {
         if (customer?.id) {
             setBillDetails({ ...billDetails, customerId: customer.id })
+            setValue("customerId", customer.id);
         }
     }, [customer?.id])
 

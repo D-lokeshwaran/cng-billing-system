@@ -6,7 +6,7 @@ export type Tariff = {
     id: number,
     fromDate: Date,
     toDate: Date,
-    unitsAndRate: {
+    unitsAndRates: {
         fromUnit: number,
         toUnit: number, 
         ratePerUnit: number
@@ -28,42 +28,39 @@ const tariffSlice: SliceProps = {
     columnHelper.accessor('toDate', {
       header: TARIFF_LIST.TO_DATE
     }),
-    columnHelper.accessor('maxUnit', {
-      header: TARIFF_LIST.MAX_UNIT
-    }),
-    columnHelper.accessor('unitRateAboveMax', {
-      header: TARIFF_LIST.UNIT_RATE_ABOVE_MAX
+    columnHelper.display({
+      header: "#Units and Rate"
     })
   ],
-//   params: {
-//     url: "/cng/tariffs"
-//   },
-  _mock: [
-    {
-        fromDate: new Date(),
-        toDate: new Date(),
-        maxUnit: 1111,
-        unitRateAboveMax: 10.34
-    },
-    {
-        fromDate: new Date(),
-        toDate: new Date(),
-        maxUnit: 2222,
-        unitRateAboveMax: 30.34
-    },
-    {
-        fromDate: new Date(),
-        toDate: new Date(),
-        maxUnit: 2222,
-        unitRateAboveMax: 40.56
-    },
-    {
-        fromDate: new Date(),
-        toDate: new Date(),
-        maxUnit: 2222,
-        unitRateAboveMax: 90.43
-    }
-  ]
+  params: {
+    url: "/cng/tariffs"
+  },
+//   _mock: [
+//     {
+//         fromDate: new Date(),
+//         toDate: new Date(),
+//         maxUnit: 1111,
+//         unitRateAboveMax: 10.34
+//     },
+//     {
+//         fromDate: new Date(),
+//         toDate: new Date(),
+//         maxUnit: 2222,
+//         unitRateAboveMax: 30.34
+//     },
+//     {
+//         fromDate: new Date(),
+//         toDate: new Date(),
+//         maxUnit: 2222,
+//         unitRateAboveMax: 40.56
+//     },
+//     {
+//         fromDate: new Date(),
+//         toDate: new Date(),
+//         maxUnit: 2222,
+//         unitRateAboveMax: 90.43
+//     }
+//   ]
 }
 
 export default tariffSlice;

@@ -15,9 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class RepositoryRestConfig {
 
-    @Value("${baseURL}")
-    private String baseURL;
-
     @Bean
     public RepositoryRestConfigurer repositoryRestConfigurer() {
 
@@ -33,7 +30,6 @@ public class RepositoryRestConfig {
                     .allowedMethods("*")
                     .allowedOrigins("http://localhost:3003");
 
-                config.setBasePath(baseURL);
                 config.exposeIdsFor(
                     Customer.class,
                     Bill.class,

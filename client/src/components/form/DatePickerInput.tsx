@@ -5,6 +5,7 @@ import { FormGroup, FormLabel } from 'react-bootstrap';
 import { AlertCircleIcon } from 'hugeicons-react';
 import classNames from 'classnames';
 import { DATE_FORMATS } from 'src/utils/date';
+import ErrorMessage from "./ErrorMessage";
 
 interface DatePickerInputProps {
     field: FieldType;
@@ -31,14 +32,6 @@ const DatePickerInput = ({
             {showLabel && <FormLabel className="mb-1 d-block">
                 {field.title}<span style={{color:"#dc3545"}}>{required && ' *'}</span>
             </FormLabel>}
-            {errorMessage && <div style={{fontSize: ".80rem"}} className='mb-1 d-flex align-items-center'>
-                <AlertCircleIcon 
-                    size={14} 
-                    color="#dc3545"
-                    strokeWidth='2.5'    
-                />
-                <span className='ps-1'>{`${errorMessage}`}</span>
-            </div>}
             <Controller
                 control={control}
                 name={field.state}
@@ -62,7 +55,6 @@ const DatePickerInput = ({
                     validate: {
                         required: (v: any) => {
                             if (required) {
-                                console.log(v)
                                 return !v ? "Please, pick one date" : true
                             }
                             return true;
@@ -70,6 +62,7 @@ const DatePickerInput = ({
                     }
                 }} 
             />
+            <ErrorMessage errorMessage={errorMessage}/>
         </FormGroup>
     )
 

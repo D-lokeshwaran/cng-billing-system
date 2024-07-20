@@ -1,6 +1,8 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import ReadyMadeTable from "src/components/table/ReadyMadeTable";
+import TanStackTable from "src/components/table/TanStackTable"
 import { SliceProps } from "src/components/table/types";
+import { Card } from "react-bootstrap"
+import { useTableAdapter } from "src/hooks";
 
 type CurrentTariff = {
     fromUnit: number,
@@ -11,7 +13,7 @@ type CurrentTariff = {
 const columnHelper = createColumnHelper<CurrentTariff>();
 
 const currentTariffListSlice: SliceProps = {
-    name: "tariffs",
+    name: "unitsAndRates",
     columns: [
         columnHelper.accessor("fromUnit", {
             header: "From unit"
@@ -22,35 +24,19 @@ const currentTariffListSlice: SliceProps = {
         columnHelper.accessor("ratePerUnit", {
             header: "Rate per unit"
         }),
-    ],
-    alterOptions: {
-        rowSelection: false
-    },
-    _mock: [
-        {
-            fromUnit: 100,
-            toUnit: '140',
-            ratePerUnit: 23.45
-        }, {
-            fromUnit: 140,
-            toUnit: '300',
-            ratePerUnit: 23.45
-        }, {
-            fromUnit: 300,
-            toUnit: '560',
-            ratePerUnit: 23.45
-        }, {
-            fromUnit: 560,
-            toUnit: 'above',
-            ratePerUnit: 23.45
-        }, 
     ]
 }
 
-const CurrentTariffList = () => {
+const CurrentTariffList = ({ data }) => {
+    const table = useTableAdapter({
+        columns: currentTariffListSlice.columns,
+        _mock: data[currentTariffListSlice.name]
+    })
 
     return (
-        <ReadyMadeTable slice={currentTariffListSlice}/>
+        <Card body className="mt-3 rounded">
+            <TanStackTable table={table} />
+        </Card>
     )
 
 }

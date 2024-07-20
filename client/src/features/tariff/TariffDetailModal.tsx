@@ -4,7 +4,8 @@ import { SubmitHandler } from "react-hook-form";
 import HookForm from "src/components/form/HookForm";
 import { Tariff } from "./tariffSlice";
 import DatePickerInput from "src/components/form/DatePickerInput";
-import UnitsAndRate from "./UnitsAndRate";
+import UnitsAndRates from "./UnitsAndRates";
+import { coreApi } from 'src/utils/api';
 
 interface TariffDetailModalProps extends ModalProps {
 
@@ -12,8 +13,16 @@ interface TariffDetailModalProps extends ModalProps {
 
 const TariffDetailModal: React.FC<TariffDetailModalProps> = ({ ...props }) => {
 
-    const handleTariffSubmit: SubmitHandler<Tariff> = (data) => {
-        console.log(data);
+    const { onHide } = props;
+    const handleTariffSubmit: SubmitHandler<Tariff> = async (data) => {
+        const { maxUnit, unitRateAboveMax, ...tariff } = data;
+        tariff.unitsAndRates.push({
+            fromUnit: maxUnit,
+            toUnit: "above",
+            ratePerUnit: unitRateAboveMax
+        })
+        const newTariff = await coreApi.post("/cng/tariffs", tariff)
+        onHide()
     }
 
     return (
@@ -23,19 +32,19 @@ const TariffDetailModal: React.FC<TariffDetailModalProps> = ({ ...props }) => {
             </Modal.Header>
             <Modal.Body>
                 <HookForm onSubmit={handleTariffSubmit} defaultValues={{
-                    unitsAndRate: [
+                    unitsAndRates: [
                         {
                             fromUnit: 1,
                             toUnit: 100,
-                            ratePerUnit: 200
+                            ratePerUnit: 2.43
                         }, {
-                            fromUnit: 100,
+                            fromUnit: 101,
                             toUnit: 200,
-                            ratePerUnit: 300
+                            ratePerUnit: 5.6
                         }, {
-                            fromUnit: 200,
+                            fromUnit: 201,
                             toUnit: 300,
-                            ratePerUnit: 400
+                            ratePerUnit: 9.3
                         }, 
                     ]
                 }}>
@@ -51,7 +60,7 @@ const TariffDetailModal: React.FC<TariffDetailModalProps> = ({ ...props }) => {
                             />
                         </Col>
                     </Row>
-                    <UnitsAndRate/>
+                    <UnitsAndRates/>
                     <Modal.Footer className="px-0 pb-0">
                         <Button type="submit">Create</Button>
                     </Modal.Footer>
