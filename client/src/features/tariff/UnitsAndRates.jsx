@@ -3,8 +3,7 @@ import { Button, FormControl } from "react-bootstrap"
 import { Delete02Icon } from "hugeicons-react";
 import ErrorMessage from "src/components/form/ErrorMessage";
 
-const UnitsAndRates = () => {
-
+const UnitsAndRates = ({ maxUnitRate }) => {
     const { register, formState: { errors }, watch, trigger, setValue} = useFormContext();
     const { fields, append, remove} = useFieldArray({
         name: "unitsAndRates",
@@ -28,12 +27,17 @@ const UnitsAndRates = () => {
                     const previousField = watchUnitsAndRates[index -1];
                     const currentField = watchUnitsAndRates[index];
                     const nextField = watchUnitsAndRates[index +1];
+                    const nextFromUnit = parseInt(watch(`unitsAndRates.${index -1}.toUnit`)) +1 || 1;
+                    const currentFromUnit = parseInt(watch(`unitsAndRates.${index}.fromUnit`)) || 1;
 
                     return (
                         <tr key={field.id}>
                             <td>
                                 <FormControl
-                                    {...register(`unitsAndRates.${index}.fromUnit`, {value: previousField?.fromUnit})}
+                                    {...register(`unitsAndRates.${index}.fromUnit`, {
+                                        value: nextFromUnit
+                                    })}
+                                    value={nextFromUnit}
                                     step={.01}
                                     disabled
                                 />
@@ -98,6 +102,7 @@ const UnitsAndRates = () => {
                     <td>
                         <FormControl
                             {...register("unitRateAboveMax", {
+                                value: maxUnitRate,
                                 required: { value: true, message: `Rate is required`},
                                 min: { value: parseFloat(lastField?.ratePerUnit), message: `Should be greater than last rate (${lastField?.ratePerUnit})`}
                             })}

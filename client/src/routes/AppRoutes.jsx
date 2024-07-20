@@ -40,8 +40,10 @@ const AppRoutes = () => {
                               <Route path="bills">
                                    <Route index element={<BillList/>} />
                               </Route>
+                              {/* Context provider route to manage state replacement */}
                               <Route element={<BillContextProvider />}>
                                    <Route path="bills/new" element={<BillDetail/>} />
+                                   <Route path="bills/:billId" element={<BillDetail/>} />
                                    <Route path="customers/:customerId" element={<CustomerDetail/>} />
                               </Route>
                          </Route>

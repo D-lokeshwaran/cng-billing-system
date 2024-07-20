@@ -17,7 +17,7 @@ const HookForm: React.FC<HookFormProps> = ({
 }) => {
     const methods = useForm({
         mode: "all",
-        defaultValues: {...defaultValues}
+        values: {...defaultValues}
     });
 
     const handleOnSubmit: SubmitHandler<any> = (data, event) => {
