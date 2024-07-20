@@ -35,9 +35,22 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice, rowProps }) => {
         columnVisibility
     } = slice;
 
-    const columnHelper = createColumnHelper<any>();
+    const table = useTableAdapter({
+        columns,
+        name,
+        params,
+        columnVisibility,
+        _mock
+    });
 
     useEffect(() => {
+        if (options?.initPageSize) {
+            table.setPageSize(options.initPageSize)
+        }
+    }, [options])
+
+    useEffect(() => {
+        const columnHelper = createColumnHelper<any>();
         if (options.rowSelection === true && columns[0].id !== 'rowSelect') {
             columns.unshift(
                 columnHelper.display({
@@ -62,20 +75,6 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice, rowProps }) => {
             )
         }
     }, [options.rowSelection])
-
-    const table = useTableAdapter({
-        columns,
-        name,
-        params,
-        columnVisibility,
-        _mock
-    });
-
-    useEffect(() => {
-        if (options?.initPageSize) {
-            table.setPageSize(options.initPageSize)
-        }
-    }, [options])
 
   return (
     <section>

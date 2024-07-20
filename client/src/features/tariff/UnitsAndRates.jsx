@@ -28,7 +28,6 @@ const UnitsAndRates = ({ maxUnitRate }) => {
                     const currentField = watchUnitsAndRates[index];
                     const nextField = watchUnitsAndRates[index +1];
                     const nextFromUnit = parseInt(watch(`unitsAndRates.${index -1}.toUnit`)) +1 || 1;
-                    const currentFromUnit = parseInt(watch(`unitsAndRates.${index}.fromUnit`)) || 1;
 
                     return (
                         <tr key={field.id}>

@@ -8,6 +8,7 @@ import HookForm from "src/components/form/HookForm";
 import Input from "src/components/form/Input";
 import DocumentList from "./DocumentList";
 import { coreApi } from 'src/utils/api';
+import { useRouter } from "src/hooks";
 import { ACTIONS, CUSTOMER_DETAILS } from 'src/constants/labels';
 
 const CONTACT_NUMBER_REGEX = /^[0-9]{10}$/;
@@ -17,6 +18,7 @@ const PINCODE_REGEX = /^[0-9]{6}$/;
 const CustomerForm = () => {
 
     const [ customerDetails, setCustomerDetails ] = useState<Customer>();
+    const router = useRouter();
     const { customerId } = useParams();
 
     useEffect(() => {
@@ -36,7 +38,11 @@ const CustomerForm = () => {
 
     const onSubmitCustomer: SubmitHandler<Customer> = async (data) => {
         const { documents, ...customer} = data;
-        const newCustomer = await coreApi.post("/cng/customers", customer)
+        const newCustomer = await coreApi({
+            url: customerDetails ? `/cng/customers/${customerId}` : "/cng/customers",
+            method: customerDetails ? "PUT" : "POST",
+            data: customer
+        })
         const customerId = newCustomer.data.id;
 
         for (const document of documents) {
@@ -47,6 +53,7 @@ const CustomerForm = () => {
                 await coreApi.post("/cng/documents", formData);
             }
         }
+        router.push("/customers");
     }
 
     return (

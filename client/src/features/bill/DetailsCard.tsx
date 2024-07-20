@@ -124,7 +124,8 @@ const DetailsCard = ({ tariff }) => {
                         <Col className="text-end">
                             <FormControl
                                 {...register("billAmount", {
-                                    value: ratePerUnit * parseInt(watchUnitsConsumed)
+                                    value: ratePerUnit * parseInt(watchUnitsConsumed),
+                                    valueAsNumber: true
                                 })}
                                 value={ratePerUnit * parseInt(watchUnitsConsumed)}
                                 hidden

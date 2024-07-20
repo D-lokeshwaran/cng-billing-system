@@ -35,6 +35,9 @@ const tariffSlice: SliceProps = {
   params: {
     url: "/cng/tariffs"
   },
+  alterOptions: {
+    columnChooser: false
+  }
 //   _mock: [
 //     {
 //         fromDate: new Date(),

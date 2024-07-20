@@ -9,22 +9,28 @@ import DetailsCard from "./DetailsCard";
 import BillCustomerInfo from "./BillCustomerInfo";
 import CurrentTariffList from "./CurrentTariffList";
 import { useParams } from "react-router-dom";
+import { useRouter } from "src/hooks";
 import { useState, useEffect } from "react";
 
 const BillDetail = () => {
 
     const [ todayTariff, setTodayTariff ] = useState();
     const [ bill, setBill ] = useState();
+    const router = useRouter();
     const { billId } = useParams();
 
     useEffect(() => {
         retrieveTodayTariff();
-        retrieveBill();
+        if (billId) {
+            retrieveBill();
+        }
         return () => setTodayTariff(null);
     }, [])
 
     const retrieveTodayTariff = async () => {
-        const result = await coreApi.get("/cng/tariffs/search/findTodayTariff");
+        const result = await coreApi
+            .get("/cng/tariffs/search/findTodayTariff")
+            .catch(error => console.log("No tariff for today add one."))
         if (result) {
             setTodayTariff(result.data);
         }
@@ -40,11 +46,11 @@ const BillDetail = () => {
     }
 
     const onSubmitBill: SubmitHandler<Bill> = async (data) => {
-        const { customerId, ...bill} = data;
+        const { customerId, ...billData} = data;
         const newBill = await coreApi({
             url: bill ? `/cng/bills/${bill.id}` : "/cng/bills",
             method: bill ? "PUT" : "POST",
-            data: bill
+            data: billData
         }); // create or update bill
         const billId = newBill?.data.id;
         const tariffId = todayTariff?.id;
@@ -62,6 +68,7 @@ const BillDetail = () => {
                 { headers: { 'Content-Type': 'text/uri-list' } }
             );
         }
+        router.push("/bills")
     }
 
     return (
