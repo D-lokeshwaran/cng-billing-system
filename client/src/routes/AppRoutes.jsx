@@ -33,18 +33,18 @@ const AppRoutes = () => {
                          </Route>
 
                          <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Customer]}/> }>
-                              <Route path="customers">
-                                   <Route index element={<CustomerList/>} />
-                                   <Route path="new" element={<CustomerDetail/>} />
-                              </Route>
-                              <Route path="bills">
-                                   <Route index element={<BillList/>} />
-                              </Route>
                               {/* Context provider route to manage state replacement */}
                               <Route element={<BillContextProvider />}>
-                                   <Route path="bills/new" element={<BillDetail/>} />
-                                   <Route path="bills/:billId" element={<BillDetail/>} />
-                                   <Route path="customers/:customerId" element={<CustomerDetail/>} />
+                                   <Route path="customers">
+                                        <Route index element={<CustomerList/>} />
+                                        <Route path="new" element={<CustomerDetail/>} />
+                                        <Route path=":customerId" element={<CustomerDetail/>} />
+                                   </Route>
+                                   <Route path="bills">
+                                        <Route index element={<BillList/>} />
+                                        <Route path="new" element={<BillDetail/>} />
+                                        <Route path=":billId" element={<BillDetail/>} />
+                                   </Route>
                               </Route>
                          </Route>
                     </Route>

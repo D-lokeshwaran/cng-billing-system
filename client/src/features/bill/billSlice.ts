@@ -27,7 +27,7 @@ const billSlice: SliceProps = {
     columnHelper.accessor('billingDate', {
       header: BILL_LIST.BILLING_DATE
     }),
-    columnHelper.accessor('dueDate', {
+    columnHelper.accessor('paymentDueDate', {
       header: BILL_LIST.DUE_DATE
     }),
     columnHelper.accessor('status', {
@@ -47,80 +47,83 @@ const billSlice: SliceProps = {
     url: "/cng/bills"
   }
 
-  /* _mock = [
-    {
-        accountNumber: 12345,
-        fullName: "LOKM",
-        contactNumber: 1111,
-        addressLine1: "add1"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    }
-  ] */
+  // _mock: [
+  //   {
+  //       accountNumber: 12345,
+  //       fullName: "LOKM",
+  //       contactNumber: 1111,
+  //       addressLine1: "add1",
+  //       status: "paid"
+  //   },
+  //   {
+  //       accountNumber: 54321,
+  //       fullName: "LOKM",
+  //       contactNumber: 2222,
+  //       addressLine1: "add2",
+  //       status: "paid"
+
+  //   },
+  //   {
+  //       accountNumber: 54321,
+  //       fullName: "LOKM",
+  //       contactNumber: 2222,
+  //       addressLine1: "add2"
+  //   },
+  //   {
+  //       accountNumber: 54321,
+  //       fullName: "LOKM",
+  //       contactNumber: 2222,
+  //       addressLine1: "add2"
+  //   },
+  //   {
+  //       accountNumber: 54321,
+  //       fullName: "LOKM",
+  //       contactNumber: 2222,
+  //       addressLine1: "add2"
+  //   },
+  //   {
+  //       accountNumber: 54321,
+  //       fullName: "LOKM",
+  //       contactNumber: 2222,
+  //       addressLine1: "add2"
+  //   },
+  //   {
+  //       accountNumber: 54321,
+  //       fullName: "LOKM",
+  //       contactNumber: 2222,
+  //       addressLine1: "add2"
+  //   },
+  //   {
+  //       accountNumber: 54321,
+  //       fullName: "LOKM",
+  //       contactNumber: 2222,
+  //       addressLine1: "add2"
+  //   },
+  //   {
+  //       accountNumber: 54321,
+  //       fullName: "LOKM",
+  //       contactNumber: 2222,
+  //       addressLine1: "add2"
+  //   },
+  //   {
+  //       accountNumber: 54321,
+  //       fullName: "LOKM",
+  //       contactNumber: 2222,
+  //       addressLine1: "add2"
+  //   },
+  //   {
+  //       accountNumber: 54321,
+  //       fullName: "LOKM",
+  //       contactNumber: 2222,
+  //       addressLine1: "add2"
+  //   },
+  //   {
+  //       accountNumber: 54321,
+  //       fullName: "LOKM",
+  //       contactNumber: 2222,
+  //       addressLine1: "add2"
+  //   }
+  // ]
 
 }
 export default billSlice;

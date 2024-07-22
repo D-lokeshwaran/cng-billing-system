@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import billSlice from './billSlice';
-import { Card } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { useRouter, useTableAdapter } from 'src/hooks';
 import { ACTIONS } from 'src/constants/labels';
@@ -8,6 +8,7 @@ import ColumnChooser from 'src/components/table/ColumnChooser';
 import ExportData from 'src/components/common/ExportData';
 import TanStackTable from 'src/components/table/TanStackTable';
 import Pagination from 'src/components/table/Pagination';
+import StatusFilter from './StatusFilter';
 
 const CustomerList: FC = () => {
 
@@ -51,9 +52,14 @@ const CustomerList: FC = () => {
             </Button>
             <section>
                 <Card>
-                    <Card.Header>
-                        <ColumnChooser table={table} />
-                        <ExportData filename={name} table={table}/>
+                    <Card.Header as={Row}>
+                        <Col>
+                            <StatusFilter table={table}/>
+                        </Col>
+                        <Col>
+                            <ColumnChooser table={table} />
+                            <ExportData filename={name} table={table}/>
+                        </Col>
                     </Card.Header>
                     <Card.Body>
                         <TanStackTable table={table} rowProps={getRowProps}/>
