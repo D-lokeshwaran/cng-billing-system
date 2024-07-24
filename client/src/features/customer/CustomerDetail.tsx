@@ -43,13 +43,13 @@ const CustomerForm = () => {
             method: customerDetails ? "PUT" : "POST",
             data: customer
         })
-        const customerId = newCustomer.data.id;
+        const newCustomerId = newCustomer.data.id;
 
         for (const document of documents) {
             if (document.file) {
                 const formData = new FormData();
                 formData.append("file", document.file);
-                formData.append("customerId", customerId);
+                formData.append("customerId", newCustomerId);
                 await coreApi.post("/cng/documents", formData);
             }
         }

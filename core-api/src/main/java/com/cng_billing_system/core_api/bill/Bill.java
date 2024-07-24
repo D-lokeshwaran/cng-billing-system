@@ -1,5 +1,6 @@
 package com.cng_billing_system.core_api.bill;
 
+import com.cng_billing_system.core_api.AuditModel;
 import com.cng_billing_system.core_api.customer.Customer;
 import com.cng_billing_system.core_api.enums.PaymentStatus;
 import com.cng_billing_system.core_api.tariff.Tariff;
@@ -14,7 +15,7 @@ import java.util.Date;
 @Table(name = "bills")
 @Getter
 @Setter
-public class Bill {
+public class Bill extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
