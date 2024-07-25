@@ -9,6 +9,7 @@ import { useBillContext } from "src/context/BillContext";
 import { trackPromise } from 'react-promise-tracker';
 import { coreApi } from 'src/utils/api';
 import { Bill } from "./billSlice";
+import { Customer } from "../customer/customerSlice";
 
 const BillCustomerInfo = () => {
     const { setValue, getValues } = useFormContext<Bill>();
@@ -18,7 +19,7 @@ const BillCustomerInfo = () => {
     const [customer, setCustomer] = useState<Customer>();
     const selectedCustomerId = getValues("customerId");
 
-    const updateCustomerDetails = useCallback(async (customerId) => {
+    const updateCustomerDetails = useCallback(async (customerId: number) => {
         try {
             const res = await trackPromise(coreApi.get(`/cng/customers/${customerId}`));
             setCustomer(res.data);

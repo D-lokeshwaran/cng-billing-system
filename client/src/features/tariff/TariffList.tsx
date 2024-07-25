@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from 'react';
+import { FC, useState } from 'react';
 import tariffSlice from './tariffSlice';
 import ReadyMadeTable from 'src/components/table/ReadyMadeTable';
 import { Button } from 'react-bootstrap';
@@ -8,12 +8,10 @@ import TariffDetailModal from './TariffDetailModal';
 const TariffList: FC = () => {
 
     const [ showTariffModal, toggleTariffModal ] = useToggle();
-    const [, updateState] = useState();
-    const forceUpdate = useCallback(() => updateState({}), []);
     const [ tariff, setTariff ] = useState();
     
     const handleAddTariff = () => {
-        setTariff(null);
+        setTariff(undefined);
         toggleTariffModal();
     }
 
@@ -28,7 +26,6 @@ const TariffList: FC = () => {
     }
 
     const handleCloseModal = () => {
-        forceUpdate();
         toggleTariffModal()
     }
 

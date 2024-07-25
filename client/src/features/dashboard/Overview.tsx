@@ -13,13 +13,19 @@ const Overview = ({ data }) => {
     },
     yaxis: {
       min: 0,
+      max: 100,
+      tickAmount: 5,
     }
   }
 
   const series = [
     {
+      name: "Sales",
+      data: [14, 23, 14, 34, 26, 70, 20, 23]
+    },
+    {
       name: "Revenue",
-      data: data
+      data: [80, 76, 86, 80, 73, 93, 30, 61]
     }
   ]
 

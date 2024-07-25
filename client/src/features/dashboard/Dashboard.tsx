@@ -6,6 +6,7 @@ import Overview from './Overview';
 import { coreApi } from 'src/utils/api';
 import { Bill } from '../bill/billSlice';
 import { useState, useEffect } from 'react';
+import SimpleTable from 'src/components/table/SimpleTable';
 
 type DashboardInfoType = {
     totalRevenue: number,
@@ -20,8 +21,35 @@ type DashboardInfoType = {
 
 const Dashboard = () => {
 
-    const [ dashboardInfo, setDashboardInfo ] = useState<DashboardInfoType>(!null);
-    const [ recentBills, setRecentBills ] = useState<Bill[]>(!null);
+    const [ dashboardInfo, setDashboardInfo ] = useState<DashboardInfoType>();
+    const [ recentBills, setRecentBills ] = useState<Bill[]>();
+
+    const dummyRecentBills = [
+        {
+          "id": 1,
+          "unitsConsumed": 12,
+          "paymentStatus": "Pending",
+          "billAmount": 29.16,
+          "billingDate": "2024-07-25T04:56:12.767+00:00",
+          "paymentDueDate": "2024-08-04T04:56:12.767+00:00"
+        },
+        {
+          "id": 2,
+          "unitsConsumed": 122,
+          "paymentStatus": "Pending",
+          "billAmount": 296.46,
+          "billingDate": "2024-08-22T04:56:12.000+00:00",
+          "paymentDueDate": "2024-08-04T04:56:12.767+00:00"
+        },
+        {
+          "id": 3,
+          "unitsConsumed": 122,
+          "paymentStatus": "Pending",
+          "billAmount": null,
+          "billingDate": "2024-08-22T04:56:12.000+00:00",
+          "paymentDueDate": "2024-09-01T04:56:12.000+00:00"
+        }
+      ]
 
     useEffect(() => {
         retrieveDashboardInfo()
@@ -49,7 +77,7 @@ const Dashboard = () => {
                             <div>R</div>
                         </FlexBox>
                         <h2>
-                            ₹ {dashboardInfo.totalRevenue}
+                            ₹ {dashboardInfo?.totalRevenue}
                         </h2>
                         <small>+40% from last month </small>
                     </Card>
@@ -59,7 +87,7 @@ const Dashboard = () => {
                             <div>C</div>
                         </FlexBox>
                         <h2>
-                            {dashboardInfo.customers}
+                            {dashboardInfo?.customers}
                         </h2>
                         <small>+2% from last month</small>
                     </Card>
@@ -69,7 +97,7 @@ const Dashboard = () => {
                             <div>B</div>
                         </FlexBox>
                         <h2>
-                            +{dashboardInfo.sales}
+                            +{dashboardInfo?.sales}
                         </h2>
                         <small>+21% from last month</small>
                     </Card>
@@ -79,19 +107,30 @@ const Dashboard = () => {
                             <div>A</div>
                         </FlexBox>
                         <h2>
-                            {dashboardInfo.activeBills}
+                            {dashboardInfo?.activeBills}
                         </h2>
                         <small>+10 from last month</small>
                     </Card>
                 </FlexBox>
                 <FlexBox>
-                    <Overview data={dashboardInfo.monthlyRevenue}/>
+                    <Overview data={dashboardInfo?.monthlyRevenue}/>
                     <Card>
                         <Card.Header>
                             <div>Recent Bills</div>
                             <a>View All</a>
-                            {JSON.stringify(recentBills, null, 2)}
                         </Card.Header>
+                        <Card.Body>
+                          <SimpleTable data={dummyRecentBills} columns={[
+                            {
+                              attr: "paymentStatus",
+                              title: "Status"
+                            },
+                            {
+                              attr: "billAmount",
+                              title: "Amount"
+                            }
+                          ]}/>
+                        </Card.Body>
                     </Card>
                 </FlexBox>
             </div>
