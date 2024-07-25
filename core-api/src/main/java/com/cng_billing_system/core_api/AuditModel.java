@@ -13,7 +13,7 @@ import java.util.Date;
 public class AuditModel {
 
     @CreationTimestamp
-    private Date createAt;
+    private Date createdAt;
 
     @UpdateTimestamp
     private Date updatedAt;

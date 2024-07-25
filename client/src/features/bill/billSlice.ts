@@ -4,7 +4,6 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "react-boot
 import { SliceProps } from "src/components/table/types";
 import { BILL_LIST } from "src/constants/labels"
 import { coreApi } from "src/utils/api";
-import ActionsDropdown from "./ActionsDropdown";
 
 export type Bill = {
   id: number,
@@ -44,7 +43,6 @@ const billSlice: SliceProps = {
     }),
     columnHelper.display({
       header: "Actions",
-      cell: ActionsDropdown
     })
   ],
   columnVisibility: {
@@ -53,87 +51,9 @@ const billSlice: SliceProps = {
   alterOptions: {
     globelFilter: false
   },
-  // params: {
-  //   url: "/cng/bills"
-  // }
-
-  _mock: [
-    {
-        accountNumber: 12345,
-        fullName: "LOKM",
-        contactNumber: 1111,
-        addressLine1: "add1",
-        status: "paid"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2",
-        status: "paid"
-
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    },
-    {
-        accountNumber: 54321,
-        fullName: "LOKM",
-        contactNumber: 2222,
-        addressLine1: "add2"
-    }
-  ]
+  params: {
+    url: "/cng/bills"
+  }
 
 }
 

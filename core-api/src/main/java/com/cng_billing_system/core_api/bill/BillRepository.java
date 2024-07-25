@@ -18,15 +18,33 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> findAllByPaymentStatus(PaymentStatus paymentStatus);
 
     @Query(nativeQuery = true, value =
-            "SELECT sum(bill_amount) as \"revenue\" " +
+        "SELECT sum(bill_amount) as \"revenue\", " +
+                "month(updated_at) as \"month\" " +
             "FROM bills " +
-            "WHERE year(billing_date) = year(curDate())" +
-            "AND payment_status = 'Paid' " +
-            "GROUP BY month(billing_date)"
+            "WHERE year(updated_at) = year(curDate())" +
+                "AND payment_status = 'Paid' " +
+            "GROUP BY month(updated_at) " +
+            "ORDER BY month(updated_at) asc"
     )
-    List<BigDecimal> getMonthlyRevenue();
+    List<Map<BigDecimal, Integer>> getMonthlyRevenue();
 
-    @Query("SELECT b FROM Bill b ORDER BY b.createAt ASC")
-    List<Bill> recentBills();
+    @Query(nativeQuery = true, value =
+        "SELECT sum(bill_amount) as \"revenue\", " +
+                "week(updated_at) as \"week\" " +
+            "FROM bills " +
+            "WHERE month(updated_at) = month(curDate()) " +
+                "AND payment_status = 'Paid' " +
+            "GROUP BY week(updated_at) " +
+            "ORDER BY week(updated_at) asc"
+    )
+    List<Map<BigDecimal, Integer>> getWeeklyRevenue();
+
+    @Query(nativeQuery = true, value =
+            "SELECT b.*, (c.full_name, c.account_number) as customer FROM bills b, customers c\n" +
+            "WHERE b.customer_id = c.id\n" +
+            "ORDER BY created_at ASC\n" +
+            "LIMIT 5"
+    )
+    List<Bill> recent5Bills();
 
 }

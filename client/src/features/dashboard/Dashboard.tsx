@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet-async';
 import FlexBox from 'src/components/common/FlexBox';
 import Overview from './Overview';
 import { coreApi } from 'src/utils/api';
-import { Bill } from '../bill/billSlice';
 import { useState, useEffect } from 'react';
 import SimpleTable from 'src/components/table/SimpleTable';
 
@@ -21,35 +20,7 @@ type DashboardInfoType = {
 
 const Dashboard = () => {
 
-    const [ dashboardInfo, setDashboardInfo ] = useState<DashboardInfoType>();
-    const [ recentBills, setRecentBills ] = useState<Bill[]>();
-
-    const dummyRecentBills = [
-        {
-          "id": 1,
-          "unitsConsumed": 12,
-          "paymentStatus": "Pending",
-          "billAmount": 29.16,
-          "billingDate": "2024-07-25T04:56:12.767+00:00",
-          "paymentDueDate": "2024-08-04T04:56:12.767+00:00"
-        },
-        {
-          "id": 2,
-          "unitsConsumed": 122,
-          "paymentStatus": "Pending",
-          "billAmount": 296.46,
-          "billingDate": "2024-08-22T04:56:12.000+00:00",
-          "paymentDueDate": "2024-08-04T04:56:12.767+00:00"
-        },
-        {
-          "id": 3,
-          "unitsConsumed": 122,
-          "paymentStatus": "Pending",
-          "billAmount": null,
-          "billingDate": "2024-08-22T04:56:12.000+00:00",
-          "paymentDueDate": "2024-09-01T04:56:12.000+00:00"
-        }
-      ]
+    const [ dashboardInfo, setDashboardInfo ] = useState<DashboardInfoType>(!null);
 
     useEffect(() => {
         retrieveDashboardInfo()
@@ -59,9 +30,6 @@ const Dashboard = () => {
         const dashboardResult = await coreApi.get("/cng/dashboard")
         let dashboardInfo = dashboardResult.data;
         setDashboardInfo(dashboardInfo);
-        const recentBillsResult = await coreApi.get("/cng/bills/search/recentBills");
-        let recentBills = recentBillsResult.data._embedded.bills;
-        setRecentBills(recentBills);
     }
 
     return (
@@ -113,20 +81,33 @@ const Dashboard = () => {
                     </Card>
                 </FlexBox>
                 <FlexBox>
-                    <Overview data={dashboardInfo?.monthlyRevenue}/>
+                    <Overview data={{
+                        monthly: dashboardInfo?.monthlyRevenue,
+                        weekly: dashboardInfo?.weeklyRevenue
+                    }}/>
                     <Card>
                         <Card.Header>
                             <div>Recent Bills</div>
                             <a>View All</a>
                         </Card.Header>
                         <Card.Body>
-                          <SimpleTable data={dummyRecentBills} columns={[
+                          <SimpleTable data={dashboardInfo?.recentBills} columns={[
                             {
-                              attr: "paymentStatus",
+                              attr: "customer",
+                              title: "Customer",
+                              cell: (value) => (
+                                <>
+                                    <div>{value.fullName}</div>
+                                    {value.accountNumber}
+                                </>
+                              )
+                            },
+                            {
+                              attr: "status",
                               title: "Status"
                             },
                             {
-                              attr: "billAmount",
+                              attr: "amount",
                               title: "Amount"
                             }
                           ]}/>

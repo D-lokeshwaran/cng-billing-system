@@ -4,11 +4,12 @@ import { Table as BSTable } from "react-bootstrap";
 type Column = {
     attr: string,
     title: string,
+    cell: (value: any) => React.ReactNode
 }
 
 interface SimpleTableProps {
     columns: Column[];
-    data: any;
+    data: any[];
 }
 
 export const SimpleTable: React.FC<SimpleTableProps> = ({ 
@@ -20,7 +21,7 @@ export const SimpleTable: React.FC<SimpleTableProps> = ({
         <BSTable striped bordered hover variant="light">
             <thead>
                 <tr>
-                    {columns.map(col => (
+                    {columns?.map(col => (
                         <th key={col.attr}>
                             {col.title}
                         </th>
@@ -28,11 +29,11 @@ export const SimpleTable: React.FC<SimpleTableProps> = ({
                 </tr>
             </thead>
             <tbody>
-                {data.map((cell: any, id: number) => (
+                {data && data?.map((row: any, id: number) => (
                     <tr key={id}>
-                        {columns.map(col => 
+                        {columns?.map(col =>
                             <td key={id}>
-                                {cell[col.attr]}
+                                {col.cell ? col.cell(row[col.attr]) : row[col.attr]}
                             </td>
                         )}
                     </tr>
