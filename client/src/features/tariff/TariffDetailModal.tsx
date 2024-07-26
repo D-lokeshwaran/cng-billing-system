@@ -1,19 +1,35 @@
 import React, { useMemo, useState }from "react";
 import { Button, Col, Modal, ModalProps, Row } from "react-bootstrap";
-import { SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useFormContext } from "react-hook-form";
 import HookForm from "src/components/form/HookForm";
 import { Tariff } from "./tariffSlice";
 import DatePickerInput from "src/components/form/DatePickerInput";
 import UnitsAndRates from "./UnitsAndRates";
+import moment from "moment";
+import ErrorMessage from "src/components/form/ErrorMessage";
 import { coreApi } from 'src/utils/api';
 
-interface TariffDetailModalProps extends ModalProps {
+const defaultTariffUnits = [
+   {
+       fromUnit: 1,
+       toUnit: 100,
+       ratePerUnit: 2.43
+   }, {
+       fromUnit: 101,
+       toUnit: 200,
+       ratePerUnit: 5.6
+   }, {
+       fromUnit: 201,
+       toUnit: 300,
+       ratePerUnit: 9.3
+   },
+]
 
-}
-
-const TariffDetailModal: React.FC<TariffDetailModalProps> = ({ ...props }) => {
+const TariffDetailModal = ({ ...props }) => {
 
     const { onHide, tariff } = props;
+    const [ duplicated, setDuplicated ] = useState();
+
     const handleTariffSubmit: SubmitHandler<Tariff> = async (data) => {
         const { maxUnit, unitRateAboveMax, ...tariff } = data;
         tariff.unitsAndRates.push({
@@ -21,32 +37,31 @@ const TariffDetailModal: React.FC<TariffDetailModalProps> = ({ ...props }) => {
             toUnit: "above",
             ratePerUnit: unitRateAboveMax
         })
-        const newTariff = await coreApi.post("/cng/tariffs", tariff)
-        onHide()
+        validateDuplicateTariff(tariff);
+        if (duplicated) {
+            const newTariff = await coreApi.post("/cng/tariffs", tariff)
+            onHide()
+        }
     }
+
+    const validateDuplicateTariff = async (tariff) => {
+        // formatted because using Rest resource unable to format in server...
+        const formattedDate = moment(tariff.fromDate).format("YYYY-MM-DD");
+        const duplicateResult = await coreApi.get(
+            `/cng/tariffs/search/checkDuplicate?fromDate=${formattedDate}`
+        )
+        // validate duplicate tariff;
+        var duplicate = duplicateResult.data._embedded.tariffs.length > 0;
+        setDuplicated(duplicate);
+    }
+
     const tariffDetails = useMemo(() => {
         if (tariff) {
             const filteredUnitsAndRates = tariff.unitsAndRates.filter(rate => rate.toUnit !== "above");
             return { ...tariff, unitsAndRates: filteredUnitsAndRates };
         }
         // default tariff data
-        return {
-            unitsAndRates: [
-                {
-                    fromUnit: 1,
-                    toUnit: 100,
-                    ratePerUnit: 2.43
-                }, {
-                    fromUnit: 101,
-                    toUnit: 200,
-                    ratePerUnit: 5.6
-                }, {
-                    fromUnit: 201,
-                    toUnit: 300,
-                    ratePerUnit: 9.3
-                },
-            ]
-        }
+        return { unitsAndRates: defaultTariffUnits }
     }, [tariff, tariff?.unitsAndRates])
 
     const maxUnitRate = useMemo(() => {
@@ -67,15 +82,20 @@ const TariffDetailModal: React.FC<TariffDetailModalProps> = ({ ...props }) => {
                         <Col>
                             <DatePickerInput
                                 field={{ title: "From date", state: "fromDate"}}
+                                validate={{
+                                    pastDate: (value: any) => {
+                                        let past = moment().isBefore(value);
+                                        return past || "From Date should be at past";
+                                    }
+                                }}
                             />
                         </Col>
                         <Col>
-                            <DatePickerInput
-                                field={{ title: "To date", state: "toDate"}}
-                            />
+                            <ToDateWithValidation/>
                         </Col>
                     </Row>
                     <UnitsAndRates maxUnitRate={maxUnitRate}/>
+                    {duplicated && <ErrorMessage errorMessage="Duplicate Tariff exists for these date's" />}
                     <Modal.Footer className="px-0 pb-0">
                         <Button type="submit">Create</Button>
                     </Modal.Footer>
@@ -83,6 +103,25 @@ const TariffDetailModal: React.FC<TariffDetailModalProps> = ({ ...props }) => {
             </Modal.Body>
         </Modal>
     )
+}
+
+const ToDateWithValidation = () => {
+    const { watch } = useFormContext();
+    const fromDate = watch("fromDate");
+
+    return (
+        <DatePickerInput
+            field={{ title: "To date", state: "toDate"}}
+            validate={{
+                afterFromDate: (value: any) => {
+                    let afterFromDate = moment(value).isAfter(fromDate);
+                    return afterFromDate || "To Date should be after from date";
+                },
+
+            }}
+        />
+    )
+
 }
 
 export default TariffDetailModal;

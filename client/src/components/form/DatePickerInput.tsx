@@ -58,7 +58,8 @@ const DatePickerInput = ({
                                 return !v ? "Please, pick one date" : true
                             }
                             return true;
-                        }
+                        },
+                        ...validate
                     }
                 }} 
             />

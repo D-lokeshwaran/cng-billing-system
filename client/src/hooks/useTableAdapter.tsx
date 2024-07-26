@@ -73,5 +73,5 @@ export const useTableAdapter = <T,>({
         // debugColumns: false
     });
 
-    return table;
+    return { table, setData };
 }

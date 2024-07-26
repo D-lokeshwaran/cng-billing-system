@@ -35,7 +35,7 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice, rowProps }) => {
         columnVisibility
     } = slice;
 
-    const table = useTableAdapter({
+    const { table } = useTableAdapter({
         columns,
         name,
         params,

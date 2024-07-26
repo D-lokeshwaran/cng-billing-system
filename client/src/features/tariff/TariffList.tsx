@@ -1,15 +1,33 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import tariffSlice from './tariffSlice';
 import ReadyMadeTable from 'src/components/table/ReadyMadeTable';
-import { Button } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import { useToggle } from 'src/hooks';
 import TariffDetailModal from './TariffDetailModal';
+import { useTableAdapter } from 'src/hooks';
+import { coreApi } from "src/utils/api";
+import TanStackTable from "src/components/table/TanStackTable";
+import Pagination from "src/components/table/Pagination";
 
 const TariffList: FC = () => {
 
     const [ showTariffModal, toggleTariffModal ] = useToggle();
+    const [ refresh, refreshTable ] = useToggle();
     const [ tariff, setTariff ] = useState();
-    
+    const { table, setData } = useTableAdapter({
+        ...tariffSlice,
+    });
+
+    useEffect(() => {
+        refreshTariffs();
+    }, [refresh])
+
+    const refreshTariffs = async () => {
+        const result = await coreApi.get("/cng/tariffs");
+        const tariffs = result.data.tariffs || result.data._embedded.tariffs;
+        setData(tariffs);
+    }
+
     const handleAddTariff = () => {
         setTariff(undefined);
         toggleTariffModal();
@@ -26,7 +44,8 @@ const TariffList: FC = () => {
     }
 
     const handleCloseModal = () => {
-        toggleTariffModal()
+        toggleTariffModal();
+        refreshTable();
     }
 
     return (
@@ -38,7 +57,8 @@ const TariffList: FC = () => {
                 + Tariff
             </Button>
             <TariffDetailModal show={showTariffModal} onHide={handleCloseModal} tariff={tariff}/>
-            <ReadyMadeTable slice={tariffSlice} rowProps={getRowProps} />
+            <TanStackTable table={table} rowProps={getRowProps} />
+            <Pagination table={table} />
         </div>
     );
 

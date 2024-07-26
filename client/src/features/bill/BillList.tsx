@@ -21,7 +21,7 @@ const CustomerList: FC = () => {
         columnVisibility
     } = billSlice;
 
-    const table = useTableAdapter({
+    const { table } = useTableAdapter({
         columns,
         name,
         params,

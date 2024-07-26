@@ -1,11 +1,13 @@
 package com.cng_billing_system.core_api.tariff;
 
+import jakarta.validation.constraints.Pattern;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.Date;
+import java.util.List;
 
 @RepositoryRestResource(collectionResourceRel = "tariffs", path = "tariffs")
 public interface TariffRepository extends JpaRepository<Tariff, Long> {
@@ -18,5 +20,12 @@ public interface TariffRepository extends JpaRepository<Tariff, Long> {
             "WHERE t.fromDate < :searchDate AND t.toDate > :searchDate")
     Tariff findByDate(@Param("searchDate") Date searchDate);
 
+    @Query(
+            name = "findByToDateBefore",
+            nativeQuery = true,
+            value = "SELECT * FROM tariffs " +
+                    "WHERE to_date > ?"
+    )
+    List<Tariff> checkDuplicate(String fromDate);
 
 }

@@ -22,7 +22,7 @@ const ChooseCustomerModal: React.FC<ChooseCustomerModelProps> = ({
     onClose
 }) => {
 
-    const table = useTableAdapter({
+    const { table } = useTableAdapter({
         name: customerSlice.name,
         columns: customerSlice.columns,
         params: customerSlice.params,

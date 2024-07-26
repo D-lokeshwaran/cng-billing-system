@@ -36,34 +36,9 @@ const tariffSlice: SliceProps = {
     url: "/cng/tariffs"
   },
   alterOptions: {
-    columnChooser: false
+    columnChooser: false,
+    pagination: true
   }
-//   _mock: [
-//     {
-//         fromDate: new Date(),
-//         toDate: new Date(),
-//         maxUnit: 1111,
-//         unitRateAboveMax: 10.34
-//     },
-//     {
-//         fromDate: new Date(),
-//         toDate: new Date(),
-//         maxUnit: 2222,
-//         unitRateAboveMax: 30.34
-//     },
-//     {
-//         fromDate: new Date(),
-//         toDate: new Date(),
-//         maxUnit: 2222,
-//         unitRateAboveMax: 40.56
-//     },
-//     {
-//         fromDate: new Date(),
-//         toDate: new Date(),
-//         maxUnit: 2222,
-//         unitRateAboveMax: 90.43
-//     }
-//   ]
 }
 
 export default tariffSlice;

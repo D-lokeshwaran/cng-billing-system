@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 interface Params {
     url: string;
     method?: string;
+    refreshData?: boolean;
 }
 
 export interface AlterOptions {

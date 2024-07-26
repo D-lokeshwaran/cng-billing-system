@@ -22,7 +22,7 @@ import java.util.*;
 @RestController
 @CrossOrigin
 @AllArgsConstructor
-@RequestMapping("/cng/documents")
+@RequestMapping("/documents")
 public class DocumentController {
 
     private final StorageService storageService;

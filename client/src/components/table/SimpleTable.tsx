@@ -32,7 +32,7 @@ export const SimpleTable: React.FC<SimpleTableProps> = ({
                 {data && data?.map((row: any, id: number) => (
                     <tr key={id}>
                         {columns?.map(col =>
-                            <td key={id}>
+                            <td key={col.attr}>
                                 {col.cell ? col.cell(row[col.attr]) : row[col.attr]}
                             </td>
                         )}

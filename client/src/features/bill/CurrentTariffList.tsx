@@ -28,7 +28,7 @@ const currentTariffListSlice: SliceProps = {
 }
 
 const CurrentTariffList = ({ data }) => {
-    const table = useTableAdapter({
+    const { table } = useTableAdapter({
         columns: currentTariffListSlice.columns,
         _mock: data[currentTariffListSlice.name]
     })
