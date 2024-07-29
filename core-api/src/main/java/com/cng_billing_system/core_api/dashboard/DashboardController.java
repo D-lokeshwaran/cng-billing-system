@@ -40,7 +40,7 @@ public class DashboardController {
         BigDecimal totalRevenue = billRepository.getTotalRevenue();
         overview.put("totalRevenue", totalRevenue != null ? totalRevenue : 0);
         overview.put("customers", customerRepository.findAll().size());
-        overview.put("sales", billRepository.findAllByPaymentStatus(PaymentStatus.Paid).size());
+        overview.put("sales", billRepository.findAllByPaymentStatus(PaymentStatus.Completed).size());
         overview.put("activeBills", billRepository.findAllByPaymentStatus(PaymentStatus.Pending).size());
 
         // revenue overview Monthly and weekly

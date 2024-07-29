@@ -10,7 +10,7 @@ import BillCustomerInfo from "./BillCustomerInfo";
 import CurrentTariffList from "./CurrentTariffList";
 import { useParams } from "react-router-dom";
 import { useRouter } from "src/hooks";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const BillDetail = () => {
 
@@ -70,18 +70,45 @@ const BillDetail = () => {
         }
         router.push("/bills")
     }
+    const handleMarkAsPaid = async () => {
+        const updateBill = await coreApi.put(`/cng/bills/${bill.id}`, {
+            ...bill,
+            paymentStatus: "Paid"
+        })
+        const newBill = updateBill.data;
+        setBill(newBill);
+        router.push("/bills");
+    }
+    const paymentStatus = useMemo(() => {
+        let status = bill?.paymentStatus;
+        if (status === "Pending") {
+            return { label: "Pending", type: "warning" };
+        } else if (status === "Paid") {
+            return { label: "Completed", type: "success" };
+        } else if (status === "Overdue"){
+            return { label: "Overdue", type: "danger" };
+        } else {
+            return { label: "Not Billed", type: "secondary" };
+        }
+    }, [bill?.paymentStatus])
 
     return (
         <div id="cng-bill-details">
             <HookForm onSubmit={onSubmitBill} defaultValues={bill}>
                 <FeatureHeader title="Bill" className="justify-content-between">
                     <FlexBox className="justify-content-between">
-                        <Badge pill bg="" className="text-success border border-success d-flex align-items-center">
-                            Completed
+                        <Badge pill bg="" className={`text-${paymentStatus.type} border border-${paymentStatus.type} d-flex align-items-center`}>
+                            {paymentStatus.label}
                         </Badge>
-                        <Button variant="primary" type="submit">
-                            { bill ? "Update" : "Create"}
-                        </Button>
+                        <div>
+                            {bill?.id && bill?.paymentStatus != "Paid" && bill?.paymentStatus != "Not_billed" &&
+                            <Button variant="default" type="button" onClick={handleMarkAsPaid}>
+                                Mark as paid
+                            </Button>}
+                            <Button variant="primary" type="submit">
+                                { bill ? "Update" : "Create"}
+                            </Button>
+                        </div>
                     </FlexBox>
                 </FeatureHeader>
                 <Row>

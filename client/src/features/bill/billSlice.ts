@@ -35,14 +35,11 @@ const billSlice: SliceProps = {
     columnHelper.accessor('paymentDueDate', {
       header: BILL_LIST.DUE_DATE
     }),
-    columnHelper.accessor('status', {
+    columnHelper.accessor('paymentStatus', {
       header: BILL_LIST.STATUS,
     }),
     columnHelper.accessor('billAmount', {
       header: BILL_LIST.AMOUNT,
-    }),
-    columnHelper.display({
-      header: "Actions",
     })
   ],
   columnVisibility: {

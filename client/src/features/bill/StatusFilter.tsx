@@ -12,7 +12,7 @@ const StatusFilter = ({
 }: { table: Table<Bill> }) => {
 
     const filterByStatus = (status: string) => 
-        table.getRowModel().rows.filter((row: any) => row.original.status?.toUpperCase() === status.toUpperCase())
+        table.getCoreRowModel().rows.filter((row: any) => row.original.paymentStatus?.toUpperCase() === status.toUpperCase())
     const filterItems: FilterItem[] = ["Pending", "Paid", "Overdue", "NotBilled"]
         .map( status => { 
             return { status: status, count: filterByStatus(status).length };
@@ -25,7 +25,7 @@ const StatusFilter = ({
             return
         }
         table.setColumnFilters([{
-            id: "status",
+            id: "paymentStatus",
             value: status
         }]);
     }
