@@ -40,7 +40,10 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice, rowProps }) => {
         name,
         params,
         columnVisibility,
-        _mock
+        _mock,
+        options: {
+            enableRowSelection: alterOptions.rowSelection
+        }
     });
 
     useEffect(() => {
@@ -48,33 +51,6 @@ const ReadyMadeTable: React.FC<ReadyMadeTableProps> = ({ slice, rowProps }) => {
             table.setPageSize(options.initPageSize)
         }
     }, [options])
-
-    useEffect(() => {
-        const columnHelper = createColumnHelper<any>();
-        if (options.rowSelection === true && columns[0].id !== 'rowSelect') {
-            columns.unshift(
-                columnHelper.display({
-                    id: 'rowSelect',
-                    header: ({ table }) => <IndeterminateCheckbox
-                        {...{
-                            checked: table.getIsAllRowsSelected(),
-                            indeterminate: table.getIsSomeRowsSelected(),
-                            onChange: table.getToggleAllRowsSelectedHandler(),
-                        }}
-                    />,
-                    cell: ({ row }) => <IndeterminateCheckbox
-                            {...{
-                                checked: row.getIsSelected(),
-                                disabled: !row.getCanSelect(),
-                                indeterminate: row.getIsSomeSelected(),
-                                onChange: row.getToggleSelectedHandler(),
-                            }}
-                        />
-
-                })
-            )
-        }
-    }, [options.rowSelection])
 
   return (
     <section>

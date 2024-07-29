@@ -47,6 +47,9 @@ const customerSlice: SliceProps = {
   params: {
     url: "/cng/customers"
   },
+  options: {
+    enableRowSelection: true
+  }
   /* _mock: [
     {
         accountNumber: 12345,

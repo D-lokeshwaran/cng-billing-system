@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import {
     useReactTable,
     getCoreRowModel,
@@ -10,10 +10,16 @@ import {
 import { trackPromise } from 'react-promise-tracker';
 import { coreApi } from 'src/utils/api';
 import { ColumnDef } from "@tanstack/react-table";
+import { createColumnHelper } from '@tanstack/react-table';
+import IndeterminateCheckbox from 'src/components/table/IntermediateCheckbox';
 
 interface Params {
     url: string;
     method?: string;
+}
+
+interface Options {
+    enableRowSelection?: boolean
 }
 
 export interface UseTableAdapterProps<T> {
@@ -22,6 +28,7 @@ export interface UseTableAdapterProps<T> {
     params?: Params;
     columnVisibility?: {[int:string]:boolean}
     _mock?: any;
+    options?: Options
 }
 
 export const useTableAdapter = <T,>({
@@ -29,7 +36,8 @@ export const useTableAdapter = <T,>({
     name,
     params,
     columnVisibility,
-    _mock
+    _mock,
+    options={enableRowSelection: true}
 }: UseTableAdapterProps<T>): Table<T> => {
 
     const [data, setData] = useState<T[]>(_mock || []);
@@ -58,9 +66,37 @@ export const useTableAdapter = <T,>({
         }
     }, [params]);
 
+    const updatedColumns = useMemo(() => {
+        const columnHelper = createColumnHelper<any>();
+        if (options.enableRowSelection === true && columns[0].id !== 'rowSelect') {
+            return columns = [
+                columnHelper.display({
+                    id: 'rowSelect',
+                    header: ({ table }) => <IndeterminateCheckbox
+                        {...{
+                            checked: table.getIsAllRowsSelected(),
+                            indeterminate: table.getIsSomeRowsSelected(),
+                            onChange: table.getToggleAllRowsSelectedHandler(),
+                        }}
+                    />,
+                    cell: ({ row }) => <IndeterminateCheckbox
+                        {...{
+                            checked: row.getIsSelected(),
+                            disabled: !row.getCanSelect(),
+                            indeterminate: row.getIsSomeSelected(),
+                            onChange: row.getToggleSelectedHandler(),
+                        }}
+                    />
+                }),
+                ...columns,
+            ]
+        }
+        return columns;
+    }, [options.enableRowSelection])
+
     const table = useReactTable({
         data,
-        columns,
+        columns: updatedColumns,
         initialState: {
             columnVisibility
         },

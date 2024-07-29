@@ -1,13 +1,39 @@
 import { FC } from 'react';
-import customerSlice from './customerSlice';
-import ReadyMadeTable from 'src/components/table/ReadyMadeTable';
-import { Button } from 'react-bootstrap';
-import { useRouter } from 'src/hooks';
+import customerSlice, { Customer } from './customerSlice';
+import TanStackTable from 'src/components/table/TanStackTable';
+import { createColumnHelper } from '@tanstack/react-table';
+import DefaultRowActions from './DefaultRowActions'
+import { Button, Card } from 'react-bootstrap';
+import { useRouter, useTableAdapter } from 'src/hooks';
+import ExportData from 'src/components/common/ExportData';
+import SearchBoxInput from 'src/components/common/SearchBoxInput';
+import ColumnChooser from 'src/components/table/ColumnChooser';
+import Pagination from 'src/components/table/Pagination';
+import FlexBox from 'src/components/common/FlexBox';
+import { Delete02Icon } from "hugeicons-react";
+import { coreApi } from "src/utils/api";
 
 const CustomerList: FC = () => {
 
     const router = useRouter();
-    
+    const columnHelper = createColumnHelper<Customer>();
+    const { table, setData } = useTableAdapter({
+        ...customerSlice,
+        columns: [
+            ...customerSlice.columns,
+            columnHelper.display({
+                id: 'actions',
+                cell: ({row, ...props}) => <DefaultRowActions
+                    {...{props, row}}
+                    onDelete={handleDelete}
+                    onEdit={() => router.push(`/customers/${row.original.id}`)}
+                />
+            })
+        ]
+    })
+    const selectedRowIds = table.getSelectedRowModel().rows.map(row => row.original.id);
+    const selectedRowsCount = selectedRowIds.length;
+
     const handleAddCustomer = () => {
         router.push('/customers/new')
     }
@@ -21,6 +47,27 @@ const CustomerList: FC = () => {
         }
     }
 
+    // Delete features
+    const refreshData = async () => {
+        const updatedData = await coreApi.get("/cng/customers");
+        const customers = updatedData.data._embedded.customers;
+        setData(customers);
+    }
+    const handleDelete = async (customer) => {
+        await coreApi.delete(`/cng/customers/${customer.id}`);
+        refreshData();
+    }
+    const handleBulkDelete = async () => {
+        await coreApi({
+            url: `/cng/bulk-delete-customers`,
+            method: "delete",
+            data: {
+                ids: selectedRowIds
+            }
+        });
+        refreshData();
+    }
+
     return (
         <div>
             <Button 
@@ -29,7 +76,29 @@ const CustomerList: FC = () => {
             >
                 + Customer
             </Button>
-            <ReadyMadeTable slice={customerSlice} rowProps={getRowProps}/>
+            <Card>
+                {selectedRowsCount > 0  ?
+                    <Card.Header as={FlexBox} justify="between">
+                        <div>{`${selectedRowsCount} Rows selected`}</div>
+                        <Delete02Icon onClick={handleBulkDelete}/>
+                    </Card.Header> :
+                    <Card.Header>
+                        <SearchBoxInput
+                            value={table.getState().globalFilter ?? ''}
+                            onChange={(value) => table.setGlobalFilter(String(value))}
+                            debounce={200}
+                        />
+                        <ColumnChooser table={table} displayColumns={["rowSelect", "actions"]}/>
+                        <ExportData filename="customers" table={table}/>
+                    </Card.Header>
+                }
+                <Card.Body>
+                    <TanStackTable table={table} rowProps={getRowProps}/>
+                </Card.Body>
+                <Card.Footer>
+                    <Pagination table={table}/>
+                </Card.Footer>
+            </Card>
         </div>
     );
 
