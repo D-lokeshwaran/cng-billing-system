@@ -4,6 +4,7 @@ import com.cng_billing_system.core_api.enums.PaymentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -46,5 +47,8 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             "LIMIT 5"
     )
     List<Bill> recent5Bills();
+
+    @RestResource(exported = false)
+    void deleteByIdIn(List<Long> ids);
 
 }

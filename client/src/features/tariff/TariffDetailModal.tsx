@@ -37,11 +37,12 @@ const TariffDetailModal = ({ ...props }) => {
             toUnit: "above",
             ratePerUnit: unitRateAboveMax
         })
-        validateDuplicateTariff(tariff);
-        if (duplicated) {
+        const duplicated = await validateDuplicateTariff(tariff);
+        if (duplicated === false) {
             const newTariff = await coreApi.post("/cng/tariffs", tariff)
             onHide()
         }
+        setDuplicated(duplicated)
     }
 
     const validateDuplicateTariff = async (tariff) => {
@@ -52,7 +53,7 @@ const TariffDetailModal = ({ ...props }) => {
         )
         // validate duplicate tariff;
         var duplicate = duplicateResult.data._embedded.tariffs.length > 0;
-        setDuplicated(duplicate);
+        return duplicate;
     }
 
     const tariffDetails = useMemo(() => {
@@ -84,8 +85,9 @@ const TariffDetailModal = ({ ...props }) => {
                                 field={{ title: "From date", state: "fromDate"}}
                                 validate={{
                                     pastDate: (value: any) => {
-                                        let past = moment().isBefore(value);
-                                        return past || "From Date should be at past";
+                                        let yesterday = moment(new Date()).subtract(1, "d");
+                                        let past = moment(yesterday).isBefore(value);
+                                        return past || "From Date should not be at past";
                                     }
                                 }}
                             />

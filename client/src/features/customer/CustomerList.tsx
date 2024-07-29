@@ -2,7 +2,7 @@ import { FC } from 'react';
 import customerSlice, { Customer } from './customerSlice';
 import TanStackTable from 'src/components/table/TanStackTable';
 import { createColumnHelper } from '@tanstack/react-table';
-import DefaultRowActions from './DefaultRowActions'
+import DefaultRowActions from 'src/components/common/DefaultRowActions'
 import { Button, Card } from 'react-bootstrap';
 import { useRouter, useTableAdapter } from 'src/hooks';
 import ExportData from 'src/components/common/ExportData';
@@ -52,6 +52,7 @@ const CustomerList: FC = () => {
         const updatedData = await coreApi.get("/cng/customers");
         const customers = updatedData.data._embedded.customers;
         setData(customers);
+        table.reset();
     }
     const handleDelete = async (customer) => {
         await coreApi.delete(`/cng/customers/${customer.id}`);

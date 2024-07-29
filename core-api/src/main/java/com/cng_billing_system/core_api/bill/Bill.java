@@ -37,7 +37,7 @@ public class Bill extends AuditModel {
     @ManyToOne
     private Customer customer;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     private Tariff tariff;
 
 }

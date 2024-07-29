@@ -13,7 +13,7 @@ import java.util.List;
 public interface TariffRepository extends JpaRepository<Tariff, Long> {
 
     @Query("SELECT t FROM Tariff t " +
-            "WHERE t.fromDate < CURRENT_DATE() AND t.toDate > CURRENT_DATE()")
+            "WHERE t.fromDate <= CURRENT_DATE() AND t.toDate >= CURRENT_DATE()")
     Tariff findTodayTariff();
 
     @Query("SELECT t FROM Tariff t " +
