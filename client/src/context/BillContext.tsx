@@ -4,8 +4,8 @@ import { Outlet } from 'react-router-dom';
 type BillDetailsType = {
     unitsConsumed?: number | undefined,
     billingDate?: Date,
-    editDetails?: boolean,
-    customerId?: number
+    customerId?: number,
+    billEditable?: boolean,
 }
 
 type BillContextType = {

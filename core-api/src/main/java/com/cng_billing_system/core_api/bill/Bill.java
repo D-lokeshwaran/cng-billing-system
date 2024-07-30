@@ -25,9 +25,8 @@ public class Bill extends AuditModel {
     private Integer unitsConsumed;
 
     @Enumerated(value = EnumType.STRING)
-//    @Column(columnDefinition = "ENUM('Pending', 'Paid', 'Overdue', 'Not_Billed') default 'Not_Billed'")
-    private PaymentStatus paymentStatus = PaymentStatus.Pending;
-
+//    @Column(columnDefinition = "ENUM('Pending', 'Paid', 'Overdue', 'NotBilled') default 'NotBilled'")
+    private PaymentStatus paymentStatus = PaymentStatus.NotBilled;
     private BigDecimal billAmount;
 
     private Date billingDate;
@@ -40,4 +39,27 @@ public class Bill extends AuditModel {
     @ManyToOne
     private Tariff tariff;
 
+    @PrePersist
+    @PreUpdate
+    public void updatePaymentStatus() {
+        if (billAmount != null && paymentStatus == PaymentStatus.NotBilled) {
+            setPaymentStatus(PaymentStatus.Pending);
+        } else if (paymentStatus == null){
+            setPaymentStatus(PaymentStatus.NotBilled);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "id=" + id +
+                ", unitsConsumed=" + unitsConsumed +
+                ", paymentStatus=" + paymentStatus +
+                ", billAmount=" + billAmount +
+                ", billingDate=" + billingDate +
+                ", paymentDueDate=" + paymentDueDate +
+                ", customer=" + customer +
+                ", tariff=" + tariff +
+                '}';
+    }
 }

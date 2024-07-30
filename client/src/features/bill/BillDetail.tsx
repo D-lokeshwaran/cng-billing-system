@@ -8,6 +8,8 @@ import { coreApi } from "src/utils/api";
 import DetailsCard from "./DetailsCard";
 import BillCustomerInfo from "./BillCustomerInfo";
 import CurrentTariffList from "./CurrentTariffList";
+import { startCase } from "lodash";
+import { useBillContext } from "src/context/BillContext";
 import { useParams } from "react-router-dom";
 import { useRouter } from "src/hooks";
 import { useState, useEffect, useMemo } from "react";
@@ -16,6 +18,8 @@ const BillDetail = () => {
 
     const [ todayTariff, setTodayTariff ] = useState();
     const [ bill, setBill ] = useState();
+    const { billDetails, setBillDetails } = useBillContext();
+    let canMarkAsPaid = bill?.id && bill?.paymentStatus == "Pending" && billDetails?.customerId;
     const router = useRouter();
     const { billId } = useParams();
 
@@ -26,6 +30,13 @@ const BillDetail = () => {
         }
         return () => setTodayTariff(null);
     }, [])
+
+    useEffect(() => {
+        if (bill) {
+            let canEditBill = bill?.paymentStatus == "Completed";
+            setBillDetails({...billDetails, billEditable: canEditBill })
+        }
+    }, [bill])
 
     const retrieveTodayTariff = async () => {
         const result = await coreApi
@@ -39,13 +50,18 @@ const BillDetail = () => {
     const retrieveBill = async () => {
         const retrievedBill = await coreApi.get(`/cng/bills/${billId}`);
         const bill = retrievedBill.data;
-        const billCustomer = await coreApi.get(`/cng/bills/${billId}/customer`);
-        const customer = billCustomer.data;
-        bill["customerId"] = customer.id;
-        setBill(bill);
+        await coreApi.get(`/cng/bills/${billId}/customer`)
+            .then((result) => {
+                bill["customerId"] = result.data.id
+                setBill(bill);
+            })
+            .catch(error => {
+                console.log("Customer doesn't exists for this bill", error)
+                setBill(bill);
+            });
     }
 
-    const onSubmitBill: SubmitHandler<Bill> = async (data) => {
+    const createOrUpdateBill: SubmitHandler<Bill> = async (data) => {
         const { customerId, ...billData} = data;
         const newBill = await coreApi({
             url: bill ? `/cng/bills/${bill.id}` : "/cng/bills",
@@ -70,42 +86,54 @@ const BillDetail = () => {
         }
         router.push("/bills")
     }
-    const handleMarkAsPaid = async () => {
-        const updateBill = await coreApi.put(`/cng/bills/${bill.id}`, {
-            ...bill,
-            paymentStatus: "Paid"
-        })
-        const newBill = updateBill.data;
-        setBill(newBill);
+    const handleStatusChange = async (status: string) => {
+        const updatedBill = { ...bill, paymentStatus: status }
+        const updateResult = await coreApi.put(`/cng/bills/${bill.id}`, updatedBill)
+        const newBill = updateResult.data;
+        if (billDetails?.customerId) {
+            await coreApi.put(
+                `/cng/bills/${newBill?.id}/customer`,
+                `/cng/customers/${billDetails?.customerId}`,
+                { headers: { 'Content-Type': 'text/uri-list' } }
+            );
+        }
+        setBillDetails
         router.push("/bills");
     }
     const paymentStatus = useMemo(() => {
-        let status = bill?.paymentStatus;
-        if (status === "Pending") {
-            return { label: "Pending", type: "warning" };
-        } else if (status === "Paid") {
-            return { label: "Completed", type: "success" };
-        } else if (status === "Overdue"){
-            return { label: "Overdue", type: "danger" };
+        let name = bill?.paymentStatus || "NotBilled";
+        let type = ""
+        if (name === "Overdue") {
+            type = "danger";
+        } else if (name === "Completed") {
+            type = "success";
+        } else if (name === "Pending") {
+            type = "warning"
         } else {
-            return { label: "Not Billed", type: "secondary" };
+            type = "secondary"
         }
+        return { name, type };
     }, [bill?.paymentStatus])
 
     return (
         <div id="cng-bill-details">
-            <HookForm onSubmit={onSubmitBill} defaultValues={bill}>
+            <HookForm onSubmit={createOrUpdateBill} defaultValues={bill}>
                 <FeatureHeader title="Bill" className="justify-content-between">
                     <FlexBox className="justify-content-between">
                         <Badge pill bg="" className={`text-${paymentStatus.type} border border-${paymentStatus.type} d-flex align-items-center`}>
-                            {paymentStatus.label}
+                            {startCase(paymentStatus.name)}
                         </Badge>
                         <div>
-                            {bill?.id && bill?.paymentStatus != "Paid" && bill?.paymentStatus != "Not_billed" &&
-                            <Button variant="default" type="button" onClick={handleMarkAsPaid}>
+                            {canMarkAsPaid &&
+                            <Button variant="default" type="button" onClick={() => handleStatusChange("Completed")}>
                                 Mark as paid
                             </Button>}
-                            <Button variant="primary" type="submit">
+                            {bill?.paymentStatus === "Completed" &&
+                                <Button variant="default" type="button" onClick={() => handleStatusChange("Pending")}>
+                                    Undo Bill
+                                </Button>
+                            }
+                            <Button variant="primary" type="submit" disabled={billDetails?.billEditable}>
                                 { bill ? "Update" : "Create"}
                             </Button>
                         </div>
@@ -117,7 +145,7 @@ const BillDetail = () => {
                         {todayTariff ? <CurrentTariffList data={todayTariff} /> : <>No Tariff for today</>}
                     </Col>
                     <Col>
-                        <BillCustomerInfo/>
+                        <BillCustomerInfo customerId={bill?.customerId}/>
                     </Col>
                 </Row>
             </HookForm>

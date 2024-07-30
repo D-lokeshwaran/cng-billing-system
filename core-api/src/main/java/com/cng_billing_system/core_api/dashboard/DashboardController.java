@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -50,19 +47,18 @@ public class DashboardController {
         overview.put("weeklyRevenue", weeklyRevenue);
 
         // Recent bills first 5 with customer
-        List<Bill> recent5Bills = billRepository.recent5Bills();
-        List<Map<String, Object>> recentBills = new ArrayList<>();
-        Map<String, Object> recentBillRow = new LinkedHashMap<>();
-        for (Bill recentBill : recent5Bills) {
-            recentBillRow.put("status", recentBill.getPaymentStatus());
-            recentBillRow.put("amount", recentBill.getBillAmount());
-            if (recentBill.getCustomer() != null) {
-                Map<String, Object> customer = new LinkedHashMap<>();
-                customer.put("fullName", recentBill.getCustomer().getFullName());
-                customer.put("accountNumber", recentBill.getCustomer().getAccountNumber());
-                recentBillRow.put("customer", customer);
-            }
-            recentBills.add(recentBillRow);
+        List<Map<String, Object>> recent5Bills = billRepository.recent5Bills();
+        List<Object> recentBills = new LinkedList<>();
+        for (Map<String, Object> bill : recent5Bills) {
+            Map<String, Object> record = new HashMap<>();
+            record.put("status", bill.get("paymentStatus"));
+            record.put("amount", bill.get("billAmount"));
+            Map<String, Object> customer = new LinkedHashMap<>();
+            customer.put("fullName", bill.get("fullName"));
+            customer.put("accountNumber", bill.get("accountNumber"));
+            record.put("customer", customer);
+
+            recentBills.add(record);
         }
         overview.put("recentBills", recentBills);
 

@@ -12,4 +12,5 @@ export interface InputProps extends FormGroupProps {
     required?: boolean;
     validate?: Record<string, (v: any) => string | undefined>;
     control?: FormControlProps;
+    showLabel?: boolean;
 }

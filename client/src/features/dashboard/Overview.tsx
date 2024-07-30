@@ -48,7 +48,10 @@ const Overview = ({ data }) => {
 
   const options = {
     chart: {
-      id: "overview"
+      id: "overview",
+      toolbar: {
+        show: false
+      }
     },
     xaxis: {
       categories: filter == "monthly" ? months : weeks
@@ -83,8 +86,7 @@ return (
       type="bar"
       series={series}
       options={options}
-      width={400}
-      height={364}
+      height={340}
     />
   </Card>
 )

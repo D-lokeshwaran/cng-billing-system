@@ -61,7 +61,7 @@ const CustomerForm = () => {
             <HookForm onSubmit={onSubmitCustomer} defaultValues={customerDetails}>
                 <FeatureHeader title="Create Customer" className="justify-content-between">
                     <Button variant="primary" type="submit">
-                        {customerId ? ACTIONS.UPDATE : ACTIONS.CREATE}
+                        {customerId !== "new" ? ACTIONS.UPDATE : ACTIONS.CREATE}
                     </Button>
                 </FeatureHeader>
                 <Card body >

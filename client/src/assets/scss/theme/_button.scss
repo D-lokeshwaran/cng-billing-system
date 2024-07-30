@@ -6,3 +6,19 @@
 .btn-reveal-trigger:hover .btn-reveal {
     display: block;
 }
+
+$cng-icon-default-bg-hover: rgba(145, 158, 171, 30%);
+$cng-icon-default-size: 2.3rem;
+
+.btn-icon-button {
+    background-color: transparent !important;
+    border-radius: 30% !important;
+    border: none !important;
+    height: $cng-icon-default-size;
+    width: $cng-icon-default-size;
+    margin: 0px;
+}
+
+.btn-icon-button:hover {
+    background-color: $cng-icon-default-bg-hover !important;
+}

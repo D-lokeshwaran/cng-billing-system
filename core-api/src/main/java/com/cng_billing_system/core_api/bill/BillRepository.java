@@ -13,7 +13,7 @@ import java.util.Map;
 @RepositoryRestResource(collectionResourceRel = "bills", path = "bills")
 public interface BillRepository extends JpaRepository<Bill, Long> {
 
-    @Query("SELECT SUM(b.billAmount) FROM Bill b WHERE b.paymentStatus = 'Paid'")
+    @Query("SELECT SUM(b.billAmount) FROM Bill b WHERE b.paymentStatus = 'Completed'")
     BigDecimal getTotalRevenue();
 
     List<Bill> findAllByPaymentStatus(PaymentStatus paymentStatus);
@@ -23,7 +23,7 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
                 "month(updated_at) as \"month\" " +
             "FROM bills " +
             "WHERE year(updated_at) = year(curDate())" +
-                "AND payment_status = 'Paid' " +
+                "AND payment_status = 'Completed' " +
             "GROUP BY month(updated_at) " +
             "ORDER BY month(updated_at) asc"
     )
@@ -34,19 +34,20 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
                 "week(updated_at) as \"week\" " +
             "FROM bills " +
             "WHERE month(updated_at) = month(curDate()) " +
-                "AND payment_status = 'Paid' " +
+                "AND payment_status = 'Completed' " +
             "GROUP BY week(updated_at) " +
             "ORDER BY week(updated_at) asc"
     )
     List<Map<BigDecimal, Integer>> getWeeklyRevenue();
 
     @Query(nativeQuery = true, value =
-            "SELECT b.*, (c.full_name, c.account_number) as customer FROM bills b, customers c\n" +
+            "SELECT c.full_name, c.account_number, b.payment_status, b.bill_amount " +
+                "FROM bills b, customers c\n" +
             "WHERE b.customer_id = c.id\n" +
-            "ORDER BY created_at ASC\n" +
-            "LIMIT 5"
+                "ORDER BY created_at DESC\n" +
+                "LIMIT 5"
     )
-    List<Bill> recent5Bills();
+    List<Map<String, Object>> recent5Bills();
 
     @RestResource(exported = false)
     void deleteByIdIn(List<Long> ids);

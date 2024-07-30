@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import FlexBox from 'src/components/common/FlexBox';
 import Overview from './Overview';
@@ -38,8 +39,8 @@ const Dashboard = () => {
                 <title>CNG Dashboard</title>
             </Helmet>
             <div>
-                <FlexBox>
-                    <Card body>
+                <Row>
+                    <Card body as={Col}>
                         <FlexBox justify='between'>
                             <div>Total Revenue</div>
                             <div>R</div>
@@ -49,7 +50,7 @@ const Dashboard = () => {
                         </h2>
                         <small>+40% from last month </small>
                     </Card>
-                    <Card body>
+                    <Card body as={Col}>
                         <FlexBox justify='between'>
                             <div>Customers</div>
                             <div>C</div>
@@ -59,7 +60,7 @@ const Dashboard = () => {
                         </h2>
                         <small>+2% from last month</small>
                     </Card>
-                    <Card body>
+                    <Card body as={Col}>
                         <FlexBox justify='between'>
                             <div>Sales</div>
                             <div>B</div>
@@ -69,7 +70,7 @@ const Dashboard = () => {
                         </h2>
                         <small>+21% from last month</small>
                     </Card>
-                    <Card body>
+                    <Card body as={Col}>
                         <FlexBox justify='between'>
                             <div>Active Bills</div>
                             <div>A</div>
@@ -79,16 +80,18 @@ const Dashboard = () => {
                         </h2>
                         <small>+10 from last month</small>
                     </Card>
-                </FlexBox>
-                <FlexBox>
-                    <Overview data={{
-                        monthly: dashboardInfo?.monthlyRevenue,
-                        weekly: dashboardInfo?.weeklyRevenue
-                    }}/>
-                    <Card>
-                        <Card.Header>
+                </Row>
+                <Row>
+                    <Col lg={7} md={5} sm={3}>
+                        <Overview data={{
+                            monthly: dashboardInfo?.monthlyRevenue,
+                            weekly: dashboardInfo?.weeklyRevenue
+                        }}/>
+                    </Col>
+                    <Card as={Col}>
+                        <Card.Header as={FlexBox} justify="between">
                             <div>Recent Bills</div>
-                            <a>View All</a>
+                            <Link to="/bills">View All</Link>
                         </Card.Header>
                         <Card.Body>
                           <SimpleTable data={dashboardInfo?.recentBills} columns={[
@@ -113,7 +116,7 @@ const Dashboard = () => {
                           ]}/>
                         </Card.Body>
                     </Card>
-                </FlexBox>
+                </Row>
             </div>
         </section>
     )

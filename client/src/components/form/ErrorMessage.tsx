@@ -5,9 +5,9 @@ interface ErrorMessageProps {
     errorMessage: string | undefined;
 }
 
-const ErrorMessage: FC<ErrorMessageProps> = ({ errorMessage }) => {
+const ErrorMessage: FC<ErrorMessageProps> = ({ errorMessage, ...props }) => {
     return errorMessage && 
-        <div style={{fontSize: ".80rem"}} className='mt-1 d-flex align-items-center'>
+        <div style={{fontSize: ".80rem"}} className='mt-1 d-flex align-items-center' {...props}>
             <AlertCircleIcon 
                 size={14} 
                 color="#dc3545"

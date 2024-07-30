@@ -3,6 +3,7 @@ import { Button, FormControl, Modal, Row, Col, ListGroup, ListGroupItem } from '
 import customerSlice, { Customer } from './customerSlice';
 import { useTableAdapter } from 'src/hooks/useTableAdapter'
 import SearchBoxInput from 'src/components/common/SearchBoxInput';
+import IconButton from 'src/components/common/IconButton';
 import Pagination from 'src/components/table/Pagination';
 import { ArrowLeft01Icon, ArrowRight01Icon, PencilEdit01Icon, ArrowMoveDownLeftIcon } from 'hugeicons-react';
 import classNames from 'classnames';
@@ -53,9 +54,7 @@ const ChooseCustomerModal: React.FC<ChooseCustomerModelProps> = ({
                             <div className='text-secondary'>{"99415787856"}</div>
                         </Col>
                         <Col sm="auto">
-                            <Button size="sm" variant="reveal">
-                                <ArrowMoveDownLeftIcon className="cursor-pointer"/>
-                            </Button>
+                            <IconButton icon={ArrowMoveDownLeftIcon} className="btn-reveal"/>
                         </Col>
                     </Row>
                 </ListGroupItem>
@@ -64,7 +63,7 @@ const ChooseCustomerModal: React.FC<ChooseCustomerModelProps> = ({
     </ListGroup>
 
     return (
-        <Modal show={show} onHide={onClose}>
+        <Modal show={show} onHide={onClose} size="lg">
             <Modal.Header className='d-block'>
                 <Row className="g-0 justify-content-between">
                     <Col sm={7} md={9}>
@@ -78,8 +77,9 @@ const ChooseCustomerModal: React.FC<ChooseCustomerModelProps> = ({
                     </Col>
                     <Col sm={3} className="p-0 d-flex align-items-center justify-content-end">
                         <span className='me-3'>{DEFAULT_PAGE_SIZE} - {table.getState().pagination.pageIndex}</span>
-                        <ArrowLeft01Icon
-                            className={classNames("cursor-pointer", {
+                        <IconButton
+                            icon={ArrowLeft01Icon}
+                            className={classNames("me-1", {
                                 'text-secondary': !table.getCanPreviousPage()
                             })}
                             onClick={() => {
@@ -87,7 +87,8 @@ const ChooseCustomerModal: React.FC<ChooseCustomerModelProps> = ({
                                     table.previousPage()
                             }}
                         />
-                        <ArrowRight01Icon
+                        <IconButton
+                            icon={ArrowRight01Icon}
                             className={classNames("cursor-pointer", {
                                 'text-secondary': !table.getCanNextPage()
                             })}

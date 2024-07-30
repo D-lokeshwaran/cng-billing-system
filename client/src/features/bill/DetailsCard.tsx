@@ -2,6 +2,9 @@ import { Card, Col, FormControl, Row } from "react-bootstrap";
 import FlexBox from "src/components/common/FlexBox";
 import { FloppyDiskIcon, HelpCircleIcon, PencilEdit01Icon } from "hugeicons-react";
 import DatePickerInput from "src/components/form/DatePickerInput";
+import IconButton from "src/components/common/IconButton";
+import ErrorMessage from "src/components/form/ErrorMessage";
+import Input from "src/components/form/Input";
 import { useToggle } from "src/hooks";
 import { useEffect, useState } from "react";
 import { Bill } from "./billSlice";
@@ -12,9 +15,8 @@ import moment from "moment";
 import { COMMON } from "src/constants/labels";
 
 const DetailsCard = ({ tariff }) => {
-    const { register, watch, setValue } = useFormContext<Bill>();
+    const { register, formState:{ errors }, watch, setValue } = useFormContext<Bill>();
     const { billDetails, setBillDetails } = useBillContext()
-    const [ editDetails, toggleEditDetails ] = useToggle(billDetails?.editDetails);
     const [ ratePerUnit, setRatePerUnit ] = useState<any>();
 
     const watchUnitsConsumed = watch("unitsConsumed");
@@ -33,9 +35,8 @@ const DetailsCard = ({ tariff }) => {
             ...billDetails,
             unitsConsumed: watchUnitsConsumed,
             billingDate: watchBillingDate,
-            editDetails: editDetails,
         });
-    }, [watchUnitsConsumed, watchBillingDate, editDetails])
+    }, [watchUnitsConsumed, watchBillingDate])
 
     useEffect(() => {
         const unitsAndRates = tariff?.unitsAndRates
@@ -56,48 +57,48 @@ const DetailsCard = ({ tariff }) => {
 
     return (
         <Card body>
-            <FlexBox justify="between">
-                <h3>Details</h3>
-                <div onClick={toggleEditDetails}>
-                    {editDetails ? <FloppyDiskIcon /> : <PencilEdit01Icon />}
-                </div>
-            </FlexBox>
+            <div className="mb-3">
+                <h3 className="mb-0">Details</h3>
+                <small className="text-secondary">Change units consumed to calculate bill amount.</small>
+            </div>
             <FlexBox justify="between">
                 <span>
-                    Units consumed
+                    Units consumed <span className="text-danger">*</span>
                 </span>
                 <span>
-                    {editDetails 
-                        ? <FormControl
-                            {...register("unitsConsumed")}
-                            size="sm"
-                            type="number"
-                            autoFocus
-                        />
-                        : watchUnitsConsumed || COMMON.NO_DATA
-                    }
+                    <FormControl
+                        {...register("unitsConsumed", {
+                            required: { value: true, message: "Units consume is required"},
+                            validate: {
+                                positiveNumber: (v) => v > 0 || "Units consumed must be positive"
+                            }
+                        })}
+                        size="sm"
+                        type="number"
+                        autoFocus
+                        isInvalid={errors?.["unitsConsumed"]?.message != undefined}
+                    />
+                    <ErrorMessage errorMessage={errors?.["unitsConsumed"]?.message} />
                 </span>
             </FlexBox>
             <hr className="border-style-dotted"/>
             <FlexBox justify="end">
                 <div className="w-75">
-                    <Row className="justify-content-between mb-2">
-                        <Col className="text-end">Billing Date:</Col>
+                    <Row className="justify-content-between align-items-center mb-2">
+                        <Col className="text-end">Billing Date</Col>
                         <Col className="text-end">
-                            {editDetails
-                                ? <DatePickerInput
-                                    field={{ title: "Billing Date", state: "billingDate", defaultValue: new Date()}}
-                                    required={false}
-                                    showLabel={false}
-                                    className="form-control-sm"
-                                />
-                                : formateDate(watchBillingDate)
-                            }
+                            <DatePickerInput
+                                field={{ title: "Billing Date", state: "billingDate", defaultValue: new Date()}}
+                                required={false}
+                                showLabel={false}
+                                isClearable={false}
+                                className="form-control-sm"
+                            />
                         </Col>
                     </Row>
                     <Row className="justify-content-between mb-2">
                         <Col className="text-end">
-                            <span>Payment Due Date: </span>
+                            <span>Payment Due Date </span>
                         </Col>
                         <Col className="text-end">
                             <FormControl
@@ -114,13 +115,13 @@ const DetailsCard = ({ tariff }) => {
                         </Col>
                     </Row>
                     <Row className="justify-content-between mb-2">
-                        <Col className="text-end">Rate per unit:</Col>
+                        <Col className="text-end">Rate per unit</Col>
                         <Col className="text-end">
                             {ratePerUnit || COMMON.NO_DATA}
                         </Col>
                     </Row>
                     <Row className="justify-content-between mb-2">
-                        <Col className="text-end">Billing Amount:</Col>
+                        <Col className="text-end">Billing Amount</Col>
                         <Col className="text-end">
                             <FormControl
                                 {...register("billAmount", {

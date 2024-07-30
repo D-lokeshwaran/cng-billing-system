@@ -3,6 +3,7 @@ import { MoreVerticalCircle01Icon } from "hugeicons-react";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "react-bootstrap";
 import { SliceProps } from "src/components/table/types";
 import { BILL_LIST } from "src/constants/labels"
+import { startCase } from "lodash";
 import { coreApi } from "src/utils/api";
 
 export type Bill = {
@@ -37,6 +38,7 @@ const billSlice: SliceProps = {
     }),
     columnHelper.accessor('paymentStatus', {
       header: BILL_LIST.STATUS,
+      cell: ({ row }) => startCase(row.original.paymentStatus)
     }),
     columnHelper.accessor('billAmount', {
       header: BILL_LIST.AMOUNT,

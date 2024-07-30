@@ -1,5 +1,6 @@
 import { Table } from '@tanstack/react-table';
 import { Badge, ListGroup } from 'react-bootstrap';
+import { startCase } from "lodash";
 import { Bill } from './billSlice';
 
 type FilterItem = {
@@ -13,9 +14,9 @@ const StatusFilter = ({
 
     const filterByStatus = (status: string) => 
         table.getCoreRowModel().rows.filter((row: any) => row.original.paymentStatus?.toUpperCase() === status.toUpperCase())
-    const filterItems: FilterItem[] = ["Pending", "Paid", "Overdue", "NotBilled"]
+    const filterItems: FilterItem[] = ["Pending", "Completed", "Overdue", "NotBilled"]
         .map( status => { 
-            return { status: status, count: filterByStatus(status).length };
+            return { status: startCase(status), count: filterByStatus(status).length };
         });
     filterItems.unshift({ status: "All", count: table.getCoreRowModel().rows.length})
 
