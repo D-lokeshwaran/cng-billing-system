@@ -25,9 +25,7 @@ const BillDetail = () => {
 
     useEffect(() => {
         retrieveTodayTariff();
-        if (billId) {
-            retrieveBill();
-        }
+        retrieveBill();
         return () => setTodayTariff(null);
     }, [])
 
@@ -41,6 +39,10 @@ const BillDetail = () => {
     }
 
     const retrieveBill = async () => {
+        if (!billId) {
+            setBillDetails({ ...billDetails, billId: "new" })
+            return;
+        };
         const retrievedBill = await coreApi.get(`/cng/bills/${billId}`);
         const bill = retrievedBill.data;
         await coreApi.get(`/cng/bills/${billId}/customer`)
@@ -49,7 +51,12 @@ const BillDetail = () => {
                 bill["customerId"] = customerId;
                 let canEditBill = bill?.paymentStatus == "Completed";
                 console.log(customerId);
-                setBillDetails({...billDetails, customerId: customerId, billEditable: canEditBill })
+                setBillDetails({
+                    ...billDetails,
+                    customerId: customerId,
+                    billId: billId,
+                    billEditable: canEditBill
+                })
                 setBill(bill);
             })
             .catch(error => {

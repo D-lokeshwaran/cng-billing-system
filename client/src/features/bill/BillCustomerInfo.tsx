@@ -1,4 +1,4 @@
-import { Attachment02Icon, PencilEdit01Icon, PlusSignSquareIcon } from "hugeicons-react";
+import { Attachment02Icon, PencilEdit01Icon, DatabaseAddIcon } from "hugeicons-react";
 import { Card, Button } from "react-bootstrap";
 import { useFormContext } from "react-hook-form";
 import { useState, useEffect, useCallback } from "react";
@@ -51,7 +51,7 @@ const BillCustomerInfo = () => {
                     },
                 })}
             />
-            <Card body>
+            <Card body className="h-100">
                 <FlexBox justify="between" className="mb-3">
                     <h3>Customer info</h3>
                     <div>
@@ -59,7 +59,6 @@ const BillCustomerInfo = () => {
                         <IconButton
                             icon={PencilEdit01Icon}
                             className="me-1"
-                            disabled={billDetails?.billEditable}
                             onClick={() => router.push(`/customers/${customer.id}`)}
                         />}
                         <IconButton
@@ -105,7 +104,7 @@ const BillCustomerInfo = () => {
                     </div>
                 ) : (
                     <div className="text-center">
-                        <PlusSignSquareIcon size="14%" className={`${errors?.["customerId"]?.message ? "text-danger" : "gray-100"} mb-0`}/>
+                        <DatabaseAddIcon size="14%" className={`${errors?.["customerId"]?.message ? "text-danger" : "gray-100"} mb-0`}/>
                         <ErrorMessage errorMessage={errors?.["customerId"]?.message} className="justify-content-center "/>
                         <div className="mb-4">
                             <small className="text-secondary">You haven't added any Customer to this bill. Create a Customer or choose one.</small>

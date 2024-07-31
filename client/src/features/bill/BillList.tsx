@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useCallback } from 'react';
 import billSlice from './billSlice';
 import { Card, Row, Col } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
@@ -63,12 +63,12 @@ const CustomerList: FC = () => {
 
     const selectedRowIds = table.getSelectedRowModel().rows.map(row => row.original.id);
     const selectedRowsCount = selectedRowIds.length;
-    const refreshData = async () => {
+    const refreshData = useCallback(async () => {
         const updatedData = await coreApi.get("/cng/bills-with-customer");
         const bills = updatedData.data;
         setData(bills);
         table.reset();
-    }
+    }, []);
     const handleDelete = async (bill) => {
         await coreApi.delete(`/cng/bills/${bill.id}`);
         refreshData();

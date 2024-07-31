@@ -9,6 +9,7 @@ import Input from "src/components/form/Input";
 import DocumentList from "./DocumentList";
 import { coreApi } from 'src/utils/api';
 import { useRouter } from "src/hooks";
+import { useBillContext } from "src/context/BillContext";
 import { ACTIONS, CUSTOMER_DETAILS } from 'src/constants/labels';
 
 const CONTACT_NUMBER_REGEX = /^[0-9]{10}$/;
@@ -17,12 +18,13 @@ const PINCODE_REGEX = /^[0-9]{6}$/;
 
 const CustomerForm = () => {
 
+    const { billDetails, setBillDetails } = useBillContext();
     const [ customerDetails, setCustomerDetails ] = useState<Customer>();
     const router = useRouter();
     const { customerId } = useParams();
 
     useEffect(() => {
-        if (customerId) {
+        if (customerId != "new") {
             retrieveCustomers(customerId);
         }
     }, [customerId])
@@ -53,7 +55,12 @@ const CustomerForm = () => {
                 await coreApi.post("/cng/documents", formData);
             }
         }
-        router.push("/customers");
+        if (billDetails?.billId) {
+            setBillDetails({...billDetails, customerId: newCustomerId});
+            router.push(`/bills/${billDetails?.billId}`)
+        } else {
+            router.push("/customers");
+        }
     }
 
     return (

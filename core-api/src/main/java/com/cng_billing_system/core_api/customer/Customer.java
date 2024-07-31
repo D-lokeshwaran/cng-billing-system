@@ -3,6 +3,7 @@ package com.cng_billing_system.core_api.customer;
 import com.cng_billing_system.core_api.bill.Bill;
 import com.cng_billing_system.core_api.document.Document;
 import com.cng_billing_system.core_api.enums.States;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,9 +48,11 @@ public class Customer {
     private Integer pincode;
 
     @OneToMany(mappedBy = "customer", cascade = REMOVE)
+    @JsonIgnore
     private List<Bill> bills;
 
     @OneToMany(mappedBy = "customer", cascade = REMOVE)
+    @JsonIgnore
     private List<Document> documents;
 
     @PrePersist

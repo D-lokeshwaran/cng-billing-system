@@ -4,6 +4,7 @@ import com.cng_billing_system.core_api.AuditModel;
 import com.cng_billing_system.core_api.customer.Customer;
 import com.cng_billing_system.core_api.enums.PaymentStatus;
 import com.cng_billing_system.core_api.tariff.Tariff;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,6 +38,7 @@ public class Bill extends AuditModel {
     private Customer customer;
 
     @ManyToOne
+    @JsonIgnore
     private Tariff tariff;
 
     @PrePersist
