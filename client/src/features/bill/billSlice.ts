@@ -2,13 +2,14 @@ import { RowData, RowModel, createColumnHelper } from "@tanstack/react-table"
 import { MoreVerticalCircle01Icon } from "hugeicons-react";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "react-bootstrap";
 import { SliceProps } from "src/components/table/types";
-import { BILL_LIST } from "src/constants/labels"
+import { BILL_LIST } from "src/constants/labels";
+import { Customer } from "src/features/customer/customerSlice";
 import { startCase } from "lodash";
 import { coreApi } from "src/utils/api";
 
 export type Bill = {
   id: number,
-  customerId: number,
+  customer: Customer,
   unitsConsumed: number,
   billingDate: Date,
   paymentDueDate: Date,
@@ -23,10 +24,6 @@ const columnHelper = createColumnHelper<Bill>()
 const billSlice: SliceProps = {
   name: "bills",
   columns: [
-    columnHelper.accessor('customerId', {
-      header: BILL_LIST.CUSTOMER,
-      enableHiding: false
-    }),
     columnHelper.accessor('unitsConsumed', {
       header: BILL_LIST.UNITS
     }),
@@ -49,11 +46,7 @@ const billSlice: SliceProps = {
   },
   alterOptions: {
     globelFilter: false
-  },
-  params: {
-    url: "/cng/bills"
   }
-
 }
 
 export default billSlice;

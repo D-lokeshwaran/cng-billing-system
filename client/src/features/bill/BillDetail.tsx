@@ -31,13 +31,6 @@ const BillDetail = () => {
         return () => setTodayTariff(null);
     }, [])
 
-    useEffect(() => {
-        if (bill) {
-            let canEditBill = bill?.paymentStatus == "Completed";
-            setBillDetails({...billDetails, billEditable: canEditBill })
-        }
-    }, [bill])
-
     const retrieveTodayTariff = async () => {
         const result = await coreApi
             .get("/cng/tariffs/search/findTodayTariff")
@@ -52,7 +45,11 @@ const BillDetail = () => {
         const bill = retrievedBill.data;
         await coreApi.get(`/cng/bills/${billId}/customer`)
             .then((result) => {
-                bill["customerId"] = result.data.id
+                let customerId = result.data.id;
+                bill["customerId"] = customerId;
+                let canEditBill = bill?.paymentStatus == "Completed";
+                console.log(customerId);
+                setBillDetails({...billDetails, customerId: customerId, billEditable: canEditBill })
                 setBill(bill);
             })
             .catch(error => {
@@ -97,7 +94,6 @@ const BillDetail = () => {
                 { headers: { 'Content-Type': 'text/uri-list' } }
             );
         }
-        setBillDetails
         router.push("/bills");
     }
     const paymentStatus = useMemo(() => {

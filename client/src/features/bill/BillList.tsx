@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import billSlice from './billSlice';
 import { Card, Row, Col } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
@@ -22,13 +22,26 @@ const CustomerList: FC = () => {
     const { 
         name,
         columns, 
-        params,
-        _mock, 
+        _mock,
         columnVisibility
     } = billSlice;
 
     const { table, setData } = useTableAdapter({
         columns: [
+            columnHelper.display({
+                id: "customer",
+                header: "Customer",
+                cell: ({ row }) => {
+                    const customer = row.original.customer;
+                    return (
+                        <div>
+                           <p className="mb-0">{customer?.fullName}</p>
+                           <p>{customer?.accountNumber}</p>
+                        </div>
+                    )
+                },
+                enableHiding: false
+            }),
             ...columns,
             columnHelper.display({
                 id: 'actions',
@@ -40,17 +53,20 @@ const CustomerList: FC = () => {
             })
         ],
         name,
-        params,
         columnVisibility,
         _mock
     });
 
+    useEffect(() => {
+        refreshData();
+    }, [])
+
     const selectedRowIds = table.getSelectedRowModel().rows.map(row => row.original.id);
     const selectedRowsCount = selectedRowIds.length;
     const refreshData = async () => {
-        const updatedData = await coreApi.get("/cng/bills");
-        const customers = updatedData.data._embedded.bills;
-        setData(customers);
+        const updatedData = await coreApi.get("/cng/bills-with-customer");
+        const bills = updatedData.data;
+        setData(bills);
         table.reset();
     }
     const handleDelete = async (bill) => {

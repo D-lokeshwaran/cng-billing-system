@@ -75,7 +75,7 @@ const DetailsCard = ({ tariff }) => {
                         })}
                         size="sm"
                         type="number"
-                        autoFocus
+                        disabled={billDetails?.billEditable}
                         isInvalid={errors?.["unitsConsumed"]?.message != undefined}
                     />
                     <ErrorMessage errorMessage={errors?.["unitsConsumed"]?.message} />
@@ -92,6 +92,7 @@ const DetailsCard = ({ tariff }) => {
                                 required={false}
                                 showLabel={false}
                                 isClearable={false}
+                                disabled={billDetails?.billEditable}
                                 className="form-control-sm"
                             />
                         </Col>
@@ -129,7 +130,7 @@ const DetailsCard = ({ tariff }) => {
                                     valueAsNumber: true
                                 })}
                                 value={ratePerUnit * parseInt(watchUnitsConsumed)}
-                                hidden
+                                type="hidden"
                             />
                             {Number(billingAmount) ? billingAmount : COMMON.NO_DATA}
                         </Col>

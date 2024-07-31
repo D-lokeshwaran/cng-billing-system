@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { Button, FormControl, Modal, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import customerSlice, { Customer } from './customerSlice';
-import { useTableAdapter } from 'src/hooks/useTableAdapter'
+import { useTableAdapter } from 'src/hooks/useTableAdapter';
+import { useBillContext } from 'src/context/BillContext';
 import SearchBoxInput from 'src/components/common/SearchBoxInput';
 import IconButton from 'src/components/common/IconButton';
 import Pagination from 'src/components/table/Pagination';
@@ -11,7 +12,6 @@ import FlexBox from 'src/components/common/FlexBox';
 
 interface ChooseCustomerModelProps {
     show: boolean;
-    handleSelect: (customer: Customer) => void;
     onClose: () => void;
 }
 
@@ -19,10 +19,10 @@ const DEFAULT_PAGE_SIZE = 5;
 
 const ChooseCustomerModal: React.FC<ChooseCustomerModelProps> = ({
     show,
-    handleSelect,
     onClose
 }) => {
 
+    const { billDetails, setBillDetails } = useBillContext()
     const { table } = useTableAdapter({
         name: customerSlice.name,
         columns: customerSlice.columns,
@@ -43,7 +43,7 @@ const ChooseCustomerModal: React.FC<ChooseCustomerModelProps> = ({
                     action
                     className='text-dark btn-reveal-trigger cursor-pointer'
                     onClick={() => {
-                        handleSelect(customer)
+                        setBillDetails({ ...billDetails, customerId: customer.id });
                         onClose()
                     }}
                 >

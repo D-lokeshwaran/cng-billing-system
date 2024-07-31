@@ -7,7 +7,7 @@ interface ErrorMessageProps {
 
 const ErrorMessage: FC<ErrorMessageProps> = ({ errorMessage, ...props }) => {
     return errorMessage && 
-        <div style={{fontSize: ".80rem"}} className='mt-1 d-flex align-items-center' {...props}>
+        <div style={{fontSize: ".80rem", display: "flex", alignItems: "center"}} className="mt-1" {...props}>
             <AlertCircleIcon 
                 size={14} 
                 color="#dc3545"

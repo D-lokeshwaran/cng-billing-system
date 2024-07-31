@@ -13,14 +13,13 @@ import { coreApi } from 'src/utils/api';
 import { Bill } from "./billSlice";
 import { Customer } from "../customer/customerSlice";
 
-const BillCustomerInfo = ({ customerId }: { customerId: number }) => {
-    const { setValue, getValues, register, formState: { errors } } = useFormContext<Bill>();
+const BillCustomerInfo = () => {
+
+    const { setValue, register, formState: { errors } } = useFormContext<Bill>();
     const [customerModal, toggleCustomerModal] = useToggle();
     const { billDetails, setBillDetails } = useBillContext();
     const router = useRouter();
     const [customer, setCustomer] = useState<Customer>();
-    const selectedCustomerId = getValues("customerId");
-
     const updateCustomerDetails = useCallback(async (customerId: number) => {
         try {
             if (customerId) {
@@ -31,40 +30,44 @@ const BillCustomerInfo = ({ customerId }: { customerId: number }) => {
             console.error("Failed to fetch Customer:", error);
         }
     }, []);
-
     useEffect(() => {
-        let localCustomerId = customerId || selectedCustomerId;
-        setBillDetails({ ...billDetails, customerId: localCustomerId });
-    }, [customer?.id, selectedCustomerId])
-
-    useEffect(() => {
-        let updateCustomerId = customerId || billDetails?.customerId
-        updateCustomerDetails(updateCustomerId);
-    }, [customerId, billDetails?.customerId, updateCustomerDetails]);
+        let customerId = billDetails?.customerId
+        updateCustomerDetails(customerId);
+        setValue("customerId", customerId);
+    }, [billDetails?.customerId, updateCustomerDetails]);
 
     return (
         <>
             <ChooseCustomerModal
                 show={customerModal}
                 onClose={toggleCustomerModal}
-                handleSelect={setCustomer}
                 chosenCustomerId={billDetails?.customerId}
             />
             <input
                 type="hidden"
                 {...register("customerId", {
                     validate: {
-                        required: (v) => customer || "You haven't added any Customer to this bill. Create a Customer or choose one.",
+                        required: (v) => customer || "No customer selected for this bill",
                     },
-                    value: customer?.id || selectedCustomerId
                 })}
             />
             <Card body>
                 <FlexBox justify="between" className="mb-3">
                     <h3>Customer info</h3>
                     <div>
-                        {customer && <IconButton icon={PencilEdit01Icon} className="me-1" onClick={() => router.push(`/customers/${customer.id}`)} />}
-                        <IconButton className="p-0" onClick={toggleCustomerModal} icon={Attachment02Icon}/>
+                        {customer &&
+                        <IconButton
+                            icon={PencilEdit01Icon}
+                            className="me-1"
+                            disabled={billDetails?.billEditable}
+                            onClick={() => router.push(`/customers/${customer.id}`)}
+                        />}
+                        <IconButton
+                            className="p-0"
+                            disabled={billDetails?.billEditable}
+                            onClick={toggleCustomerModal}
+                            icon={Attachment02Icon}
+                        />
                     </div>
                 </FlexBox>
                 {customer ? (
@@ -102,11 +105,11 @@ const BillCustomerInfo = ({ customerId }: { customerId: number }) => {
                     </div>
                 ) : (
                     <div className="text-center">
-                        <PlusSignSquareIcon size="14%" className="gray-100 mb-0"/>
-                        <p className="mb-4">
-                            No customer selected for this bill
-                            <ErrorMessage errorMessage={errors?.["customerId"]?.message} className="justify-content-center mb-4"/>
-                        </p>
+                        <PlusSignSquareIcon size="14%" className={`${errors?.["customerId"]?.message ? "text-danger" : "gray-100"} mb-0`}/>
+                        <ErrorMessage errorMessage={errors?.["customerId"]?.message} className="justify-content-center "/>
+                        <div className="mb-4">
+                            <small className="text-secondary">You haven't added any Customer to this bill. Create a Customer or choose one.</small>
+                        </div>
                         <Button size="sm" type="button" onClick={() => router.push("/customers/new")}>
                             Create Customer
                         </Button>
