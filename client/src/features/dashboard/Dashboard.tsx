@@ -39,7 +39,7 @@ const Dashboard = () => {
                 <title>CNG Dashboard</title>
             </Helmet>
             <div>
-                <Row>
+                <Row className="g-0">
                     <Card body as={Col}>
                         <FlexBox justify='between'>
                             <div>Total Revenue</div>

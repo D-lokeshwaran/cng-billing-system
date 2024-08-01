@@ -27,7 +27,7 @@ const BillDetail = () => {
         retrieveTodayTariff();
         retrieveBill();
         return () => setTodayTariff(null);
-    }, [])
+    }, [billId])
 
     const retrieveTodayTariff = async () => {
         const result = await coreApi
@@ -50,7 +50,6 @@ const BillDetail = () => {
                 let customerId = result.data.id;
                 bill["customerId"] = customerId;
                 let canEditBill = bill?.paymentStatus == "Completed";
-                console.log(customerId);
                 setBillDetails({
                     ...billDetails,
                     customerId: customerId,

@@ -30,8 +30,10 @@ public class Bill extends AuditModel {
     private PaymentStatus paymentStatus = PaymentStatus.NotBilled;
     private BigDecimal billAmount;
 
+    @Temporal(TemporalType.DATE)
     private Date billingDate;
 
+    @Temporal(TemporalType.DATE)
     private Date paymentDueDate;
 
     @ManyToOne
