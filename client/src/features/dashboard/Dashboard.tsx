@@ -7,6 +7,12 @@ import Overview from './Overview';
 import { coreApi } from 'src/utils/api';
 import { useState, useEffect } from 'react';
 import SimpleTable from 'src/components/table/SimpleTable';
+import {
+   Coins01Icon,
+   UserMultiple02Icon,
+   SaleTag02Icon,
+   HourglassIcon
+} from "hugeicons-react"
 
 type DashboardInfoType = {
     totalRevenue: number,
@@ -39,83 +45,93 @@ const Dashboard = () => {
                 <title>CNG Dashboard</title>
             </Helmet>
             <div>
-                <Row className="g-0">
-                    <Card body as={Col}>
-                        <FlexBox justify='between'>
-                            <div>Total Revenue</div>
-                            <div>R</div>
-                        </FlexBox>
-                        <h2>
-                            ₹ {dashboardInfo?.totalRevenue}
-                        </h2>
-                        <small>+40% from last month </small>
-                    </Card>
-                    <Card body as={Col}>
-                        <FlexBox justify='between'>
-                            <div>Customers</div>
-                            <div>C</div>
-                        </FlexBox>
-                        <h2>
-                            {dashboardInfo?.customers}
-                        </h2>
-                        <small>+2% from last month</small>
-                    </Card>
-                    <Card body as={Col}>
-                        <FlexBox justify='between'>
-                            <div>Sales</div>
-                            <div>B</div>
-                        </FlexBox>
-                        <h2>
-                            +{dashboardInfo?.sales}
-                        </h2>
-                        <small>+21% from last month</small>
-                    </Card>
-                    <Card body as={Col}>
-                        <FlexBox justify='between'>
-                            <div>Active Bills</div>
-                            <div>A</div>
-                        </FlexBox>
-                        <h2>
-                            {dashboardInfo?.activeBills}
-                        </h2>
-                        <small>+10 from last month</small>
-                    </Card>
+                <Row className="mb-3 g-3">
+                    <Col>
+                        <Card body>
+                            <FlexBox justify='between'>
+                                <div>Total Revenue</div>
+                                <Coins01Icon/>
+                            </FlexBox>
+                            <h2>
+                                ₹ {dashboardInfo?.totalRevenue}
+                            </h2>
+                            <small>+40% from last month </small>
+                        </Card>
+                    </Col>
+                    <Col>
+                        <Card body>
+                            <FlexBox justify='between'>
+                                <div>Customers</div>
+                                <UserMultiple02Icon/>
+                            </FlexBox>
+                            <h2>
+                                {dashboardInfo?.customers}
+                            </h2>
+                            <small>+2% from last month</small>
+                        </Card>
+                    </Col>
+                    <Col>
+                        <Card body>
+                            <FlexBox justify='between'>
+                                <div>Sales</div>
+                                <SaleTag02Icon/>
+                            </FlexBox>
+                            <h2>
+                                {dashboardInfo?.sales}
+                            </h2>
+                            <small>+21% from last month</small>
+                        </Card>
+                    </Col>
+                    <Col>
+                        <Card body>
+                            <FlexBox justify='between'>
+                                <div>Active Bills</div>
+                                <HourglassIcon/>
+                            </FlexBox>
+                            <h2>
+                                {dashboardInfo?.activeBills}
+                            </h2>
+                            <small>+10 from last month</small>
+                        </Card>
+                    </Col>
                 </Row>
-                <Row>
+                <Row className="g-3">
                     <Col lg={7} md={5} sm={3}>
                         <Overview data={{
                             monthly: dashboardInfo?.monthlyRevenue,
                             weekly: dashboardInfo?.weeklyRevenue
                         }}/>
                     </Col>
-                    <Card as={Col}>
-                        <Card.Header as={FlexBox} justify="between">
-                            <div>Recent Bills</div>
-                            <Link to="/bills">View All</Link>
-                        </Card.Header>
-                        <Card.Body>
-                          <SimpleTable data={dashboardInfo?.recentBills} columns={[
-                            {
-                              attr: "customer",
-                              title: "Customer",
-                              cell: (value) => (
-                                <>
-                                    <div>{value.fullName}</div>
-                                    {value.accountNumber}
-                                </>
-                              )
-                            },
-                            {
-                              attr: "status",
-                              title: "Status"
-                            },
-                            {
-                              attr: "amount",
-                              title: "Amount"
-                            }
-                          ]}/>
-                        </Card.Body>
-                    </Card>
+                    <Col>
+                        <Card>
+                            <Card.Header as={FlexBox} justify="between">
+                                <div>Recent Bills</div>
+                                <Link to="/bills">View All</Link>
+                            </Card.Header>
+                            <Card.Body>
+                              <SimpleTable data={dashboardInfo?.recentBills} columns={[
+                                {
+                                  attr: "customer",
+                                  title: "Customer",
+                                  cell: (value) => (
+                                    <>
+                                        <div>{value.fullName}</div>
+                                        {value.accountNumber}
+                                    </>
+                                  )
+                                },
+                                {
+                                  attr: "status",
+                                  title: "Status"
+                                },
+                                {
+                                  attr: "amount",
+                                  title: "Amount"
+                                }
+                              ]}/>
+                            </Card.Body>
+                        </Card>
+                    </Col>
                 </Row>
             </div>
         </section>

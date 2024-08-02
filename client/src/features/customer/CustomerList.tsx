@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo, useState, useEffect } from 'react';
 import customerSlice, { Customer } from './customerSlice';
 import TanStackTable from 'src/components/table/TanStackTable';
 import { createColumnHelper } from '@tanstack/react-table';
@@ -19,7 +19,7 @@ const CustomerList: FC = () => {
     const columnHelper = createColumnHelper<Customer>();
     const { table, setData } = useTableAdapter({
         ...customerSlice,
-        columns: [
+        columns: useMemo(() => [
             ...customerSlice.columns,
             columnHelper.display({
                 id: 'actions',
@@ -29,7 +29,7 @@ const CustomerList: FC = () => {
                     onEdit={() => router.push(`/customers/${row.original.id}`)}
                 />
             })
-        ]
+        ], [])
     })
     const selectedRowIds = table.getSelectedRowModel().rows.map(row => row.original.id);
     const selectedRowsCount = selectedRowIds.length;

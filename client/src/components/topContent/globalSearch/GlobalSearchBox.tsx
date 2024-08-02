@@ -60,7 +60,7 @@ const GlobalSearchBox = () => {
                 <SearchBoxInput
                     id="global-search-input"
                     className="border-0"
-                    initialValue={value}
+                    value={value}
                     onChange={handleSearch}
                     onClick={() => setMenu(true)}
                     onFocus={() => setMenu(true)}

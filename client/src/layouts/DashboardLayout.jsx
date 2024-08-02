@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 import PageLoading from 'src/components/common/PageLoading';
 import SideBar from 'src/components/structure/SideBar';
-import TopContentBar from 'src/components/structure/TopContentBar';
+import TopContentBar from 'src/components/topContent/TopContentBar';
 
 const DashboardLayout = () => {
 

@@ -1,4 +1,4 @@
-import { FC, useEffect, useCallback } from 'react';
+import { FC, useEffect, useCallback, useMemo } from 'react';
 import billSlice from './billSlice';
 import { Card, Row, Col } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
@@ -27,7 +27,7 @@ const CustomerList: FC = () => {
     } = billSlice;
 
     const { table, setData } = useTableAdapter({
-        columns: [
+        columns: useMemo(() => [
             columnHelper.display({
                 id: "customer",
                 header: "Customer",
@@ -51,7 +51,7 @@ const CustomerList: FC = () => {
                     onEdit={() => router.push(`/bills/${row.original.id}`)}
                 />
             })
-        ],
+        ], []),
         name,
         columnVisibility,
         _mock
