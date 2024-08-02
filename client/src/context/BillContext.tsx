@@ -5,8 +5,8 @@ type BillDetailsType = {
     unitsConsumed?: number | undefined,
     billingDate?: Date,
     customerId?: number,
+    tariffId?: number,
     billId?: number,
-    billEditable?: boolean,
 }
 
 type BillContextType = {

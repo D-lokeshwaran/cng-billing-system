@@ -12,10 +12,11 @@ import { useFormContext } from "react-hook-form";
 import { useBillContext } from "src/context/BillContext"
 import { formateDate } from "src/utils/date";
 import moment from "moment";
+import { coreApi } from "src/utils/api";
 import { COMMON } from "src/constants/labels";
 
-const DetailsCard = ({ tariff }) => {
-    const { register, formState:{ errors }, watch, setValue } = useFormContext<Bill>();
+const DetailsCard = ({ tariff, setBillTariff }) => {
+    const { register, formState:{ errors }, watch, setValue, setError, clearErrors } = useFormContext<Bill>();
     const { billDetails, setBillDetails } = useBillContext()
     const [ ratePerUnit, setRatePerUnit ] = useState<any>();
 
@@ -27,6 +28,7 @@ const DetailsCard = ({ tariff }) => {
     useEffect(() => {
         setValue("unitsConsumed", billDetails?.unitsConsumed!);
         setValue("billingDate", billDetails?.billingDate || new Date());
+        retrieveBillTariff()
     }, [])
 
     // handle state restoration when navigate;
@@ -37,6 +39,30 @@ const DetailsCard = ({ tariff }) => {
             billingDate: watchBillingDate,
         });
     }, [watchUnitsConsumed, watchBillingDate])
+
+    const retrieveBillTariff = async () => {
+        await coreApi({
+            url: "/cng/tariffs/search/findByDate",
+            method: "GET",
+            params: {
+                searchDate: moment(watchBillingDate).format("YYYY-MM-DD") || new Date()
+            }
+        })
+        .then(result => {
+            const tariff = result.data;
+            setBillDetails({...billDetails, tariffId: tariff.id})
+            setBillTariff(tariff)
+            if (errors?.["unitsConsumed"]?.type === "tariffRequired") {
+                clearErrors("unitsConsumed")
+            }
+        })
+        .catch(error => {
+            console.log(`No tariff for ${watchBillingDate ? watchBillingDate : "today"} add one.`)
+            setBillDetails({...billDetails, tariffId: null})
+            setBillTariff(null);
+            setError("unitsConsumed", {type:"tariffRequired", message: "No tariff to calculate"})
+        })
+    }
 
     useEffect(() => {
         const unitsAndRates = tariff?.unitsAndRates
@@ -51,92 +77,98 @@ const DetailsCard = ({ tariff }) => {
                     }
                 }
             })
+        } else {
+            setRatePerUnit(null);
         }
         setValue("billAmount", billingAmount)
     }, [watchUnitsConsumed, tariff])
 
     return (
-        <Card body>
-            <div className="mb-3">
+        <Card>
+            <Card.Header>
                 <h3 className="mb-0">Details</h3>
                 <small className="text-secondary">Change units consumed to calculate bill amount.</small>
-            </div>
-            <FlexBox justify="between">
-                <span>
-                    Units consumed <span className="text-danger">*</span>
-                </span>
-                <span>
-                    <FormControl
-                        {...register("unitsConsumed", {
-                            required: { value: true, message: "Units consume is required"},
-                            validate: {
-                                positiveNumber: (v) => v > 0 || "Units consumed must be positive"
-                            }
-                        })}
-                        size="sm"
-                        type="number"
-                        disabled={billDetails?.billEditable}
-                        isInvalid={errors?.["unitsConsumed"]?.message != undefined}
-                    />
-                    <ErrorMessage errorMessage={errors?.["unitsConsumed"]?.message} />
-                </span>
-            </FlexBox>
-            <hr className="border-style-dotted"/>
-            <FlexBox justify="end">
-                <div className="w-75">
-                    <Row className="justify-content-between align-items-center mb-2">
-                        <Col className="text-end">Billing Date</Col>
-                        <Col className="text-end">
-                            <DatePickerInput
-                                field={{ title: "Billing Date", state: "billingDate", defaultValue: new Date()}}
-                                required={false}
-                                showLabel={false}
-                                isClearable={false}
-                                disabled={billDetails?.billEditable}
-                                className="form-control-sm"
-                            />
-                        </Col>
-                    </Row>
-                    <Row className="justify-content-between mb-2">
-                        <Col className="text-end">
-                            <span>Payment Due Date </span>
-                        </Col>
-                        <Col className="text-end">
-                            <FormControl
-                                {...register("paymentDueDate", {
-                                    value: moment(watchBillingDate).add(10, 'days').toDate(),
-                                    valueAsDate: true
-                                })}
-                                hidden
-                            />
-                            {watchBillingDate
-                                ? formateDate(moment(watchBillingDate).add(10, 'days'))
-                                : COMMON.NO_DATA
-                            }
-                        </Col>
-                    </Row>
-                    <Row className="justify-content-between mb-2">
-                        <Col className="text-end">Rate per unit</Col>
-                        <Col className="text-end">
-                            {ratePerUnit || COMMON.NO_DATA}
-                        </Col>
-                    </Row>
-                    <Row className="justify-content-between mb-2">
-                        <Col className="text-end">Billing Amount</Col>
-                        <Col className="text-end">
-                            <FormControl
-                                {...register("billAmount", {
-                                    value: ratePerUnit * parseInt(watchUnitsConsumed),
-                                    valueAsNumber: true
-                                })}
-                                value={ratePerUnit * parseInt(watchUnitsConsumed)}
-                                type="hidden"
-                            />
-                            {Number(billingAmount) ? billingAmount : COMMON.NO_DATA}
-                        </Col>
-                    </Row>
-                </div>
-            </FlexBox>
+            </Card.Header>
+            <Card.Body>
+                <FlexBox justify="between">
+                    <span>
+                        Units consumed <span className="text-danger">*</span>
+                    </span>
+                    <span>
+                        <FormControl
+                            {...register("unitsConsumed", {
+                                required: { value: true, message: "Units consumed is required"},
+                                validate: {
+                                    positiveNumber: (v) => v > 0 || "Units consumed must be positive",
+                                    tariffRequired: (v) => tariff || "No tariff to calculate"
+                                }
+                            })}
+                            size="sm"
+                            type="number"
+                            disabled={billDetails?.billId}
+                            isInvalid={errors?.["unitsConsumed"]?.message != undefined}
+                        />
+                        <ErrorMessage errorMessage={errors?.["unitsConsumed"]?.message} />
+                    </span>
+                </FlexBox>
+                <hr className="border-style-dotted"/>
+                <FlexBox justify="end">
+                    <div className="w-75">
+                        <Row className="justify-content-between align-items-center mb-2">
+                            <Col className="text-end">Billing Date</Col>
+                            <Col className="text-end">
+                                <DatePickerInput
+                                    field={{ title: "Billing Date", state: "billingDate", defaultValue: new Date()}}
+                                    required={false}
+                                    showLabel={false}
+                                    isClearable={false}
+                                    disabled={billDetails?.billId}
+                                    onChangeDate={retrieveBillTariff}
+                                    className="form-control-sm"
+                                />
+                            </Col>
+                        </Row>
+                        <Row className="justify-content-between mb-2">
+                            <Col className="text-end">
+                                <span>Payment Due Date </span>
+                            </Col>
+                            <Col className="text-end">
+                                <FormControl
+                                    {...register("paymentDueDate", {
+                                        value: moment(watchBillingDate).add(10, 'days').toDate(),
+                                        valueAsDate: true
+                                    })}
+                                    hidden
+                                />
+                                {watchBillingDate
+                                    ? formateDate(moment(watchBillingDate).add(10, 'days'))
+                                    : COMMON.NO_DATA
+                                }
+                            </Col>
+                        </Row>
+                        <Row className="justify-content-between mb-2">
+                            <Col className="text-end">Rate per unit</Col>
+                            <Col className="text-end">
+                                {ratePerUnit || COMMON.NO_DATA}
+                            </Col>
+                        </Row>
+                        <Row className="justify-content-between mb-2">
+                            <Col className="text-end">Billing Amount</Col>
+                            <Col className="text-end">
+                                <FormControl
+                                    {...register("billAmount", {
+                                        value: ratePerUnit * parseInt(watchUnitsConsumed),
+                                        valueAsNumber: true
+                                    })}
+                                    value={ratePerUnit * parseInt(watchUnitsConsumed)}
+                                    type="hidden"
+                                />
+                                {Number(billingAmount) ? billingAmount : COMMON.NO_DATA}
+                            </Col>
+                        </Row>
+                    </div>
+                </FlexBox>
+            </Card.Body>
         </Card>
     )
 

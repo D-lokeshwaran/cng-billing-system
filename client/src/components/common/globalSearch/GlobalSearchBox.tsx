@@ -51,7 +51,10 @@ const GlobalSearchBox = () => {
     return (
         <Dropdown
             id="global-search"
+            show={showMenu}
             onToggle={handleAddons}
+            autoClose="outside"
+            onBlur={(e) => setMenu(e.relatedTarget !== null)}
         >
             <Dropdown.Toggle as={SearchBox}>
                 <SearchBoxInput
@@ -59,6 +62,8 @@ const GlobalSearchBox = () => {
                     className="border-0"
                     initialValue={value}
                     onChange={handleSearch}
+                    onClick={() => setMenu(true)}
+                    onFocus={() => setMenu(true)}
                     autoComplete="off"
                     type="text"
                 />

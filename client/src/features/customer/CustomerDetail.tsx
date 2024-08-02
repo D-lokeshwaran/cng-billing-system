@@ -55,12 +55,8 @@ const CustomerForm = () => {
                 await coreApi.post("/cng/documents", formData);
             }
         }
-        if (billDetails?.billId) {
-            setBillDetails({...billDetails, customerId: newCustomerId});
-            router.push(`/bills/${billDetails?.billId}`)
-        } else {
-            router.push("/customers");
-        }
+        setBillDetails({...billDetails, customerId: newCustomerId});
+        router.back()
     }
 
     return (

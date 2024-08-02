@@ -2,8 +2,8 @@ import { FC, useState, useEffect } from 'react';
 import tariffSlice from './tariffSlice';
 import ReadyMadeTable from 'src/components/table/ReadyMadeTable';
 import { Button, Card } from 'react-bootstrap';
-import { useToggle } from 'src/hooks';
-import TariffDetailModal from './TariffDetailModal';
+import { useToggle, useRouter } from 'src/hooks';
+import TariffDetails from './TariffDetails';
 import { useTableAdapter } from 'src/hooks';
 import { coreApi } from "src/utils/api";
 import TanStackTable from "src/components/table/TanStackTable";
@@ -13,7 +13,7 @@ const TariffList: FC = () => {
 
     const [ showTariffModal, toggleTariffModal ] = useToggle();
     const [ refresh, refreshTable ] = useToggle();
-    const [ tariff, setTariff ] = useState();
+    const router = useRouter();
     const { table, setData } = useTableAdapter({
         ...tariffSlice,
     });
@@ -29,34 +29,26 @@ const TariffList: FC = () => {
     }
 
     const handleAddTariff = () => {
-        setTariff(undefined);
-        toggleTariffModal();
+        router.push(`/tariffs/new`);
     }
 
     const getRowProps = (row: any) => {
         return {
             onDoubleClick: () => {
                 const tariff = row.original;
-                setTariff(tariff);
-                toggleTariffModal();
+                router.push(`/tariffs/${tariff.id}`);
             }
         }
-    }
-
-    const handleCloseModal = () => {
-        toggleTariffModal();
-        refreshTable();
     }
 
     return (
         <div>
             <Button 
                 variant="success"
-                onClick={handleAddTariff}
+                onClick={() => router.push(`/tariffs/new`)}
             >
                 + Tariff
             </Button>
-            <TariffDetailModal show={showTariffModal} onHide={handleCloseModal} tariff={tariff}/>
             <TanStackTable table={table} rowProps={getRowProps} />
             <Pagination table={table} />
         </div>

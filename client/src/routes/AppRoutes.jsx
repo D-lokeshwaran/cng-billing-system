@@ -14,6 +14,7 @@ const BillDetail = lazy(() => import('src/features/bill/BillDetail'));
 const CustomerList = lazy(() => import('src/features/customer/CustomerList'));
 const CustomerDetail = lazy(() => import('src/features/customer/CustomerDetail'));
 const TariffList = lazy(() => import('src/features/tariff/TariffList'));
+const TariffDetails = lazy(() => import('src/features/tariff/TariffDetails'));
 
 const Error404 = lazy(() => import("src/features/error/Error404"));
 
@@ -37,6 +38,8 @@ const AppRoutes = () => {
                                <Route path="bills" element={<BillList/>} />
                               {/* Context provider route to manage state replacement */}
                               <Route element={<BillContextProvider />}>
+                                  <Route path="tariffs/new" element={<TariffDetails/>}/>
+                                  <Route path="tariffs/:tariffId" element={<TariffDetails/>}/>
                                   <Route path="bills/new" element={<BillDetail/>} />
                                   <Route path="bills/:billId" element={<BillDetail/>} />
                                   <Route path="customer/new" element={<CustomerDetail/>} />

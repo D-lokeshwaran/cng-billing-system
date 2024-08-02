@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +32,9 @@ public class Tariff {
 
     @OneToMany(mappedBy = "tariff")
     @JsonIgnore
-    private List<Bill> bills;
+    private List<Bill> bills = new ArrayList<>();
+
+    @Transient
+    private Integer numberOfBills = getBills().size();
 
 }

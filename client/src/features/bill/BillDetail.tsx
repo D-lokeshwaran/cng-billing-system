@@ -12,31 +12,29 @@ import { startCase } from "lodash";
 import { useBillContext } from "src/context/BillContext";
 import { useParams } from "react-router-dom";
 import { useRouter } from "src/hooks";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import moment from "moment";
 
 const BillDetail = () => {
 
-    const [ todayTariff, setTodayTariff ] = useState();
+    const [ billTariff, setBillTariff ] = useState();
     const [ bill, setBill ] = useState();
     const { billDetails, setBillDetails } = useBillContext();
-    let canMarkAsPaid = bill?.id && bill?.paymentStatus == "Pending" && billDetails?.customerId;
+    let canMarkAsPaid = bill?.id && bill?.paymentStatus == "Pending" && billDetails?.tariffId;
     const router = useRouter();
     const { billId } = useParams();
 
     useEffect(() => {
-        retrieveTodayTariff();
         retrieveBill();
-        return () => setTodayTariff(null);
     }, [billId])
 
-    const retrieveTodayTariff = async () => {
-        const result = await coreApi
-            .get("/cng/tariffs/search/findTodayTariff")
-            .catch(error => console.log("No tariff for today add one."))
-        if (result) {
-            setTodayTariff(result.data);
-        }
-    }
+    useEffect(() => {
+        setBillDetails({
+            ...billDetails,
+            billId: bill?.id ,
+            customerId: bill?.customerId
+        })
+    }, [bill])
 
     const retrieveBill = async () => {
         if (!billId) {
@@ -49,30 +47,23 @@ const BillDetail = () => {
             .then((result) => {
                 let customerId = result.data.id;
                 bill["customerId"] = customerId;
-                let canEditBill = bill?.paymentStatus == "Completed";
-                setBillDetails({
-                    ...billDetails,
-                    customerId: customerId,
-                    billId: billId,
-                    billEditable: canEditBill
-                })
                 setBill(bill);
             })
             .catch(error => {
                 console.log("Customer doesn't exists for this bill", error)
-                setBill(bill);
             });
     }
 
     const createOrUpdateBill: SubmitHandler<Bill> = async (data) => {
         const { customerId, ...billData} = data;
+        console.log(data);
         const newBill = await coreApi({
             url: bill ? `/cng/bills/${bill.id}` : "/cng/bills",
             method: bill ? "PUT" : "POST",
             data: billData
         }); // create or update bill
         const billId = newBill?.data.id;
-        const tariffId = todayTariff?.id;
+        const tariffId = billTariff?.id;
         if (tariffId) {
             await coreApi.put(
                 `/cng/bills/${billId}/tariff`,
@@ -135,19 +126,19 @@ const BillDetail = () => {
                                     Undo Bill
                                 </Button>
                             }
-                            <Button variant="primary" type="submit" disabled={billDetails?.billEditable}>
+                            {!billDetails?.billId && <Button variant="primary" type="submit">
                                 { bill ? "Update" : "Create"}
-                            </Button>
+                            </Button>}
                         </div>
                     </FlexBox>
                 </FeatureHeader>
                 <Row>
                     <Col>
-                        <DetailsCard tariff={todayTariff}/>
-                        {todayTariff ? <CurrentTariffList data={todayTariff} /> : <>No Tariff for today</>}
+                        <DetailsCard tariff={billTariff} setBillTariff={setBillTariff}/>
+                        <CurrentTariffList data={billTariff} />
                     </Col>
                     <Col>
-                        <BillCustomerInfo customerId={bill?.customerId}/>
+                        <BillCustomerInfo/>
                     </Col>
                 </Row>
             </HookForm>

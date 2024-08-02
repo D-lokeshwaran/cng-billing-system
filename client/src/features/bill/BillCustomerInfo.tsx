@@ -20,7 +20,7 @@ const BillCustomerInfo = () => {
     const { billDetails, setBillDetails } = useBillContext();
     const router = useRouter();
     const [customer, setCustomer] = useState<Customer>();
-    const updateCustomerDetails = useCallback(async (customerId: number) => {
+    const updateCustomerDetails = async (customerId: number) => {
         try {
             if (customerId) {
                 const res = await trackPromise(coreApi.get(`/cng/customers/${customerId}`));
@@ -29,12 +29,12 @@ const BillCustomerInfo = () => {
         } catch (error) {
             console.error("Failed to fetch Customer:", error);
         }
-    }, []);
+    };
     useEffect(() => {
         let customerId = billDetails?.customerId
         updateCustomerDetails(customerId);
         setValue("customerId", customerId);
-    }, [billDetails?.customerId, updateCustomerDetails]);
+    }, [billDetails?.customerId]);
 
     return (
         <>
@@ -63,7 +63,7 @@ const BillCustomerInfo = () => {
                         />}
                         <IconButton
                             className="p-0"
-                            disabled={billDetails?.billEditable}
+                            disabled={billDetails?.billId}
                             onClick={toggleCustomerModal}
                             icon={Attachment02Icon}
                         />

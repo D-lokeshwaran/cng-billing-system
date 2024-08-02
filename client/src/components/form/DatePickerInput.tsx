@@ -21,6 +21,7 @@ const DatePickerInput = ({
     showLabel=true,
     validate,
     className,
+    onChangeDate,
     ...props
 }: DatePickerInputProps) => {
 
@@ -39,7 +40,10 @@ const DatePickerInput = ({
                 render={({ field: { value, onChange } }) => (
                     <DatePicker
                         placeholderText='Pick date'
-                        onChange={(date) => onChange(date)}
+                        onChange={(date) => {
+                            onChangeDate(date);
+                            onChange(date)
+                        }}
                         selected={value}
                         isClearable
                         showDateSelect
