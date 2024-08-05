@@ -18,7 +18,7 @@ const SideBar = () => {
               <Nav.Item
                 key={i}
                 path={nav.path}
-                className="text-white my-1"
+                className="my-1"
               >
                 <Nav.Link as={Link} to={nav.path} eventKey={nav.path}>{nav.title}</Nav.Link>
               </Nav.Item>

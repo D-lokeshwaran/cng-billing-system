@@ -52,15 +52,11 @@ const DetailsCard = ({ tariff, setBillTariff }) => {
             const tariff = result.data;
             setBillDetails({...billDetails, tariffId: tariff.id})
             setBillTariff(tariff)
-            if (errors?.["unitsConsumed"]?.type === "tariffRequired") {
-                clearErrors("unitsConsumed")
-            }
         })
         .catch(error => {
             console.log(`No tariff for ${watchBillingDate ? watchBillingDate : "today"} add one.`)
             setBillDetails({...billDetails, tariffId: null})
             setBillTariff(null);
-            setError("unitsConsumed", {type:"tariffRequired", message: "No tariff to calculate"})
         })
     }
 

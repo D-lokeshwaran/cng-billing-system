@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from 'src/context/AuthContext';
 
 type LoginInputs = {
-  username: string,
+  emailAddress: string,
   password: string
 }
 
@@ -20,7 +20,7 @@ export const LoginForm: React.FC = () => {
   } = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
-      if (await logIn(data.username, data.password)) {
+      if (await logIn(data.emailAddress, data.password)) {
         navigateTo('/dashboard');
       } else {
         alert('Failed to login!')
@@ -35,13 +35,13 @@ export const LoginForm: React.FC = () => {
       <Form onSubmit={handleSubmit(onSubmit)} className='d-grid gap-4'>
 
         <Form.Group>
-          <Form.Label aria-label='username'>Username</Form.Label>
+          <Form.Label aria-label='emailAddress'>Username</Form.Label>
           <Form.Control 
             type="text" 
             placeholder="John doe"
             autoComplete='off'
             tabIndex={1}
-            {...register('username', {required: true})}/>
+            {...register('emailAddress', {required: true})}/>
         </Form.Group>
 
         <Form.Group className='mb-3'>

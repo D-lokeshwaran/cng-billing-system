@@ -4,7 +4,7 @@ import FlexBox from "src/components/common/FlexBox";
 import { Link } from "react-router-dom";
 
 const SearchMenu = React.forwardRef(
-    ({ children, style, className, 'aria-labelledby': labeledBy, value, addons }, ref) => {
+    ({ children, style, className, 'aria-labelledby': labeledBy, value, addons, closeMenu }, ref) => {
 
     return (
         <div
@@ -22,20 +22,20 @@ const SearchMenu = React.forwardRef(
                     <hr/>
                     <div className="px-3">
                         <small className="text-secondary">QUICK LINKS</small>
-                        <Dropdown.Item as={Link} to="/customers">
+                        <Dropdown.Item as={Link} to="/customers" onClick={closeMenu}>
                             <Badge className="bg-light text-warning">Customers:</Badge>
                             <span>All customers list</span>
                         </Dropdown.Item>
-                        <Dropdown.Item as={Link} to={`/bills/new`}>
+                        <Dropdown.Item as={Link} to={`/bills/new`} onClick={closeMenu}>
                             <Badge className="bg-light text-success">Bill:</Badge>
                             <span>Create new bill</span>
                         </Dropdown.Item>
                         {addons?.todayTariffId ?
-                            <Dropdown.Item as={Link} to={`/tariffs/${addons?.todayTariffId}`}>
+                            <Dropdown.Item as={Link} to={`/tariffs/${addons?.todayTariffId}`} onClick={closeMenu}>
                                 <Badge className="bg-light text-primary">Tariff:</Badge>
                                 <span>View today Tariff</span>
                             </Dropdown.Item>
-                        :   <Dropdown.Item as={Link} to="/tariffs/new">
+                        :   <Dropdown.Item as={Link} to="/tariffs/new" onClick={closeMenu}>
                                 <Badge className="bg-light text-primary">Tariff:</Badge>
                                 <span>Create today Tariff</span>
                             </Dropdown.Item>

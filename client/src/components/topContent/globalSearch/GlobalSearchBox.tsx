@@ -73,6 +73,7 @@ const GlobalSearchBox = () => {
                 style={{ width: "30rem"}}
                 value={value}
                 addons={addons}
+                closeMenu={() => setMenu(false)}
             >
                 <SearchResultItems searchResult={searchResult}/>
             </Dropdown.Menu>

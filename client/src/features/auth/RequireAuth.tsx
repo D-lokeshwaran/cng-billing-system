@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from 'src/context/AuthContext';
+import { useRouter } from 'src/hooks';
 
 interface RequireAuthProps {
     allowedRoles: number[]
@@ -9,6 +10,7 @@ interface RequireAuthProps {
 const RequireAuth: React.FC<RequireAuthProps> = ({ allowedRoles }) => {
 
     const { user, verifyRole } = useAuth();
+    const router = useRouter();
 
     if (
         user.isAuthenticated
@@ -16,7 +18,7 @@ const RequireAuth: React.FC<RequireAuthProps> = ({ allowedRoles }) => {
     ) {
         return <Outlet/>
     } else {
-        return <Navigate to="/login" />
+        return <Navigate to={`${user.isAuthenticated ? "/dashboard" : "/login"}`} />
     }
 
 }

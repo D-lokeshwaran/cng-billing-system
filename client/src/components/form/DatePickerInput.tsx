@@ -41,7 +41,7 @@ const DatePickerInput = ({
                     <DatePicker
                         placeholderText='Pick date'
                         onChange={(date) => {
-                            onChangeDate(date);
+                            if (onChangeDate) onChangeDate(date);
                             onChange(date)
                         }}
                         selected={value}

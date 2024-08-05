@@ -17,6 +17,7 @@ const TariffList = lazy(() => import('src/features/tariff/TariffList'));
 const TariffDetails = lazy(() => import('src/features/tariff/TariffDetails'));
 
 const Error404 = lazy(() => import("src/features/error/Error404"));
+const Profile = lazy(() => import("src/features/profile/Profile"));
 
 
 const AppRoutes = () => {
@@ -45,6 +46,13 @@ const AppRoutes = () => {
                                   <Route path="customer/new" element={<CustomerDetail/>} />
                                   <Route path="customers/:customerId" element={<CustomerDetail/>} />
                               </Route>
+                         </Route>
+
+                         <Route path="profile" element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Operator, ROLES.Customer]}/> }>
+                              <Route index element={<Navigate to="overview"/>}/>
+                              <Route path="overview" element={<Profile pageId="overview"/>}/>
+                              <Route path="settings" element={<Profile pageId="settings"/>}/>
+                              <Route path="activity-log" element={<Profile pageId="activity-log"/>}/>
                          </Route>
                     </Route>
 

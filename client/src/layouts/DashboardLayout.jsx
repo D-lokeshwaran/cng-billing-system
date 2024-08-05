@@ -10,7 +10,7 @@ const DashboardLayout = () => {
     return (
         <div>
             <Row className="g-0">
-                <Col className="sidebar-container position-fixed h-100 bg-dark" style={{ width: "15.625rem"}}>
+                <Col className="sidebar-container position-fixed h-100" style={{ width: "15.625rem"}}>
                     <SideBar/>
                 </Col>
                 <Col className="outlet-container container" style={{marginLeft: "15.625rem"}}>

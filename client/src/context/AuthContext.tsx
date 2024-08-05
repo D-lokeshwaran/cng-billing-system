@@ -12,7 +12,7 @@ type user = {
 
 interface AuthContextType {
     user: user;
-    logIn: (username: string, password: string) => Promise<boolean>;
+    logIn: (emailAddress: string, password: string) => Promise<boolean>;
     verifyRole: (allowedRoles: number[]) => boolean | null;
     logOut: (callback: VoidFunction) => void;
 }
@@ -98,14 +98,15 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
         }
     }, [])
 
-    const logIn = async (username: any, password: any) => {
+    const logIn = async (emailAddress: any, password: any) => {
         try {
             if (loginMethod == 'fake') {
                 setUser({ ...user, isAuthenticated: true});
                 return true;
             }
-            const response = await supportApi.post('/auth', {username, password});
-            setToken(response.data.accessToken)
+            const response = await supportApi.post('/auth', {emailAddress, password});
+            setToken(response.data.accessToken);
+            console.log(response.data);
             setUser({ ...user, isAuthenticated: true});
             return true;
         }  catch (error) { 
@@ -127,8 +128,6 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
             setToken(null)
         } catch (error) { 
             setToken(null);
-        } finally { 
-            callback?.();
         }
     }
 

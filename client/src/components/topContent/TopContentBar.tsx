@@ -2,7 +2,7 @@ import FlexBox from "src/components/common/FlexBox";
 import GlobalSearchBox from "./globalSearch";
 import ToggleTheme from "./ToggleTheme";
 import Notification from "./Notification";
-import Profile from "./Profile";
+import ProfileDropdown from "./ProfileDropdown";
 import { Navbar } from "react-bootstrap";
 
 const TopContentBar = () => {
@@ -16,7 +16,7 @@ const TopContentBar = () => {
                 <ToggleTheme/>
                 <Notification/>
                 <div className="px-2 border-1">|</div>
-                <Profile/>
+                <ProfileDropdown/>
             </FlexBox>
         </Navbar>
     )

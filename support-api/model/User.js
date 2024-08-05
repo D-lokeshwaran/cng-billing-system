@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const Profile = require('./Profile');
 
 const userSchema = new mongoose.Schema({
-    username: {
+    emailAddress: {
         type: String,
         unique: true,
         requires: true
@@ -18,6 +19,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         requires: true
     },
+    profile: Profile,
     refreshToken: {
         type: String
     }
