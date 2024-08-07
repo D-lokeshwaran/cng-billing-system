@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const Profile = new mongoose.Schema({
+    avatarFileName: {
+        type: String,
+        requires: true
+    },
     fullName: {
         type: String,
         requires: true
