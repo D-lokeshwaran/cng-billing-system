@@ -1,6 +1,6 @@
 import { AlertCircleIcon } from 'hugeicons-react';
 import React from 'react';
-import { FormControl, FormGroup, FormLabel } from 'react-bootstrap';
+import { FormControl, FormGroup, FormLabel, FormSelect } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 import { FieldType, InputProps } from './type';
 
@@ -33,18 +33,33 @@ const Input: React.FC<InputProps> = ({
     return (
         <FormGroup {...props} className="mb-3">
             <FormLabel className="mb-1">{field.title}<span style={{color:"#dc3545"}}>{required && ' *'}</span></FormLabel>
-            <FormControl
-                {...register(
-                    field.state, 
-                    {  validate: { 
-                        ...defaultValidate(required, field),
-                        ...validate
-                    } }
-                )}
-                type={field.type}
-                isInvalid={errorMessage !== undefined}
-                {...control}
-            />
+            {field.type === "select" ?
+                <FormSelect
+                    {...register(
+                        field.state,
+                        {  validate: {
+                            ...defaultValidate(required, field),
+                            ...validate
+                        } }
+                    )}
+                    isInvalid={errorMessage !== undefined}
+                    {...control}
+                >
+                    {props.children}
+                </FormSelect>
+            :   <FormControl
+                    {...register(
+                        field.state,
+                        {  validate: {
+                            ...defaultValidate(required, field),
+                            ...validate
+                        } }
+                    )}
+                    type={field.type}
+                    isInvalid={errorMessage !== undefined}
+                    {...control}
+                />
+            }
             {errorMessage && <div style={{fontSize: ".80rem"}} className='mt-1 d-flex align-items-center'>
                 <AlertCircleIcon 
                     size={14} 

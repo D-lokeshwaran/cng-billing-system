@@ -28,9 +28,14 @@ const HookForm: React.FC<HookFormProps> = ({
         }
     }
 
+    const handleReset = (event: any) => {
+        event.preventDefault();
+        methods.reset();
+    }
+
     return (
         <FormProvider {...methods}>
-            <Form onSubmit={methods.handleSubmit(handleOnSubmit)} {...props}>
+            <Form onSubmit={methods.handleSubmit(handleOnSubmit)} onReset={handleReset} {...props}>
                 {children}
             </Form>
         </FormProvider>

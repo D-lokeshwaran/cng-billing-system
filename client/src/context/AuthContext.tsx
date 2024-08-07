@@ -105,9 +105,14 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
                 return true;
             }
             const response = await supportApi.post('/auth', {emailAddress, password});
-            setToken(response.data.accessToken);
-            console.log(response.data);
-            setUser({ ...user, isAuthenticated: true});
+            const { accessToken, ...userData } = response.data;
+            setToken(accessToken);
+            console.log(userData);
+            setUser({
+                ...user,
+                emailAddress: userData.emailAddress,
+                isAuthenticated: true
+            });
             return true;
         }  catch (error) { 
             setToken(null);
