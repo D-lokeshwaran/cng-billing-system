@@ -1,5 +1,6 @@
 import { Card, Row, Col, Table } from "react-bootstrap";
 import FlexBox from "src/components/common/FlexBox";
+import { useUserContext } from "src/context/UserContext";
 import {
    Coins01Icon,
    UserMultiple02Icon,
@@ -28,6 +29,9 @@ const activityLogs = [
 ]
 
 const Overview = () => {
+
+    const { userDetails } = useUserContext();
+
     return (
         <Row>
             <Col sm={6} lg={7}>
@@ -36,24 +40,23 @@ const Overview = () => {
                     <Card.Body>
                         <Row className="mt-3">
                             <Col>Full Name:</Col>
-                            <Col >John doe</Col>
+                            <Col >{userDetails?.profile.fullName}</Col>
                         </Row>
                         <Row className="mt-3">
                             <Col>Email address:</Col>
-                            <Col >johndoe@gmail.com</Col>
+                            <Col >{userDetails?.emailAddress}</Col>
                         </Row>
                         <Row className="mt-3">
                             <Col>Phone Number:</Col>
-                            <Col >8660095605</Col>
+                            <Col >{userDetails?.profile.phoneNumber}</Col>
                         </Row>
                         <Row className="mt-3">
                             <Col>Status:</Col>
-                            <Col >On Duty</Col>
+                            <Col >{userDetails?.profile.status}</Col>
                         </Row>
                         <Row className="mt-3 mb-4">
                             <Col>About me:</Col>
-                            <Col>Discuss only on work hour, ill help you clarify your doubt
-                                 over payment or bill and tariff details or even some discounts.</Col>
+                            <Col>{userDetails?.profile.aboutMe}</Col>
                         </Row>
                     </Card.Body>
                 </Card>
@@ -68,7 +71,7 @@ const Overview = () => {
                         <Table>
                             <tbody>
                                 {activityLogs.map(log =>
-                                    <tr>
+                                    <tr key={log.message}>
                                         <td className="text-dark">
                                             {log.category == "Bill" ?
                                                 <SaleTag02Icon/> : log.category === "Tariff" ?

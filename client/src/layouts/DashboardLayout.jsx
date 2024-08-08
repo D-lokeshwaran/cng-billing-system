@@ -4,6 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 import PageLoading from 'src/components/common/PageLoading';
 import SideBar from 'src/components/structure/SideBar';
 import TopContentBar from 'src/components/topContent/TopContentBar';
+import UserContextProvider from 'src/context/UserContext';
 
 const DashboardLayout = () => {
 
@@ -14,11 +15,13 @@ const DashboardLayout = () => {
                     <SideBar/>
                 </Col>
                 <Col className="outlet-container container" style={{marginLeft: "15.625rem"}}>
-                    <TopContentBar/>
-                    <div>
-                        <Outlet/>
-                        <PageLoading/>
-                    </div>
+                    <UserContextProvider>
+                        <TopContentBar/>
+                        <div>
+                            <Outlet/>
+                            <PageLoading/>
+                        </div>
+                    </UserContextProvider>
                 </Col>
             </Row>
         </div>

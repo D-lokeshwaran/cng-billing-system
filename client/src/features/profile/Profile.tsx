@@ -5,10 +5,12 @@ import { useRouter } from "src/hooks";
 import Overview from "./Overview";
 import { Settings } from "./Settings";
 import profileCover from "src/assets/img/profile-cover.svg";
+import { useUserContext } from "src/context/UserContext";
 import user from "./user.jpg"
 
 const Profile = ({ pageId }) => {
     const { profileTab } = useParams();
+    const { userDetails } = useUserContext();
     const router = useRouter();
 
     return (
@@ -27,14 +29,14 @@ const Profile = ({ pageId }) => {
                         style={{top:"30%"}}
                     >
                         <img
-                            src={user}
+                            src={userDetails?.avatar}
                             height={100}
                             width={100}
                             className="border rounded-4"
                         />
                         <div className="m-4 mt-0 ms-3">
-                            <Card.Title className="mb-0">John Doe</Card.Title>
-                            <Card.Subtitle as="small" className="mb-2 text-muted">OPERATOR</Card.Subtitle>
+                            <Card.Title className="mb-0">{userDetails?.profile.fullName}</Card.Title>
+                            <Card.Subtitle as="small" className="mb-2 text-muted">{userDetails?.role["Admin"] && "ADMIN"}</Card.Subtitle>
                         </div>
                     </FlexBox>
                     <Nav variant="tabs" className="justify-content-end mt-3 me-2">

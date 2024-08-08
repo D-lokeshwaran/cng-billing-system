@@ -9,12 +9,14 @@ import IconButton from "../common/IconButton";
 import { Dropdown, Offcanvas } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useAuth } from "src/context/AuthContext";
+import { useUserContext } from "src/context/UserContext";
 import { useRouter } from "src/hooks";
 import FlexBox from "../common/FlexBox";
 
 const ProfileDropdown = () => {
 
     const { logOut } = useAuth();
+    const { userDetails } = useUserContext();
     const router = useRouter();
 
     const _handleLogout = () => {
@@ -24,10 +26,18 @@ const ProfileDropdown = () => {
 
     return (
         <Dropdown>
-            <Dropdown.Toggle as="div" className="p-2">
+            <Dropdown.Toggle as="div" className="py-2">
                 <FlexBox className="cursor-pointer">
-                    <span className="me-2">John doe</span>
-                    <UserSharingIcon/>
+                    <span className="me-2">{userDetails?.profile.fullName}</span>
+                    {userDetails?.avatar ?
+                        <img
+                            src={userDetails.avatar}
+                            height={32}
+                            width={32}
+                            className="border rounded-2 overflow-hidden"
+                        />
+                        :   <UserSharingIcon size="30"/>
+                    }
                 </FlexBox>
             </Dropdown.Toggle>
             <Dropdown.Menu align="end">

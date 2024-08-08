@@ -5,6 +5,7 @@ import HookForm from "src/components/form/HookForm";
 import Input from "src/components/form/Input";
 import AvatarUploadInput from "./AvatarUploadInput";
 import { useAuth } from "src/context/AuthContext";
+import { useUserContext } from "src/context/UserContext";
 import { supportApi } from "src/utils/api";
 
 interface BasicDetailsType {
@@ -18,42 +19,33 @@ interface BasicDetailsType {
 
 const BasicDetails = () => {
 
-    const [ basicDetails, setBasicDetails ] = useState<BasicDetailsType>();
     const { user } = useAuth();
-
-    useEffect(() => {
-        retrieveProfileDetails()
-    }, [])
-
-    const retrieveProfileDetails = async () => {
-        await supportApi.get(`profile/johnDoe02@gmail.com`)
-            .then(result => {
-                const {avatar, emailAddress, profile} = result.data;
-                setBasicDetails({ avatar, emailAddress, ...profile});
-            })
-            .catch(err => console.log("Failed to get profile: ", err));
+    const { userDetails, setUserDetails } = useUserContext();
+    const basicDetails = {
+        emailAddress: userDetails?.emailAddress,
+        avatar: userDetails?.avatar,
+        ...userDetails?.profile
     }
 
-    const handleEditDetails: SubmitHandler<BasicDetailsType> = async (data) => {
+    const handleEditDetails: SubmitHandler<BasicDetailsType> = async (data, event) => {
         try {
-            const { avatar, emailAddress, fullName, phoneNumber, status, aboutMe } = data;
+            const { avatar, fullName, phoneNumber, status, aboutMe } = data;
             var profileData = new FormData();
             profileData.append("avatar", avatar);
-            profileData.append("emailAddress", emailAddress);
             profileData.append("fullName", fullName);
             profileData.append("phoneNumber", phoneNumber);
             profileData.append("status", status);
             profileData.append("aboutMe", aboutMe);
 
             const result = await supportApi({
-                url: `profile/johnDoe02@gmail.com`,
+                url: `user/johnDoe02@gmail.com/profile`,
                 method: "PUT",
                 headers: {
                     "Content-Type": "multipart/form-data"
                 },
                 data: profileData
             });
-            alert("Profile updated.")
+            setUserDetails(result.data);
         } catch (err) {
             console.log(err)
         }
@@ -82,7 +74,7 @@ const BasicDetails = () => {
                         required={false}
                         control={{
                             as: "textarea",
-                            placeHolder: "Describe about you...",
+                            placeholder: "Describe about you...",
                             style: { fontSize: "14px"},
                             rows: 5
                         }}

@@ -24,7 +24,7 @@ const HookForm: React.FC<HookFormProps> = ({
         event?.stopPropagation();
         if (Object.keys(methods.formState.errors).length === 0) {
             console.log(`Form data: ${data}`)
-            onSubmit(data);
+            onSubmit(data, event);
         }
     }
 
