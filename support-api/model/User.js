@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Profile = require('./Profile');
+const AccountSettings = require('./AccountSettings');
 
 const userSchema = new mongoose.Schema({
     emailAddress: {
@@ -20,6 +21,7 @@ const userSchema = new mongoose.Schema({
         requires: true
     },
     profile: Profile,
+    accountSettings: AccountSettings,
     refreshToken: {
         type: String
     }
