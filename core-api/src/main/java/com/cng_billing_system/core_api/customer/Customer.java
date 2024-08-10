@@ -19,9 +19,9 @@ import static jakarta.persistence.CascadeType.REMOVE;
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_seq")
-    @SequenceGenerator(name = "customer_id_seq", sequenceName = "customer_id_seq", allocationSize = 1, initialValue = 1200)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "customer_id_seq")
+//    @SequenceGenerator(name = "customer_id_seq", sequenceName = "customer_id_seq", allocationSize = 1, initialValue = 1200)
     private Long id;
 
     @Column(name = "account_number", length = 16)
@@ -55,7 +55,7 @@ public class Customer {
     @JsonIgnore
     private List<Document> documents;
 
-    @PrePersist
+    @PrePersist // TODO: Later implement in separate IdentifierGenerator
     private void generateAccountNumber() {
         String PREFIX = "CG";
         this.setAccountNumber(PREFIX + id);

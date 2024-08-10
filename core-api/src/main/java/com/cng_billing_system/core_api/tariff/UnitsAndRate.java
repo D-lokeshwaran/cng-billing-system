@@ -3,6 +3,7 @@ package com.cng_billing_system.core_api.tariff;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.math.BigDecimal;
 
@@ -15,6 +16,14 @@ public class UnitsAndRate {
 
     private String toUnit;
 
-    private BigDecimal ratePerUnit;
+    private String ratePerUnit;
 
+    @Override
+    public String toString() {
+        return "UnitsAndRate{" +
+                "fromUnit=" + fromUnit +
+                ", toUnit='" + toUnit + '\'' +
+                ", ratePerUnit=" + ratePerUnit +
+                '}';
+    }
 }

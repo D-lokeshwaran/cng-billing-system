@@ -1,6 +1,6 @@
 package com.cng_billing_system.core_api.document;
 
-import com.cng_billing_system.core_api.AuditModel;
+import com.cng_billing_system.core_api.audit.AuditModel;
 import com.cng_billing_system.core_api.customer.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
