@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import FlexBox from "src/components/common/FlexBox";
 import { useRouter } from "src/hooks";
 import Overview from "./Overview";
+import { ActivityLogs } from "./ActivityLogs";
 import { Settings } from "./Settings";
 import profileCover from "src/assets/img/profile-cover.svg";
 import { useUserContext } from "src/context/UserContext";
@@ -55,7 +56,7 @@ const Profile = ({ pageId }) => {
             <Tab.Content className="mt-4 mb-3">
                 <Tab.Pane eventKey="overview"><Overview/></Tab.Pane>
                 <Tab.Pane eventKey="settings"><Settings/></Tab.Pane>
-                <Tab.Pane eventKey="activity-log">Activity log tab</Tab.Pane>
+                <Tab.Pane eventKey="activity-log"><ActivityLogs/></Tab.Pane>
             </Tab.Content>
         </Tab.Container>
     )

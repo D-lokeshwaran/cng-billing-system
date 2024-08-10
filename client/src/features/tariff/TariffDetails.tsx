@@ -17,15 +17,15 @@ const defaultTariffUnits = [
    {
        fromUnit: 1,
        toUnit: 100,
-       ratePerUnit: 2.43
+       ratePerUnit: 2.00
    }, {
        fromUnit: 101,
        toUnit: 200,
-       ratePerUnit: 5.6
+       ratePerUnit: 5.00
    }, {
        fromUnit: 201,
        toUnit: 300,
-       ratePerUnit: 9.3
+       ratePerUnit: 9.00
    },
 ]
 
@@ -37,7 +37,7 @@ const TariffDetails = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if (tariffId != "new") {
+        if (tariffId && tariffId != "new") {
             retrieveTariff(tariffId);
         } else {
             setTariff(null);

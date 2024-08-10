@@ -1,4 +1,4 @@
-package com.cng_billing_system.core_api;
+package com.cng_billing_system.core_api.audit;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
