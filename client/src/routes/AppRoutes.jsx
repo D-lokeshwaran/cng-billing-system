@@ -15,6 +15,8 @@ const CustomerList = lazy(() => import('src/features/customer/CustomerList'));
 const CustomerDetail = lazy(() => import('src/features/customer/CustomerDetail'));
 const TariffList = lazy(() => import('src/features/tariff/TariffList'));
 const TariffDetails = lazy(() => import('src/features/tariff/TariffDetails'));
+const UserList = lazy(() => import('src/features/user/UserList'));
+const UserDetails = lazy(() => import('src/features/user/UserDetails'));
 
 const Error404 = lazy(() => import("src/features/error/Error404"));
 const Profile = lazy(() => import("src/features/profile/Profile"));
@@ -53,6 +55,13 @@ const AppRoutes = () => {
                               <Route path="overview" element={<Profile pageId="overview"/>}/>
                               <Route path="settings" element={<Profile pageId="settings"/>}/>
                               <Route path="activity-log" element={<Profile pageId="activity-log"/>}/>
+                         </Route>
+
+                         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} /> }>
+                              <Route path="users">
+                                    <Route index element={<UserList/>}/>
+                                    <Route path=":emailAddress" element={<UserDetails/>}/>
+                              </Route>
                          </Route>
                     </Route>
 

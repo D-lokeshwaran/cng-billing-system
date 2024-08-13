@@ -6,20 +6,20 @@ import AccountSettings from "./AccountSettings"
 import UpdatePassword from "./UpdatePassword"
 import { createContext, useContext } from "react";
 
-const Settings = () => {
+const Settings = ({ readonly, readonlyUser }) => {
 
     return (
         <Row>
             <Col sm={6} lg={7}>
-                <BasicDetails/>
+                <BasicDetails {...{readonly, readonlyUser}}/>
             </Col>
             <Col>
                 <Row className="g-3 flex-column" >
                     <Col>
-                        <AccountSettings/>
+                        <AccountSettings {...{readonly, readonlyUser}}/>
                     </Col>
                     <Col>
-                        <UpdatePassword/>
+                        {!readonly && <UpdatePassword/>}
                     </Col>
                 </Row>
             </Col>

@@ -17,7 +17,7 @@ interface BasicDetailsType {
     aboutMe: string
 }
 
-const BasicDetails = () => {
+const BasicDetails = ({ readonly, readonlyUser }) => {
 
     const { user } = useAuth();
     const { userDetails, setUserDetails } = useUserContext();
@@ -25,6 +25,11 @@ const BasicDetails = () => {
         emailAddress: userDetails?.emailAddress,
         avatar: userDetails?.avatar,
         ...userDetails?.profile
+    }
+    const readonlyUserDetails = {
+        emailAddress: readonlyUser?.emailAddress,
+        avatar: readonlyUser?.avatar,
+        ...readonlyUser?.profile
     }
 
     const handleEditDetails: SubmitHandler<BasicDetailsType> = async (data, event) => {
@@ -54,15 +59,15 @@ const BasicDetails = () => {
     return (
         <Card>
             <Card.Header><h3 className="mb-0">Details</h3></Card.Header>
-            <HookForm onSubmit={handleEditDetails} defaultValues={basicDetails}>
+            <HookForm onSubmit={handleEditDetails} defaultValues={readonly ? readonlyUserDetails : basicDetails}>
                 <Card.Body>
-                    <AvatarUploadInput/>
-                    <Input field={{state: "emailAddress", title: "Email Address"}} control={{disabled: false}}/>
-                    <Input field={{state: "fullName", title: "Full Name"}}/>
-                    <Input field={{state: "phoneNumber", title: "Phone Number"}}/>
+                    <AvatarUploadInput control={{disabled: readonly}}/>
+                    <Input field={{state: "emailAddress", title: "Email Address"}} control={{disabled: true}}/>
+                    <Input field={{state: "fullName", title: "Full Name"}} control={{disabled: readonly}}/>
+                    <Input field={{state: "phoneNumber", title: "Phone Number"}} control={{disabled: readonly}}/>
                     <Input
                         field={{state: "status", title: "Status", type: "select"}}
-                        control={{defaultValue: "onDuty"}}
+                        control={{defaultValue: "onDuty", disabled: readonly}}
                         required={false}
                     >
                         <option value="leave">Leave</option>
@@ -76,14 +81,15 @@ const BasicDetails = () => {
                             as: "textarea",
                             placeholder: "Describe about you...",
                             style: { fontSize: "14px"},
-                            rows: 5
+                            rows: 5,
+                            disabled: readonly
                         }}
                     />
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-end">
+                {!readonly && <Card.Footer className="d-flex justify-content-end">
                     <Button size="sm" variant="secondary" type="reset" className="me-3">reset</Button>
                     <Button size="sm" type="submit">Update</Button>
-                </Card.Footer>
+                </Card.Footer>}
             </HookForm>
         </Card>
     )

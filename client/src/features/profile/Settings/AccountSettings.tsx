@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useUserContext } from "src/context/UserContext";
 import { AccountSettingsType } from "../type";
 
-const AccountSettings = () => {
+const AccountSettings = ({ readonly, readonlyUser }) => {
 
     const { userDetails, setUserDetails } = useUserContext();
     const { register, watch } = useForm<AccountSettingsType>({
@@ -33,18 +33,21 @@ const AccountSettings = () => {
                         {...registerSetting("whoCanView")}
                         value="everyone"
                         label="Everyone"
+                        disabled={readonly}
                     />
                     <Form.Check
                         type="radio"
                         {...registerSetting("whoCanView")}
                         value="myCustomers"
                         label="My Customers"
+                        disabled={readonly}
                     />
                     <Form.Check
                         type="radio"
                         {...registerSetting("whoCanView")}
                         value="onlyMe"
                         label="Only me"
+                        disabled={readonly}
                     />
                 </div>
                 <div>
@@ -53,11 +56,13 @@ const AccountSettings = () => {
                         type="checkbox"
                         {...registerSetting("communicateViaEmail")}
                         label="Email address"
+                        disabled={readonly}
                     />
                     <Form.Check
                         type="checkbox"
                         {...registerSetting("communicateViaPhoneNumber")}
                         label="Phone number"
+                        disabled={readonly}
                     />
                 </div>
                 <hr/>
@@ -66,11 +71,13 @@ const AccountSettings = () => {
                     type="checkbox"
                     {...registerSetting("allowDeleteLogs")}
                     label="Delete Activity logs after 30 days"
+                    disabled={readonly}
                 />
                 <Form.Check
                     type="checkbox"
                     {...registerSetting("showAboutMe")}
                     label="Allow user to show your About me."
+                    disabled={readonly}
                 />
             </Card.Body>
         </Card>

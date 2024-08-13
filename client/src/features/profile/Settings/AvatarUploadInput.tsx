@@ -48,6 +48,7 @@ const AvatarUploadInput = ({...props}) => {
                     name="avatar"
                     hidden
                     ref={imageRef}
+                    {...props.control}
                     onChange={handlePreview}
                 />
                 <FlexBox
