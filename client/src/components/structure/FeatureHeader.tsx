@@ -19,7 +19,7 @@ const FeatureHeader: React.FC<FeatureHeaderProps> = ({
                 <Col sm='auto' xs>
                     <h3>{title}</h3>
                 </Col>
-                <Col>
+                <Col sm='auto' xs>
                     {children}
                 </Col>
             </Row>
