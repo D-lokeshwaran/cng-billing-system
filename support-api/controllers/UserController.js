@@ -9,19 +9,52 @@ const bcrypt = require('bcrypt');
 // NOTE: all controller are called after verified emailAddress, so no need to
 //       verify email addresses. and it will return request with req.foundUser
 
+const handleRetrieveAllUsers = async (req, res) => {
+    const foundUsers = await User.find({});
+    if (!foundUsers) {
+        res.sendStatus(401);
+        return;
+    }
+    var allUsers = [];
+    for (var i=0; i < foundUsers.length; i++) {
+        let foundUser = foundUsers[i];
+        const fileName = foundUser.profile.avatarFileName;
+        const avatar = await getAvatarURLByFileName(fileName);
+        if (avatar) {
+            foundUser.avatar = avatar;
+            const { password, emailAddress, profile, accountSettings, roles} = foundUser;
+            allUsers.push({
+                "avatar": avatar,
+                "emailAddress": emailAddress,
+                "profile": profile,
+                "accountSettings": accountSettings,
+                "role": roles
+            })
+        }
+    }
+    res.status(200).json(allUsers);
+}
+
+const getAvatarURLByFileName = async (fileName) => {
+    let fileType = path.extname(fileName).replace(".", "");
+    var filePath = path.join(__dirname, "..", "avatars", fileName);
+    if (fs.existsSync(filePath)) {
+        var avatarFile = await fsPromises.readFile(filePath);
+        var base64BinaryAvatar = avatarFile.toString("base64");
+        const avatar = `data:image/${fileType};base64,${base64BinaryAvatar}`
+        return avatar;
+    }
+    return null;
+}
+
 const handleRetrieveUser = async (req, res) => {
     const foundUser = req.foundUser;
     let avatarFileName = foundUser.profile.avatarFileName;
-    let fileType = path.extname(avatarFileName).replace(".", "");
-    var filePath = path.join(__dirname, "..", "avatars", avatarFileName);
 
     try {
-        if (fs.existsSync(filePath)) {
-            var avatarFile = await fsPromises.readFile(filePath);
-            var base64BinaryAvatar = avatarFile.toString("base64");
-            const { password, emailAddress, profile, accountSettings, roles} = foundUser;
-            const avatar = `data:image/${fileType};base64,${base64BinaryAvatar}`
-
+        const { password, emailAddress, profile, accountSettings, roles} = foundUser;
+        const avatar = await getAvatarURLByFileName(avatarFileName);
+        if (avatar) {
             res.status(200).json({
                 "avatar": avatar,
                 "emailAddress": emailAddress,
@@ -125,6 +158,7 @@ const handleUpdatePassword = async (req, res) => {
 }
 
 module.exports = {
+    handleRetrieveAllUsers,
     handleRetrieveUser,
     handleUpdateProfile,
     handleUpdateAccountSettings,

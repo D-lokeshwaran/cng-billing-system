@@ -3,6 +3,7 @@ const router = express.Router();
 const { upload } = require("../middleware/fileHandler");
 const verifyEmailAddress = require("../middleware/verifyEmailAddress");
 const {
+    handleRetrieveAllUsers,
     handleRetrieveUser,
     handleUpdateProfile,
     handleUpdateAccountSettings,
@@ -10,6 +11,7 @@ const {
 } = require("../controllers/UserController")
 
 router.use("/:emailAddress", verifyEmailAddress)
+router.get("/", handleRetrieveAllUsers);
 router.get("/:emailAddress", handleRetrieveUser);
 router.put("/:emailAddress/profile", upload.single('avatar'), handleUpdateProfile, handleRetrieveUser);
 router.put("/:emailAddress/accountSettings", handleUpdateAccountSettings, handleRetrieveUser);
