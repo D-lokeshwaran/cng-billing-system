@@ -1,5 +1,6 @@
 import React from "react";
 import { Table as BSTable } from "react-bootstrap";
+import { useAppContext } from "src/context/AppContext";
 
 type Column = {
     attr: string,
@@ -17,8 +18,10 @@ export const SimpleTable: React.FC<SimpleTableProps> = ({
     data
 }) => {
 
+    const { config: { theme }} = useAppContext();
+
     return (
-        <BSTable striped bordered hover variant="light">
+        <BSTable striped bordered hover variant={theme}>
             <thead>
                 <tr>
                     {columns?.map(col => (

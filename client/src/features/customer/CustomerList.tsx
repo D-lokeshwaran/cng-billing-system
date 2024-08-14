@@ -3,7 +3,8 @@ import customerSlice, { Customer } from './customerSlice';
 import TanStackTable from 'src/components/table/TanStackTable';
 import { createColumnHelper } from '@tanstack/react-table';
 import DefaultRowActions from 'src/components/common/DefaultRowActions'
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Row, Col } from 'react-bootstrap';
+import FeatureHeader from "src/components/structure/FeatureHeader";
 import { useRouter, useTableAdapter } from 'src/hooks';
 import ExportData from 'src/components/common/ExportData';
 import SearchBoxInput from 'src/components/common/SearchBoxInput';
@@ -71,32 +72,43 @@ const CustomerList: FC = () => {
 
     return (
         <div>
-            <Button 
-                variant="success"
-                onClick={handleAddCustomer}
-            >
-                + Customer
-            </Button>
+            <FeatureHeader title="Customers" className="justify-content-between">
+                <Button
+                    variant="success"
+                    onClick={handleAddCustomer}
+                >
+                    + Customer
+                </Button>
+            </FeatureHeader>
             <Card>
-                {selectedRowsCount > 0  ?
-                    <Card.Header as={FlexBox} justify="between">
-                        <div>{`${selectedRowsCount} Rows selected`}</div>
-                        <Delete02Icon onClick={handleBulkDelete}/>
-                    </Card.Header> :
-                    <Card.Header>
-                        <SearchBoxInput
-                            value={table.getState().globalFilter ?? ''}
-                            onChange={(value) => table.setGlobalFilter(String(value))}
-                            debounce={200}
-                        />
-                        <ColumnChooser table={table} displayColumns={["rowSelect", "actions"]}/>
-                        <ExportData filename="customers" table={table}/>
-                    </Card.Header>
-                }
-                <Card.Body>
+                <div className="py-2">
+                    {selectedRowsCount > 0  ?
+                        <Card.Header as={FlexBox} justify="between">
+                            <div>{`${selectedRowsCount} Rows selected`}</div>
+                            <Delete02Icon onClick={handleBulkDelete}/>
+                        </Card.Header> :
+                        <Card.Header as={Row} className="justify-content-between mb-0">
+                            <Col lg="4" md="3">
+                                <SearchBoxInput
+                                    value={table.getState().globalFilter ?? ''}
+                                    onChange={(value) => table.setGlobalFilter(String(value))}
+                                    debounce={200}
+                                />
+                            </Col>
+                            <Col sm="auto" xs className="d-flex">
+                                <ColumnChooser
+                                    table={table}
+                                    displayColumns={["rowSelect", "actions"]}
+                                />
+                                <ExportData filename="customers" table={table}/>
+                            </Col>
+                        </Card.Header>
+                    }
+                </div>
+                <Card.Body className="p-0 table-container">
                     <TanStackTable table={table} rowProps={getRowProps}/>
                 </Card.Body>
-                <Card.Footer>
+                <Card.Footer> {/* rgb(23 26 51) rgb(58 59 69 / 53%) */}
                     <Pagination table={table}/>
                 </Card.Footer>
             </Card>

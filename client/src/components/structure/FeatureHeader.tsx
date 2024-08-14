@@ -1,33 +1,49 @@
 import React from 'react';
 import { Breadcrumb, Row, Col } from 'react-bootstrap';
+import { Link, useLocation } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
+import FlexBox from "src/components/common/FlexBox";
 
 interface FeatureHeaderProps {
-    title: string,
-    className: string,
+    title: String,
+    className: String,
+    breadcrumbs: {
+        title: String,
+        path: String
+    }[],
     children?: React.ReactNode
 }
 
 const FeatureHeader: React.FC<FeatureHeaderProps> = ({
     title,
     className,
-    children
+    breadcrumbs,
+    children,
 }) => {
 
+    const location = useLocation();
+
     return (
-        <header>
+        <header className="mb-3">
+            <Helmet>
+                <title>CNG {title || "Billing System"}</title>
+            </Helmet>
             <Row className={className}>
                 <Col sm='auto' xs>
-                    <h3>{title}</h3>
+                    <h3 className="mb-0">{title}</h3>
                 </Col>
                 <Col sm='auto' xs>
                     {children}
                 </Col>
             </Row>
-            <Breadcrumb>
-                <Breadcrumb.Item href="/dashboard">Dashboard</Breadcrumb.Item>
-                <Breadcrumb.Item href="/customers">customers</Breadcrumb.Item>
-                <Breadcrumb.Item active>create customer</Breadcrumb.Item>
-            </Breadcrumb>
+            <FlexBox>
+                {breadcrumbs ?
+                    breadcrumbs.map(crumb =>
+                        <Link to={crumb.path}>{crumb.title}</Link>
+                    )
+                    : <Link to="/dashboard">Dashboard</Link>
+                }
+            </FlexBox>
         </header>
     )
 

@@ -1,5 +1,6 @@
 import React, { HTMLAttributes } from "react";
 import { Table as BSTable } from "react-bootstrap";
+import { useAppContext } from "src/context/AppContext";
 import { RowData, Table, flexRender } from '@tanstack/react-table';
 
 interface TanStackTableProps {
@@ -16,9 +17,10 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
         getHeaderGroups, 
         getRowModel,
     } = table;
+    const { config: { theme }} = useAppContext();
 
     return (
-        <BSTable striped bordered hover variant="light">
+        <BSTable striped bordered hover variant={theme}>
             <thead>
                 {getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>

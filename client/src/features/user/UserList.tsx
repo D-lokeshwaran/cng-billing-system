@@ -37,15 +37,16 @@ const UserList = () => {
 
     return (
         <div>
-            <FeatureHeader title="User" className="justify-content-between">
+            <FeatureHeader title="Users" className="justify-content-between">
                 <Button
                     variant="success"
+                    disabled
                     onClick={() => router.push(`/users/new`)}
                 >
                     + Add User
                 </Button>
             </FeatureHeader>
-            <Card>
+            <Card className="mt-3">
                 <Card.Header>
                     <Row className="justify-content-between">
                         <Col lg="4">

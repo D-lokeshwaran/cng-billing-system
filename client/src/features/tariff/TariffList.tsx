@@ -7,6 +7,7 @@ import TariffDetails from './TariffDetails';
 import { useTableAdapter } from 'src/hooks';
 import { coreApi } from "src/utils/api";
 import TanStackTable from "src/components/table/TanStackTable";
+import FeatureHeader from "src/components/structure/FeatureHeader";
 import Pagination from "src/components/table/Pagination";
 
 const TariffList: FC = () => {
@@ -43,14 +44,25 @@ const TariffList: FC = () => {
 
     return (
         <div>
-            <Button 
-                variant="success"
-                onClick={() => router.push(`/tariffs/new`)}
-            >
-                + Tariff
-            </Button>
-            <TanStackTable table={table} rowProps={getRowProps} />
-            <Pagination table={table} />
+            <FeatureHeader title="Tariffs" className="justify-content-between">
+                <Button
+                    variant="success"
+                    onClick={() => router.push(`/tariffs/new`)}
+                >
+                    + Tariff
+                </Button>
+            </FeatureHeader>
+            <Card>
+                <Card.Header>
+
+                </Card.Header>
+                <Card.Body className="p-0">
+                    <TanStackTable table={table} rowProps={getRowProps} />
+                </Card.Body>
+                <Card.Footer>
+                    <Pagination table={table} />
+                </Card.Footer>
+            </Card>
         </div>
     );
 

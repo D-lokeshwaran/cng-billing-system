@@ -30,6 +30,8 @@ function AppContextProvider({ children }: {children: React.ReactNode}) {
     }
 
     useEffect(() => {
+        localforage.getItem("config")
+            .then(val => setAppConfig({...val}))
         document.documentElement.setAttribute(
             'data-bs-theme',
             config?.theme == "dark" ? 'dark' : 'light'

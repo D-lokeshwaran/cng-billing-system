@@ -9,15 +9,15 @@ import UserContextProvider from 'src/context/UserContext';
 const DashboardLayout = () => {
 
     return (
-        <div>
+        <div className="app-layout">
             <Row className="g-0">
-                <Col className="sidebar-container position-fixed h-100" style={{ width: "15.625rem"}}>
+                <Col className="sidebar-wrapper p-0" sm="auto" >
                     <SideBar/>
                 </Col>
-                <Col className="outlet-container container" style={{marginLeft: "15.625rem"}}>
+                <Col>
                     <UserContextProvider>
                         <TopContentBar/>
-                        <div>
+                        <div className="outlet-container container">
                             <Outlet/>
                             <PageLoading/>
                         </div>

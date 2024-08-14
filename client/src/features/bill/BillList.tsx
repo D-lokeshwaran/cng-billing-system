@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import { useRouter, useTableAdapter } from 'src/hooks';
 import { ACTIONS } from 'src/constants/labels';
 import ColumnChooser from 'src/components/table/ColumnChooser';
+import FeatureHeader from 'src/components/structure/FeatureHeader';
 import ExportData from 'src/components/common/ExportData';
 import TanStackTable from 'src/components/table/TanStackTable';
 import Pagination from 'src/components/table/Pagination';
@@ -99,13 +100,15 @@ const CustomerList: FC = () => {
 
     return (
         <div>
-            <Button 
-                variant="success"
-                onClick={handleAddCustomer}
-            >
-                + {ACTIONS.BILL}
-            </Button>
-            <section>
+            <FeatureHeader title="Bills" className="justify-content-between">
+                <Button
+                    variant="success"
+                    onClick={handleAddCustomer}
+                >
+                    + {ACTIONS.BILL}
+                </Button>
+            </FeatureHeader>
+            <section className="mt-3">
                 <Card>
                     {selectedRowsCount > 0  ?
                         <Card.Header as={FlexBox} justify="between">

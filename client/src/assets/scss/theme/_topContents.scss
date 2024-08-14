@@ -1,0 +1,11 @@
+
+.bg-glass {
+    backdrop-filter: blur(1px);
+    background-color: rgb(255 255 255 / 82%);
+}
+[data-bs-theme="dark"]
+.bg-glass {
+    background-color: rgb(20 26 33 / 53%);
+}
+
+

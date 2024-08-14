@@ -1,4 +1,10 @@
-import DashboardIcon from 'src/assets/icons/hui_dashboard.svg';
+import {
+    Analytics02Icon,
+    UserGroupIcon,
+    Invoice01Icon,
+    CouponPercentIcon,
+    UserMultiple02Icon
+} from "hugeicons-react";
 import ROLES from 'src/constants/ROLES';
 
 type sideBarMenu = {
@@ -12,31 +18,31 @@ export const sideBarMenu: sideBarMenu[] = [
     {
         title: "Dashboard",
         path: "/dashboard",
-        icon: DashboardIcon,
+        icon: Analytics02Icon,
         allowedRoles: [ROLES.Admin, ROLES.Operator]
     },
     {
         title: "Customers",
         path: "/customers",
-        icon: DashboardIcon,
+        icon: UserGroupIcon,
         allowedRoles: [ROLES.Admin, ROLES.Operator]
     },
     {
         title: "Bills",
         path: "/bills",
-        icon: DashboardIcon,
+        icon: Invoice01Icon,
         allowedRoles: [ROLES.Admin, ROLES.Operator, ROLES.Customer]
     },
     {
         title: "Tariff",
         path: "/tariffs",
-        icon: DashboardIcon,
+        icon: CouponPercentIcon,
         allowedRoles: [ROLES.Admin, ROLES.Operator]
     },
     {
         title: "Users",
         path: "/users",
-        icon: DashboardIcon,
+        icon: UserMultiple02Icon,
         allowedRoles: [ROLES.Admin]
     }
 ]

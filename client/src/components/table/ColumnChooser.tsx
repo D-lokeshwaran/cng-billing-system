@@ -16,7 +16,7 @@ const ColumnChooser: React.FC<ColumnChooserProps> = ({
     return (
         <div>
             <Dropdown size="sm">
-                <Dropdown.Toggle size="sm">
+                <Dropdown.Toggle size="sm" variant="ghost">
                     columns
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="w-50">
