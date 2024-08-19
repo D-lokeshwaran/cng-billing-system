@@ -1,9 +1,10 @@
 const User = require('../model/User');
-const bcrypt = require('bcrypt');
+const { v4: uuid } = require('uuid');
+const { sendFollowUpEmail } = require('../service/emailService');
 
 const handleNewUser = async (req, res) => {
-    const { emailAddress, password, fullName, ...profile } = req.body;
-    if (!emailAddress || !password) {
+    const { emailAddress, password, fullName, role, ...profile } = req.body;
+    if (!emailAddress) {
         return res.status(400).json({ "message": "emailAddress and password are required."});
     }
 
@@ -13,16 +14,17 @@ const handleNewUser = async (req, res) => {
     }
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 12)
+        const oneTimePassword = uuid().replaceAll('-', '').substring(0, 11);
         const result = await User.create({
             "emailAddress": emailAddress,
-            "password": hashedPassword,
+            "oneTimePassword": oneTimePassword,
+            "role": role,
             "profile": {
                 fullName,
                 ...profile
             }
         });
-
+        await sendFollowUpEmail(emailAddress, fullName, oneTimePassword);
         res.status(201).json({'success': `New user ${fullName} created!`});
     } catch (err) {
         res.status(500).json({"message": err.message})

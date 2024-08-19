@@ -22,13 +22,13 @@ const handleRetrieveAllUsers = async (req, res) => {
         const avatar = await getAvatarURLByFileName(fileName);
         if (avatar) {
             foundUser.avatar = avatar;
-            const { password, emailAddress, profile, accountSettings, roles} = foundUser;
+            const { password, emailAddress, profile, accountSettings, role} = foundUser;
             allUsers.push({
                 "avatar": avatar,
                 "emailAddress": emailAddress,
                 "profile": profile,
                 "accountSettings": accountSettings,
-                "role": roles
+                "role": role
             })
         }
     }
@@ -52,7 +52,7 @@ const handleRetrieveUser = async (req, res) => {
     let avatarFileName = foundUser.profile.avatarFileName;
 
     try {
-        const { password, emailAddress, profile, accountSettings, roles} = foundUser;
+        const { password, emailAddress, profile, accountSettings, role} = foundUser;
         const avatar = await getAvatarURLByFileName(avatarFileName);
         if (avatar) {
             res.status(200).json({
@@ -60,7 +60,7 @@ const handleRetrieveUser = async (req, res) => {
                 "emailAddress": emailAddress,
                 "profile": profile,
                 "accountSettings": accountSettings,
-                "role": roles
+                "role": role
             });
         } else {
             res.sendStatus(400);
@@ -84,7 +84,8 @@ const handleUpdateProfile = async (req, res, next) => {
             // rename the saved file as fullName and _avatar if different file name delete previous file
             const savedFileName = foundUser.profile.avatarFileName;
             const fileName = `${foundUser.emailAddress}_avatar${path.extname(file.originalname)}`;
-            if (foundUser.profile.avatarFileName !== fileName) {
+            console.log(savedFileName, fileName);
+            if (savedFileName && foundUser.profile.avatarFileName !== fileName) {
                 var savedFilePath = path.join(__dirname, "..", "avatars", savedFileName);
                 if (fs.existsSync(savedFilePath)) {
                     await fsPromises.unlink(savedFilePath);

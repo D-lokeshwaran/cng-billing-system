@@ -12,14 +12,24 @@ const handleLogin = async (req, res) => {
         return res.sendStatus(401); // unauthorized
     }
 
+    if (foundUser.oneTimePassword) {
+        if (password === foundUser.oneTimePassword) {
+            res.status(200).json({
+                emailAddress: foundUser.emailAddress,
+                role: foundUser.role
+            })
+        } else {
+            res.sendStatus(401);
+        }
+        return;
+    }
     const match = await bcrypt.compare(password, foundUser.password);
     if (match) {
-        const roles = Object.values(foundUser.roles);
         const accessToken = jwt.sign(
             {
                 "UserInfo": {
                     "emailAddress": foundUser.emailAddress,
-                    "roles": roles
+                    "role": foundUser.role
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
@@ -42,11 +52,11 @@ const handleLogin = async (req, res) => {
             secure: true,
             maxAge: 24 * 60 * 60 * 1000
         }); // in production secure: true,
-        let { password, ...user} = foundUser;
+        let { password, oneTimePassword, ...user} = foundUser;
         res.json({
             accessToken,
             emailAddress: foundUser.emailAddress,
-            roles: foundUser.roles
+            role: foundUser.role
         })
     } else {
         res.sendStatus(401);

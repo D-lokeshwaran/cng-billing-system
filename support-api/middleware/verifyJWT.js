@@ -2,16 +2,19 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/User');
 
 const verifyJWT = (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) {
-        return res.status(401);
+    const cookies = req.cookies;
+    if (!cookies?.jwt) {
+        return res.sendStatus(204);
     }
+    const token = cookies.jwt;
+    console.log(token);
 
     jwt.verify(
         token,
-        process.env.SECRET_TOKEN,
+        process.env.REFRESH_TOKEN_SECRET,
         (err, decodedData) => {
-            next(err)
+            if (err) return res.status(403).json({'message': err.message});
+            next();
         }
     )
 }

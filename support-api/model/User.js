@@ -5,21 +5,15 @@ const AccountSettings = require('./AccountSettings');
 const userSchema = new mongoose.Schema({
     emailAddress: {
         type: String,
-        unique: true,
         requires: true
     },
-    roles: {
-        Admin: {
-            type: Number,
-            default: 2001
-        },
-        Operator: Number,
-        Customer: Number
-    },
-    password: {
+    role: {
         type: String,
-        requires: true
+        requires: true,
+        default: "Admin"
     },
+    password: String,
+    oneTimePassword: String,
     profile: Profile,
     accountSettings: AccountSettings,
     refreshToken: {

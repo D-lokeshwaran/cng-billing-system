@@ -12,6 +12,7 @@ const connectDB = require('./config/dbConnection');
 
 const { logEvents, logger } = require('./middleware/logEvents');
 const errorHandler = require('./middleware/errorHandler');
+const verifyJWT = require('./middleware/verifyJWT');
 
 const PORT = process.env.PORT || 3600;
 dotenv.config();
@@ -31,6 +32,11 @@ app.use(cors(corsOptions));
 app.use('/register', require('./routes/register'));
 app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
+app.use('/recover-password', require('./routes/recoverPassword'));
+app.use('/reset-password', require('./routes/resetPassword'));
+app.use('/update-password', require('./routes/updatePassword'));
+
+app.use(verifyJWT);
 app.use('/logout', require('./routes/logout'));
 app.use('/user', require('./routes/user'));
 
