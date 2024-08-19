@@ -40,7 +40,7 @@ const Overview = () => {
                     <Card.Body>
                         <Row className="mt-3">
                             <Col>Full Name:</Col>
-                            <Col >{userDetails?.profile.fullName}</Col>
+                            <Col >{userDetails?.profile?.fullName}</Col>
                         </Row>
                         <Row className="mt-3">
                             <Col>Email address:</Col>
@@ -48,15 +48,15 @@ const Overview = () => {
                         </Row>
                         <Row className="mt-3">
                             <Col>Phone Number:</Col>
-                            <Col >{userDetails?.profile.phoneNumber}</Col>
+                            <Col >{userDetails?.profile?.phoneNumber}</Col>
                         </Row>
                         <Row className="mt-3">
                             <Col>Status:</Col>
-                            <Col >{userDetails?.profile.status}</Col>
+                            <Col >{userDetails?.profile?.status}</Col>
                         </Row>
                         <Row className="mt-3 mb-4">
                             <Col>About me:</Col>
-                            <Col>{userDetails?.profile.aboutMe}</Col>
+                            <Col>{userDetails?.profile?.aboutMe}</Col>
                         </Row>
                     </Card.Body>
                 </Card>

@@ -22,7 +22,7 @@ const BasicDetails = ({ readonly, readonlyUser }) => {
     const { user } = useAuth();
     const { userDetails, setUserDetails } = useUserContext();
     const basicDetails = {
-        emailAddress: userDetails?.emailAddress,
+        emailAddress: user?.emailAddress,
         avatar: userDetails?.avatar,
         ...userDetails?.profile
     }
@@ -43,7 +43,7 @@ const BasicDetails = ({ readonly, readonlyUser }) => {
             profileData.append("aboutMe", aboutMe);
 
             const result = await supportApi({
-                url: `user/johnDoe02@gmail.com/profile`,
+                url: `user/${user.emailAddress}/profile`,
                 method: "PUT",
                 headers: {
                     "Content-Type": "multipart/form-data"

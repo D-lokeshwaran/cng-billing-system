@@ -11,7 +11,7 @@ export default function Layout() {
 
     useEffect(() => {
         if (user.isAuthenticated) {
-            router.push(getDefaultRoute(ROLES.Admin))
+            router.push(getDefaultRoute(user?.role))
         } else {
             router.push('/login');
         }

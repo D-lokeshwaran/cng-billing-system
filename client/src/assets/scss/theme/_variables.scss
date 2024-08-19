@@ -79,7 +79,7 @@ $topbar-base-height: 4.375rem !default;
 // Change below variable to change the width of the sidenav
 $sidebar-base-width: 14rem !default;
 // Change below variable to change the width of the sidenav when collapsed
-$sidebar-collapsed-width: 14rem !default;
+$sidebar-collapsed-width: 15.673rem !default;
 
 // Card
 $card-cap-bg: $gray-100 !default;
@@ -114,3 +114,5 @@ $navbar-light-hover-color: $navbar-light-color;
 // body
 $body-bg-light: rgb(222 231 230 / 10%);
 $body-bg-dark: rgb(20 26 33) !default;
+$font-family-base: "Public Sans Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"

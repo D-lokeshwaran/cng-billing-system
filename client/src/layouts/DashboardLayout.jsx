@@ -17,7 +17,7 @@ const DashboardLayout = () => {
                 <Col>
                     <UserContextProvider>
                         <TopContentBar/>
-                        <div className="outlet-container container">
+                        <div className="outlet-container container px-3">
                             <Outlet/>
                             <PageLoading/>
                         </div>

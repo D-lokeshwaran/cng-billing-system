@@ -1,16 +1,18 @@
-import React from 'react'; 
+import React, { useState, useEffect } from 'react';
 import { sideBarMenu } from './sideBarMenu';
-import { Navbar, Nav, Container } from "react-bootstrap";
-import { Link } from "react-router-dom"
+import { Navbar, Nav, Container, Col, Row } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom"
 import { useAuth } from 'src/context/AuthContext';
 import { useAppContext } from 'src/context/AppContext';
 import { ArrowLeft01Icon, ArrowRight01Icon } from "hugeicons-react";
 import { useRouter, useToggle } from "src/hooks";
+import CNGLogo from "src/assets/img/cng-logo.svg";
 // ------------------------------------
 
 const SideBar = () => {
     const { user, verifyRole } = useAuth();
     const { config: { theme }} = useAppContext();
+    const pathname = useLocation().pathname;
     const [ showMenu, toggleMenu ] = useToggle();
 
     const router = useRouter();
@@ -25,10 +27,11 @@ const SideBar = () => {
                 variant={theme}
                 onToggle={showMenu}
             >
-                <Navbar.Brand className="mx-1 py-3 pb-2">
-                    CNG Billing System
+                <Navbar.Brand className="p-2 ps-1 m-0 g-0 ms-2 align-items-center pb-2" as={Row}>
+                    <Col sm="auto" xs><img src={CNGLogo} height={40} width={40}/></Col>
+                    <Col className="fs-4  ms-2">Billing System</Col>
                 </Navbar.Brand>
-                <Nav defaultActiveKey={filteredItems[0]?.path}  className="flex-column w-100 mt-4">
+                <Nav defaultActiveKey={filteredItems[0]?.path || pathname}  className="flex-column w-100 mt-4">
                     { filteredItems.map((nav, i) =>
                         <Nav.Item
                             key={i}
@@ -36,9 +39,9 @@ const SideBar = () => {
                             className="mx-1"
                             onClick={() => router.push(nav.path)}
                         >
-                            <Nav.Link eventKey={nav.path}>
+                            <Nav.Link eventKey={nav.path} className="d-flex align-items-center">
                                 <nav.icon className="me-3 ms-1" size={21} stroke-width={2}/>
-                                <span>{nav.title}</span>
+                                <h5 className="mb-0">{nav.title}</h5>
                             </Nav.Link>
                         </Nav.Item>
                     )}

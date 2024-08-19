@@ -35,9 +35,9 @@ const Profile = ({ pageId }) => {
                             width={100}
                             className="border rounded-4"
                         />
-                        <div className="m-4 mt-0 ms-3">
-                            <Card.Title className="mb-0">{userDetails?.profile.fullName}</Card.Title>
-                            <Card.Subtitle as="small" className="mb-2 text-muted">{userDetails?.role["Admin"] && "ADMIN"}</Card.Subtitle>
+                        <div className="m-4 mt-0 ms-3 text-dark">
+                            <Card.Title className="mb-0">{userDetails?.profile?.fullName}</Card.Title>
+                            <Card.Subtitle as="small" className="mb-2 text-secondary">{userDetails?.role}</Card.Subtitle>
                         </div>
                     </FlexBox>
                     <Nav variant="tabs" className="justify-content-end mt-3 me-2">

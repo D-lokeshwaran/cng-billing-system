@@ -3,7 +3,8 @@ import {
     UserGroupIcon,
     Invoice01Icon,
     CouponPercentIcon,
-    UserMultiple02Icon
+    UserMultiple02Icon,
+    UserIcon
 } from "hugeicons-react";
 import ROLES from 'src/constants/ROLES';
 
@@ -44,5 +45,11 @@ export const sideBarMenu: sideBarMenu[] = [
         path: "/users",
         icon: UserMultiple02Icon,
         allowedRoles: [ROLES.Admin]
+    },
+    {
+        title: "My Profile",
+        path: "/profile/overview",
+        icon: UserIcon,
+        allowedRoles: [ROLES.Customer]
     }
 ]

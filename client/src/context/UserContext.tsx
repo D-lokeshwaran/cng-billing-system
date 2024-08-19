@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import ProfileType from "src/features/profile/type";
+import { useAuth } from "src/context/AuthContext";
 import { supportApi } from "src/utils/api";
 
 const UserContext = createContext<ProfileType>(null!);
@@ -7,14 +8,16 @@ export const useUserContext = () => useContext(UserContext);
 
 function UserContextProvider({ children }) {
 
+    const { user } = useAuth();
     const [userDetails, setUserDetails] = useState<ProfileType | null>();
 
     useEffect(() => {
         retrieveUserDetails();
-    }, [])
+    }, [user.emailAddress])
 
     const retrieveUserDetails = async () => {
-        await supportApi.get(`user/johnDoe02@gmail.com`)
+        if (!user.emailAddress) return;
+        await supportApi.get(`user/${user.emailAddress}`)
             .then(result => {
                 const userDetails = result.data;
                 setUserDetails(userDetails);

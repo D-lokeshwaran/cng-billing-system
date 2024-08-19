@@ -3,17 +3,18 @@ import React, { createContext, useContext, useEffect, useLayoutEffect, useState 
 import { supportApi } from "src/utils/api";
 import { loginMethod } from "src/config";
 import ROLES from "src/constants/ROLES";
+import { getDefaultRoute } from "src/utils/navigation";
 
 type user = {
-    name: string,
-    roles: number[],
-    isAuthenticated: boolean
+    emailAddress: String,
+    role: String,
+    isAuthenticated: Boolean
 }
 
 interface AuthContextType {
     user: user;
     logIn: (emailAddress: string, password: string) => Promise<boolean>;
-    verifyRole: (allowedRoles: number[]) => boolean | null;
+    verifyRole: (allowedRoles: String[]) => boolean | null;
     logOut: (callback: VoidFunction) => void;
 }
 
@@ -26,7 +27,7 @@ export const useAuth = () => useContext(AuthContext);
 
 let initialUser = { 
     name: "", 
-    roles: [ROLES.Admin], 
+    role: ROLES.Admin,
     isAuthenticated: false 
 };
 
@@ -41,8 +42,10 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
         const fetchMe = async () => {
             try {
                 const response = await supportApi.get('/refresh', { withCredentials: true });
-                setToken(response?.data.accessToken);
-                setUser({...user, isAuthenticated: true})
+                const { emailAddress, accessToken, role } = response.data;
+                console.log(role)
+                setToken(accessToken);
+                setUser({ emailAddress, role, isAuthenticated: true })
             } catch {
                 setToken(null);
             }
@@ -106,31 +109,44 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
             }
             const response = await supportApi.post('/auth', {emailAddress, password});
             const { accessToken, ...userData } = response.data;
-            setToken(accessToken);
-            console.log(userData);
-            setUser({
-                ...user,
-                emailAddress: userData.emailAddress,
-                isAuthenticated: true
-            });
-            return true;
+            if (accessToken) {
+                setToken(accessToken);
+                console.log(userData);
+                setUser({
+                    ...user,
+                    emailAddress: userData.emailAddress,
+                    role: userData.role,
+                    isAuthenticated: true
+                });
+                return getDefaultRoute(loggedUser?.role)
+            } else {
+                setUser({
+                    ...user,
+                    emailAddress: userData.emailAddress,
+                    role: userData.role,
+                    isAuthenticated: false
+                });
+                return "/update-password"
+            }
+            return userData;
         }  catch (error) { 
             setToken(null);
             return false;
         }
     }
 
-    const verifyRole = (allowedRoles: number[]) => {
+    const verifyRole = (allowedRoles: String[]) => {
         if (!allowedRoles || !user.isAuthenticated) {
             return false;
         }
-        return user.roles.some(role => allowedRoles.includes(role));
+        return allowedRoles.includes(user.role);
     }
 
     const logOut = async (callback: VoidFunction) => {
         try {
             await supportApi.get('/logout');
-            setToken(null)
+            setToken(null);
+
         } catch (error) { 
             setToken(null);
         }
@@ -140,7 +156,10 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
         user,
         logIn,
         verifyRole,
-        logOut
+        logOut,
+        isCustomer: user.role === ROLES.Customer,
+        isAdmin: user.role === ROLES.Admin,
+        isOperator: user.role === ROLES.Operator,
     };
 
     return (

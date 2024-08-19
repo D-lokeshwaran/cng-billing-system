@@ -6,6 +6,6 @@ export const getDefaultRoute = (userRole) => {
     } else if (userRole === ROLES.Operator) {
          return '/dashboard'
     } else if (userRole === ROLES.Customer) {
-         return '/customer'
+         return '/bills'
     }
 }

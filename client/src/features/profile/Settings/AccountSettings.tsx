@@ -3,18 +3,20 @@ import { useForm } from "react-hook-form";
 import { supportApi } from "src/utils/api";
 import { useEffect } from "react";
 import { useUserContext } from "src/context/UserContext";
+import { useAuth } from "src/context/AuthContext";
 import { AccountSettingsType } from "../type";
 
 const AccountSettings = ({ readonly, readonlyUser }) => {
 
     const { userDetails, setUserDetails } = useUserContext();
+    const { user } = useAuth();
     const { register, watch } = useForm<AccountSettingsType>({
         values: userDetails?.accountSettings
     });
 
     const onChangeSettings = async () => {
         const watchAccountSettings = watch();
-        await supportApi.put("/user/johnDoe02@gmail.com/accountSettings", watchAccountSettings)
+        await supportApi.put(`/user/${user.emailAddress}/accountSettings`, watchAccountSettings)
             .then(result => setUserDetails(result.data));
     }
 

@@ -4,14 +4,16 @@ import ToggleTheme from "./ToggleTheme";
 import Notification from "./Notification";
 import ProfileDropdown from "./ProfileDropdown";
 import { Navbar, Container } from "react-bootstrap";
+import { useAuth } from "src/context/AuthContext";
 
 const TopContentBar = () => {
+    const { isCustomer } = useAuth();
 
     return (
         <Navbar sticky="top" className="justify-content-between bg-glass py-3">
-            <Container fluid>
+            <Container fluid className="px-3">
                 <div id="left">
-                    <GlobalSearchBox />
+                    {!isCustomer && <GlobalSearchBox />}
                 </div>
                 <FlexBox id="right">
                     <ToggleTheme/>

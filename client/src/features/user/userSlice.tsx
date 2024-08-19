@@ -34,9 +34,9 @@ const userSlice: SliceProps = {
         columnHelper.accessor('profile.phoneNumber', {
             header: "Phone Number"
         }),
-        columnHelper.accessor('roles', {
+        columnHelper.accessor('role', {
             header: "Role",
-            cell: ({ row }) => row.original.roles
+            cell: ({ row }) => row.original.role
         }),
         columnHelper.accessor('createdAt', {
             header: "Created At"

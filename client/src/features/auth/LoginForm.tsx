@@ -11,7 +11,7 @@ type LoginInputs = {
 
 export const LoginForm: React.FC = () => {
 
-  const { logIn } = useAuth();
+  const { user, logIn } = useAuth();
   const navigateTo = useNavigate();
   const { 
     register, 
@@ -20,10 +20,9 @@ export const LoginForm: React.FC = () => {
   } = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
-      if (await logIn(data.emailAddress, data.password)) {
-        navigateTo('/dashboard');
-      } else {
-        alert('Failed to login!')
+      const nextPath = await logIn(data.emailAddress, data.password)
+      if (nextPath) {
+        navigateTo(nextPath);
       }
   }
 
@@ -35,7 +34,7 @@ export const LoginForm: React.FC = () => {
       <Form onSubmit={handleSubmit(onSubmit)} className='d-grid gap-4'>
 
         <Form.Group>
-          <Form.Label aria-label='emailAddress'>Username</Form.Label>
+          <Form.Label aria-label='emailAddress'>Email Address</Form.Label>
           <Form.Control 
             type="text" 
             placeholder="John doe"

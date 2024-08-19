@@ -6,7 +6,7 @@
 
 .sidebar-container {
     min-height: 100vh;
-    width: fit-content;
+    width: $sidebar-collapsed-width;
     @extend .container-fluid;
     @extend .sticky-top;
     border-right: 1px dashed $gray-400;
@@ -40,9 +40,9 @@
                 display: flex;
                 align-items: center;
 
-                & span {
+                & h5 {
                     font-weight: 600;
-                    font-size: 0.9rem;
+                    font-size: 0.9732rem;
                     line-height: 1.57143;
                 }
                 &:hover {

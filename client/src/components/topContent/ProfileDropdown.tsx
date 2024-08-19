@@ -15,7 +15,7 @@ import FlexBox from "../common/FlexBox";
 
 const ProfileDropdown = () => {
 
-    const { logOut } = useAuth();
+    const { isCustomer, logOut } = useAuth();
     const { userDetails } = useUserContext();
     const router = useRouter();
 
@@ -28,7 +28,7 @@ const ProfileDropdown = () => {
         <Dropdown>
             <Dropdown.Toggle as="div" className="py-2">
                 <FlexBox className="cursor-pointer">
-                    <span className="me-2">{userDetails?.profile.fullName}</span>
+                    <span className="me-2">{userDetails?.profile?.fullName}</span>
                     {userDetails?.avatar ?
                         <img
                             src={userDetails.avatar}
@@ -41,9 +41,9 @@ const ProfileDropdown = () => {
                 </FlexBox>
             </Dropdown.Toggle>
             <Dropdown.Menu align="end">
-                <Dropdown.Item as={Link} to="/profile">
+                {!isCustomer && <Dropdown.Item as={Link} to="/profile">
                     <UserIcon size="18" className="me-2"/> My Profile
-                </Dropdown.Item>
+                </Dropdown.Item>}
                 <Dropdown.Item as={Link} to="/profile/settings">
                     <Settings02Icon size="18" className="me-2"/> Settings
                 </Dropdown.Item>

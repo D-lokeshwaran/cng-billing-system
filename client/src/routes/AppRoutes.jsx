@@ -7,6 +7,9 @@ import BillContextProvider from "src/context/BillContext";
 import { lazy } from "react";
 
 const Login = lazy(() => import('src/features/auth/Login'));
+const RecoverPassword = lazy(() => import('src/features/auth/RecoverPassword'));
+const ResetPassword = lazy(() => import('src/features/auth/ResetPassword'));
+const UpdatePassword = lazy(() => import('src/features/auth/UpdatePassword'));
 const Dashboard = lazy(() => import('src/features/dashboard/Dashboard'));
 
 const BillList = lazy(() => import('src/features/bill/BillList'));
@@ -25,6 +28,10 @@ const Profile = lazy(() => import("src/features/profile/Profile"));
 const AppRoutes = () => {
      return (
           <Routes>
+               <Route path="/recover-password" element={<RecoverPassword/>} />
+               <Route path="/reset-password" element={<ResetPassword/>} />
+               <Route path="/update-password" element={<UpdatePassword/>} />
+
                <Route path="/" element={<Layout/>}>
                     {/* Public Route */}
                     <Route path="/login" element={<Login/>} />

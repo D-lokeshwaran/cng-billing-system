@@ -2,16 +2,19 @@ import { Card, Button } from "react-bootstrap";
 import { useFormContext } from "react-hook-form";
 import HookForm from "src/components/form/HookForm";
 import Input from "src/components/form/Input";
+import { useAuth } from "src/context/AuthContext";
 import { supportApi } from "src/utils/api";
+import { useRef } from "react"
 
 const UpdatePassword = () => {
 
+    const { user } = useAuth();
+
     const handleUpdatePassword = async (data, event) => {
         const { oldPassword, newPassword } = data;
-        await supportApi.put("/user/johnDoe02@gmail.com/updatePassword", {
+        await supportApi.put(`/user/${user.emailAddress}/updatePassword`, {
             oldPassword, newPassword
-        })
-        .catch(err => alert(err))
+        }).catch(err => console.log(err))
     }
 
     return (
@@ -20,11 +23,11 @@ const UpdatePassword = () => {
                 <Card.Header className="fs-4">Update Password</Card.Header>
                 <Card.Body>
                     <Input
-                        field={{state: "oldPassword", title: "Old Password"}}
+                        field={{state: "oldPassword", title: "Old Password", type: "password"}}
                         required={false}
                     />
                     <Input
-                        field={{state: "newPassword", title: "New Password"}}
+                        field={{state: "newPassword", title: "New Password", type: "password"}}
                         required={false}
                     />
                     <ConfirmPassword/>
@@ -42,7 +45,7 @@ const ConfirmPassword = () => {
     const watchNewPassword = watch("newPassword");
     return (
         <Input
-            field={{state: "confirmPassword", title: "Confirm Password"}}
+            field={{state: "confirmPassword", title: "Confirm Password", type: "password"}}
             required={false}
             validate={{
                 validConfirm: (v) => v === watchNewPassword || "Mismatch Confirm password."

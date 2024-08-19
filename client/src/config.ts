@@ -1,4 +1,4 @@
-export const loginMethod = 'fake'; // remove this after project completed
+export const loginMethod = 'jwt'; // remove this after project completed
 export const settings = {
     theme: "light",
 }

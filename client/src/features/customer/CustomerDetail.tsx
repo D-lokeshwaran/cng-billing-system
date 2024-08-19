@@ -7,7 +7,7 @@ import FeatureHeader from "src/components/structure/FeatureHeader";
 import HookForm from "src/components/form/HookForm";
 import Input from "src/components/form/Input";
 import DocumentList from "./DocumentList";
-import { coreApi } from 'src/utils/api';
+import { coreApi, supportApi } from 'src/utils/api';
 import { useRouter } from "src/hooks";
 import { useBillContext } from "src/context/BillContext";
 import { ACTIONS, CUSTOMER_DETAILS } from 'src/constants/labels';
@@ -40,12 +40,19 @@ const CustomerForm = () => {
 
     const onSubmitCustomer: SubmitHandler<Customer> = async (data) => {
         const { documents, ...customer} = data;
-        const newCustomer = await coreApi({
+        await supportApi.post("/register", {
+            emailAddress: customer.emailAddress,
+            role: "Customer",
+            ...customer
+        });
+        const customerResult = await coreApi({
             url: customerDetails ? `/cng/customers/${customerId}` : "/cng/customers",
             method: customerDetails ? "PUT" : "POST",
             data: customer
         })
-        const newCustomerId = newCustomer.data.id;
+        const newCustomer = customerResult.data;
+        const newCustomerId = newCustomer.id;
+        const accountNumber = newCustomer.accountNumber;
 
         for (const document of documents) {
             if (document.file) {
