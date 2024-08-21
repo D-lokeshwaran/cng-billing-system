@@ -36,6 +36,7 @@ const handleRetrieveAllUsers = async (req, res) => {
 }
 
 const getAvatarURLByFileName = async (fileName) => {
+    if (!fileName) return;
     let fileType = path.extname(fileName).replace(".", "");
     var filePath = path.join(__dirname, "..", "avatars", fileName);
     if (fs.existsSync(filePath)) {
