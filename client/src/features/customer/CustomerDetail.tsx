@@ -8,6 +8,7 @@ import HookForm from "src/components/form/HookForm";
 import Input from "src/components/form/Input";
 import DocumentList from "./DocumentList";
 import { coreApi, supportApi } from 'src/utils/api';
+import { trackPromise } from 'react-promise-tracker';
 import { useRouter } from "src/hooks";
 import { useBillContext } from "src/context/BillContext";
 import { ACTIONS, CUSTOMER_DETAILS } from 'src/constants/labels';
@@ -30,26 +31,28 @@ const CustomerForm = () => {
     }, [customerId])
 
     const retrieveCustomers = async (customerId: string) => {
-        const retrievedCustomer = await coreApi.get(`/cng/customers/${customerId}`);
+        const retrievedCustomer = await trackPromise(coreApi.get(`/cng/customers/${customerId}`));
         const customer = retrievedCustomer.data;
-        const customerDocuments = await coreApi.get(`/cng/customers/${customerId}/documents`);
+        const customerDocuments = await trackPromise(coreApi.get(`/cng/customers/${customerId}/documents`));
         const documents = customerDocuments.data._embedded.documents;
         customer["documents"] = documents;
         setCustomerDetails(customer);
     }
 
     const onSubmitCustomer: SubmitHandler<Customer> = async (data) => {
-        const { documents, ...customer} = data;
-        await supportApi.post("/register", {
-            emailAddress: customer.emailAddress,
-            role: "Customer",
-            ...customer
-        });
-        const customerResult = await coreApi({
+        const { documents=[], ...customer} = data;
+        if (customerId === "new") {
+            await trackPromise(supportApi.post("/register", {
+                emailAddress: customer.emailAddress,
+                role: "Customer",
+                ...customer
+            }));
+        }
+        const customerResult = await trackPromise(coreApi({
             url: customerDetails ? `/cng/customers/${customerId}` : "/cng/customers",
             method: customerDetails ? "PUT" : "POST",
             data: customer
-        })
+        }));
         const newCustomer = customerResult.data;
         const newCustomerId = newCustomer.id;
         const accountNumber = newCustomer.accountNumber;
@@ -59,7 +62,7 @@ const CustomerForm = () => {
                 const formData = new FormData();
                 formData.append("file", document.file);
                 formData.append("customerId", newCustomerId);
-                await coreApi.post("/cng/documents", formData);
+                await trackPromise(coreApi.post("/cng/documents", formData));
             }
         }
         setBillDetails({...billDetails, customerId: newCustomerId});

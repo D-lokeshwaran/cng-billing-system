@@ -1,5 +1,5 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 import { useAuth } from 'src/context/AuthContext';
 import { useRouter } from 'src/hooks';
 
@@ -17,9 +17,8 @@ const RequireAuth: React.FC<RequireAuthProps> = ({ allowedRoles }) => {
         && verifyRole(allowedRoles)
     ) {
         return <Outlet/>
-    } else {
-        return <Navigate to={`${user.isAuthenticated ? "/dashboard" : "/login"}`} />
     }
+    return false;
 
 }
 

@@ -26,58 +26,57 @@ const Profile = lazy(() => import("src/features/profile/Profile"));
 
 
 const AppRoutes = () => {
-     return (
-          <Routes>
-               <Route path="/recover-password" element={<RecoverPassword/>} />
-               <Route path="/reset-password" element={<ResetPassword/>} />
-               <Route path="/update-password" element={<UpdatePassword/>} />
+    return (
+        <Routes>
+            <Route path="/" element={<Layout/>}>
+                <Route path="/recover-password" element={<RecoverPassword/>} />
+                <Route path="/reset-password" element={<ResetPassword/>} />
+                <Route path="/update-password" element={<UpdatePassword/>} />
+                {/* Public Route */}
+                <Route path="/login" element={<Login/>} />
 
-               <Route path="/" element={<Layout/>}>
-                    {/* Public Route */}
-                    <Route path="/login" element={<Login/>} />
-
-                    {/* Dashboard routes */}
-                    <Route element={<DashboardLayout/>}>
-                         <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Operator]}/> }>
-                              <Route path="dashboard" element={<Dashboard/>}/>
-                              <Route path="tariffs" element={<TariffList/>}/>
-                         </Route>
-
-                         <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Customer]}/> }>
-                               <Route path="customers" element={<CustomerList/>} />
-                               <Route path="bills" element={<BillList/>} />
-                              {/* Context provider route to manage state replacement */}
-                              <Route element={<BillContextProvider />}>
-                                  <Route path="tariffs/new" element={<TariffDetails/>}/>
-                                  <Route path="tariffs/:tariffId" element={<TariffDetails/>}/>
-                                  <Route path="bills/new" element={<BillDetail/>} />
-                                  <Route path="bills/:billId" element={<BillDetail/>} />
-                                  <Route path="customer/new" element={<CustomerDetail/>} />
-                                  <Route path="customers/:customerId" element={<CustomerDetail/>} />
-                              </Route>
-                         </Route>
-
-                         <Route path="profile" element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Operator, ROLES.Customer]}/> }>
-                              <Route index element={<Navigate to="overview"/>}/>
-                              <Route path="overview" element={<Profile pageId="overview"/>}/>
-                              <Route path="settings" element={<Profile pageId="settings"/>}/>
-                              <Route path="activity-log" element={<Profile pageId="activity-log"/>}/>
-                         </Route>
-
-                         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} /> }>
-                              <Route path="users">
-                                    <Route index element={<UserList/>}/>
-                                    <Route path=":emailAddress" element={<UserDetails/>}/>
-                              </Route>
-                         </Route>
+                {/* Dashboard routes */}
+                <Route element={<DashboardLayout/>}>
+                    <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Operator]}/> }>
+                        <Route path="dashboard" element={<Dashboard/>}/>
+                        <Route path="tariffs" element={<TariffList/>}/>
                     </Route>
 
-                    {/* Catch all */}
-                    <Route path="/404" element={<Error404/>} />
-                    <Route path="/*" element={<Navigate to="/login"/>} />
-               </Route>
-          </Routes>
-     )
+                    <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Customer]}/> }>
+                        <Route path="customers" element={<CustomerList/>} />
+                        <Route path="bills" element={<BillList/>} />
+                        {/* Context provider route to manage state replacement */}
+                        <Route element={<BillContextProvider />}>
+                            <Route path="tariffs/new" element={<TariffDetails/>}/>
+                            <Route path="tariffs/:tariffId" element={<TariffDetails/>}/>
+                            <Route path="bills/new" element={<BillDetail/>} />
+                            <Route path="bills/:billId" element={<BillDetail/>} />
+                            <Route path="customer/new" element={<CustomerDetail/>} />
+                            <Route path="customers/:customerId" element={<CustomerDetail/>} />
+                        </Route>
+                    </Route>
+
+                    <Route path="profile" element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Operator, ROLES.Customer]}/> }>
+                        <Route index element={<Profile pageId="overview"/>}/>
+                        <Route path="overview" element={<Profile pageId="overview"/>}/>
+                        <Route path="settings" element={<Profile pageId="settings"/>}/>
+                        <Route path="activity-log" element={<Profile pageId="activity-log"/>}/>
+                    </Route>
+
+                    <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} /> }>
+                        <Route path="users">
+                            <Route index element={<UserList/>}/>
+                            <Route path=":emailAddress" element={<UserDetails/>}/>
+                        </Route>
+                    </Route>
+                </Route>
+            </Route>
+
+            {/* Catch all */}
+            <Route path="/404" element={<Error404/>} />
+            <Route path="/*" element={<Navigate to="/404"/>} />
+        </Routes>
+    )
 }
 
 export default AppRoutes;

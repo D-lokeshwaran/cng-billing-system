@@ -1,0 +1,72 @@
+<svg id="eEd8PYM106n1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="0 0 100 50" shape-rendering="geometricPrecision" text-rendering="geometricPrecision"
+     project-id="f5b55465d8184c3ca87a1945bfeee753" export-id="f37cd06f56e04edcaea43070b1401e65" cached="false" class="car">
+    <g transform="matrix(.887637 0 0 1.067184 6.294753 3.684529)">
+        <path d="M46.511,3.289301C51.980072,2.769699,51.980072,2.905,51.980072,2.905c3.216937.001386,9.650778-.010535,12.494541,0h7.303553c2.59.576,6.203834,2.606,8.019834,4.531l6.348,6.732l6.245,1.877C95.489,16.553,98,19.476,98,22.552v4.206c0,.29-4.434,3.947397-7.585,3.947397-.641715-9.508851-13.302035-9.656128-13.843999,0-6.496311.020918-14.974631.088348-22.976289.147694-1.61464-10.879524-13.311763-8.846523-14.551227-.147694-2.655,0-6.575485-1.858397-5.923485-4.428397c0,0,2.928-19.029699,13.391-22.987699ZM36.5,15.5h54.01"
+              fill="none" fill-rule="evenodd" stroke="#00a36f" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round" class="car__body">
+            <animateMotion
+                dur="0.3s"
+                repeatCount="indefinite"
+                path="M 0 -1 V 0.8" />
+        </path>
+        <ellipse rx="6.922" ry="6.808" transform="translate(83.493 30.25)" fill="none" fill-rule="evenodd"
+                 stroke="#00a36f" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <ellipse rx="6.922" ry="6.808" transform="translate(46.511 30.25)" fill="none" fill-rule="evenodd"
+                 stroke="#00a36f" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M27.646031,9.5L6.5,9.3" fill="none" fill-rule="evenodd" stroke="rgba(0,163,111,0.5)" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round">
+            <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                from="3"
+                to="-50"
+                dur="0.4s"
+                repeatCount="indefinite"
+            />
+        </path>
+        <path d="M23.621031,16.5L2.475,16.5" class="car__line" fill="none" fill-rule="evenodd" stroke="rgba(0,163,111,0.5)"
+              stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1000">
+            <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                from="3"
+                to="-50"
+                dur="0.523s"
+                repeatCount="indefinite"
+            />
+        </path>
+        <path d="M21.621531,23.5h-21.146031" class="car__line" fill="none" fill-rule="evenodd" stroke="rgba(0,163,111,0.5)"
+              stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="-22">
+            <animateMotion
+                from="3"
+                to="-50"
+                dur="0.6s"
+                repeatCount="indefinite"
+                path="M 0 0 H -40"
+            />
+        </path>
+        <line
+            x1="0"
+            y1="40"
+            x2="1000"
+            y2="40"
+            stroke-width="2"
+            stroke="#38544b"
+            stroke-dasharray="4 3 1"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+        >
+            <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                type="translate"
+                from="3"
+                to="-50"
+                dur="0.5s"
+                additive="sum"
+                repeatCount="indefinite"
+            />
+        </line>
+    </g>
+</svg>

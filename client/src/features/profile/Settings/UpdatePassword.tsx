@@ -4,6 +4,7 @@ import HookForm from "src/components/form/HookForm";
 import Input from "src/components/form/Input";
 import { useAuth } from "src/context/AuthContext";
 import { supportApi } from "src/utils/api";
+import { trackPromise } from 'react-promise-tracker';
 import { useRef } from "react"
 
 const UpdatePassword = () => {
@@ -12,9 +13,9 @@ const UpdatePassword = () => {
 
     const handleUpdatePassword = async (data, event) => {
         const { oldPassword, newPassword } = data;
-        await supportApi.put(`/user/${user.emailAddress}/updatePassword`, {
+        await trackPromise(supportApi.put(`/user/${user.emailAddress}/updatePassword`, {
             oldPassword, newPassword
-        }).catch(err => console.log(err))
+        })).catch(err => console.log(err))
     }
 
     return (

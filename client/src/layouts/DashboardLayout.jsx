@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
-import PageLoading from 'src/components/common/PageLoading';
+import PromiseLoader from 'src/components/common/loaders/PromiseLoader';
 import SideBar from 'src/components/structure/SideBar';
 import TopContentBar from 'src/components/topContent/TopContentBar';
 import UserContextProvider from 'src/context/UserContext';
@@ -17,9 +17,9 @@ const DashboardLayout = () => {
                 <Col>
                     <UserContextProvider>
                         <TopContentBar/>
-                        <div className="outlet-container container px-3">
+                        <div className="outlet-container container p-3 mt-2">
+                            <PromiseLoader/>
                             <Outlet/>
-                            <PageLoading/>
                         </div>
                     </UserContextProvider>
                 </Col>

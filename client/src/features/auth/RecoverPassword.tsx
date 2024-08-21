@@ -4,14 +4,15 @@ import { Button } from "react-bootstrap";
 import HookForm from "src/components/form/HookForm";
 import Input from "src/components/form/Input";
 import { supportApi } from "src/utils/api";
+import { trackPromise } from 'react-promise-tracker';
 import { Link } from "react-router-dom";
 
 const RecoverPassword = () => {
 
     const handleSendEmail = async (data) => {
-        await supportApi.post('/recover-password', {
+        await trackPromise(supportApi.post('/recover-password', {
             emailAddress: data.emailAddress
-        })
+        }))
     }
 
     return (

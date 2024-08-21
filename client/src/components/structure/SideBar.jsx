@@ -31,7 +31,7 @@ const SideBar = () => {
                     <Col sm="auto" xs><img src={CNGLogo} height={40} width={40}/></Col>
                     <Col className="fs-4  ms-2">Billing System</Col>
                 </Navbar.Brand>
-                <Nav defaultActiveKey={filteredItems[0]?.path || pathname}  className="flex-column w-100 mt-4">
+                <Nav activeKey={"/"+pathname.split("/")?.[1]}  className="flex-column w-100 mt-4">
                     { filteredItems.map((nav, i) =>
                         <Nav.Item
                             key={i}
@@ -40,7 +40,7 @@ const SideBar = () => {
                             onClick={() => router.push(nav.path)}
                         >
                             <Nav.Link eventKey={nav.path} className="d-flex align-items-center">
-                                <nav.icon className="me-3 ms-1" size={21} stroke-width={2}/>
+                                <nav.icon className="me-3 ms-1" size={21} strokeWidth={2}/>
                                 <h5 className="mb-0">{nav.title}</h5>
                             </Nav.Link>
                         </Nav.Item>

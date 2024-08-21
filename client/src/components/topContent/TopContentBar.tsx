@@ -7,13 +7,13 @@ import { Navbar, Container } from "react-bootstrap";
 import { useAuth } from "src/context/AuthContext";
 
 const TopContentBar = () => {
-    const { isCustomer } = useAuth();
+    const auth = useAuth();
 
     return (
         <Navbar sticky="top" className="justify-content-between bg-glass py-3">
             <Container fluid className="px-3">
                 <div id="left">
-                    {!isCustomer && <GlobalSearchBox />}
+                    {!auth?.isCustomer && <GlobalSearchBox />}
                 </div>
                 <FlexBox id="right">
                     <ToggleTheme/>

@@ -12,6 +12,7 @@ import ColumnChooser from 'src/components/table/ColumnChooser';
 import Pagination from 'src/components/table/Pagination';
 import FlexBox from 'src/components/common/FlexBox';
 import { Delete02Icon } from "hugeicons-react";
+import { trackPromise } from 'react-promise-tracker';
 import { coreApi } from "src/utils/api";
 
 const CustomerList: FC = () => {
@@ -50,23 +51,23 @@ const CustomerList: FC = () => {
 
     // Delete features
     const refreshData = async () => {
-        const updatedData = await coreApi.get("/cng/customers");
+        const updatedData = await trackPromise(coreApi.get("/cng/customers"));
         const customers = updatedData.data._embedded.customers;
         setData(customers);
         table.reset();
     }
     const handleDelete = async (customer) => {
-        await coreApi.delete(`/cng/customers/${customer.id}`);
+        await trackPromise(coreApi.delete(`/cng/customers/${customer.id}`));
         refreshData();
     }
     const handleBulkDelete = async () => {
-        await coreApi({
+        await trackPromise(coreApi({
             url: `/cng/bulk-delete-customers`,
             method: "delete",
             data: {
                 ids: selectedRowIds
             }
-        });
+        }));
         refreshData();
     }
 

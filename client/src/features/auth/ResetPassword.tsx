@@ -6,6 +6,7 @@ import Input from "src/components/form/Input";
 import { useRouter } from "src/hooks";
 import { useSearchParams } from "react-router-dom";
 import { supportApi } from "src/utils/api";
+import { trackPromise } from 'react-promise-tracker';
 
 const ResetPassword = () => {
 
@@ -13,7 +14,7 @@ const ResetPassword = () => {
     const router = useRouter();
 
     const handleSendEmail = async (data) => {
-        await supportApi({
+        await trackPromise(supportApi({
             url: '/reset-password',
             method: "POST",
             params: {
@@ -22,8 +23,8 @@ const ResetPassword = () => {
             data: {
                 password: data.password
             }
-        })
-        .then(res => alert(res.data))
+        }))
+        .then(res => alert("Password rested"))
         .catch(err => console.log(err));
         router.push("/login");
 

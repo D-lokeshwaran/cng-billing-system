@@ -6,6 +6,11 @@
 @import "card";
 @import "button";
 @import "dropdown";
+@import "loader";
+
 @import "navLayout";
 @import "topContents";
 @import "plugins/plugins";
+
+// utilities
+@import "utilities/animation"

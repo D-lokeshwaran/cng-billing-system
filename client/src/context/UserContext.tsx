@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import ProfileType from "src/features/profile/type";
 import { useAuth } from "src/context/AuthContext";
 import { supportApi } from "src/utils/api";
+import { trackPromise } from 'react-promise-tracker';
 
 const UserContext = createContext<ProfileType>(null!);
 export const useUserContext = () => useContext(UserContext);
@@ -17,7 +18,7 @@ function UserContextProvider({ children }) {
 
     const retrieveUserDetails = async () => {
         if (!user.emailAddress) return;
-        await supportApi.get(`user/${user.emailAddress}`)
+        await trackPromise(supportApi.get(`user/${user.emailAddress}`))
             .then(result => {
                 const userDetails = result.data;
                 setUserDetails(userDetails);

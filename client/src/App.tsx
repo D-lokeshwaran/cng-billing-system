@@ -7,17 +7,19 @@ import AppRoutes from './routes/AppRoutes';
 import "react-datepicker/dist/react-datepicker.css";
 
 const App: React.FC = () => {
-  return (
-    <HelmetProvider>
-      <AppContextProvider>
-        <Router basename={import.meta.env.BASE_URL}>
-          <AuthContextPovider>
-            <AppRoutes/>
-          </AuthContextPovider>
-        </Router>
-      </AppContextProvider>
-    </HelmetProvider>
-  );
+
+
+    return (
+        <HelmetProvider>
+            <AppContextProvider>
+                <Router basename={import.meta.env.BASE_URL}>
+                    <AuthContextPovider>
+                        <AppRoutes/>
+                    </AuthContextPovider>
+                </Router>
+            </AppContextProvider>
+        </HelmetProvider>
+    );
 };
 
 export default App;

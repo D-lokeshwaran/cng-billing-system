@@ -12,6 +12,7 @@ import Pagination from 'src/components/table/Pagination';
 import { createColumnHelper } from '@tanstack/react-table';
 import { coreApi } from 'src/utils/api';
 import DefaultRowActions from 'src/components/common/DefaultRowActions';
+import { trackPromise } from 'react-promise-tracker';
 import FlexBox from 'src/components/common/FlexBox';
 import { Delete02Icon } from "hugeicons-react";
 import StatusFilter from './StatusFilter';
@@ -65,23 +66,23 @@ const CustomerList: FC = () => {
     const selectedRowIds = table.getSelectedRowModel().rows.map(row => row.original.id);
     const selectedRowsCount = selectedRowIds.length;
     const refreshData = useCallback(async () => {
-        const updatedData = await coreApi.get("/cng/bills-with-customer");
+        const updatedData = await trackPromise(coreApi.get("/cng/bills-with-customer"));
         const bills = updatedData.data;
         setData(bills);
         table.reset();
     }, []);
     const handleDelete = async (bill) => {
-        await coreApi.delete(`/cng/bills/${bill.id}`);
+        await trackPromise(coreApi.delete(`/cng/bills/${bill.id}`));
         refreshData();
     }
     const handleBulkDelete = async () => {
-        await coreApi({
+        await trackPromise(coreApi({
             url: `/cng/bulk-delete-bills`,
             method: "delete",
             data: {
                 ids: selectedRowIds
             }
-        });
+        }));
         refreshData();
     }
 

@@ -13,6 +13,7 @@ import { useBillContext } from "src/context/BillContext"
 import { formateDate } from "src/utils/date";
 import moment from "moment";
 import { coreApi } from "src/utils/api";
+import { trackPromise } from 'react-promise-tracker';
 import { COMMON } from "src/constants/labels";
 
 const DetailsCard = ({ tariff, setBillTariff }) => {
@@ -41,13 +42,13 @@ const DetailsCard = ({ tariff, setBillTariff }) => {
     }, [watchUnitsConsumed, watchBillingDate])
 
     const retrieveBillTariff = async () => {
-        await coreApi({
+        await trackPromise(coreApi({
             url: "/cng/tariffs/search/findByDate",
             method: "GET",
             params: {
                 searchDate: moment(watchBillingDate).format("YYYY-MM-DD") || new Date()
             }
-        })
+        }))
         .then(result => {
             const tariff = result.data;
             setBillDetails({...billDetails, tariffId: tariff.id})
@@ -153,10 +154,10 @@ const DetailsCard = ({ tariff, setBillTariff }) => {
                             <Col className="text-end">
                                 <FormControl
                                     {...register("billAmount", {
-                                        value: ratePerUnit * parseInt(watchUnitsConsumed),
+                                        value: ratePerUnit * parseInt(watchUnitsConsumed) || 0,
                                         valueAsNumber: true
                                     })}
-                                    value={ratePerUnit * parseInt(watchUnitsConsumed)}
+                                    value={ratePerUnit * parseInt(watchUnitsConsumed) || 0}
                                     type="hidden"
                                 />
                                 {Number(billingAmount) ? billingAmount : COMMON.NO_DATA}

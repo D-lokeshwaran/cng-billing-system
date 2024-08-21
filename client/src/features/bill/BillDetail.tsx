@@ -5,6 +5,7 @@ import HookForm from "src/components/form/HookForm";
 import FeatureHeader from "src/components/structure/FeatureHeader";
 import { Bill } from "./billSlice";
 import { coreApi } from "src/utils/api";
+import { trackPromise } from 'react-promise-tracker';
 import DetailsCard from "./DetailsCard";
 import BillCustomerInfo from "./BillCustomerInfo";
 import CurrentTariffList from "./CurrentTariffList";
@@ -41,9 +42,9 @@ const BillDetail = () => {
             setBillDetails({ ...billDetails, billId: "new" })
             return;
         };
-        const retrievedBill = await coreApi.get(`/cng/bills/${billId}`);
+        const retrievedBill = await trackPromise(coreApi.get(`/cng/bills/${billId}`));
         const bill = retrievedBill.data;
-        await coreApi.get(`/cng/bills/${billId}/customer`)
+        await trackPromise(coreApi.get(`/cng/bills/${billId}/customer`))
             .then((result) => {
                 let customerId = result.data.id;
                 bill["customerId"] = customerId;
@@ -57,39 +58,39 @@ const BillDetail = () => {
     const createOrUpdateBill: SubmitHandler<Bill> = async (data) => {
         const { customerId, ...billData} = data;
         console.log(data);
-        const newBill = await coreApi({
+        const newBill = await trackPromise(coreApi({
             url: bill ? `/cng/bills/${bill.id}` : "/cng/bills",
             method: bill ? "PUT" : "POST",
             data: billData
-        }); // create or update bill
+        })); // create or update bill
         const billId = newBill?.data.id;
         const tariffId = billTariff?.id;
         if (tariffId) {
-            await coreApi.put(
+            await trackPromise(coreApi.put(
                 `/cng/bills/${billId}/tariff`,
                 `/cng/tariffs/${tariffId}`,
                 { headers: { 'Content-Type': 'text/uri-list' } }
-            ); // associate tariff in bill with uri-list modern rest-resource method
+            )); // associate tariff in bill with uri-list modern rest-resource method
         }
         if (customerId) {
-            await coreApi.put(
+            await trackPromise(coreApi.put(
                 `/cng/bills/${billId}/customer`,
                 `/cng/customers/${customerId}`,
                 { headers: { 'Content-Type': 'text/uri-list' } }
-            );
+            ));
         }
         router.push("/bills")
     }
     const handleStatusChange = async (status: string) => {
         const updatedBill = { ...bill, paymentStatus: status }
-        const updateResult = await coreApi.put(`/cng/bills/${bill.id}`, updatedBill)
+        const updateResult = await trackPromise(coreApi.put(`/cng/bills/${bill.id}`, updatedBill));
         const newBill = updateResult.data;
         if (billDetails?.customerId) {
-            await coreApi.put(
+            await trackPromise(coreApi.put(
                 `/cng/bills/${newBill?.id}/customer`,
                 `/cng/customers/${billDetails?.customerId}`,
                 { headers: { 'Content-Type': 'text/uri-list' } }
-            );
+            ));
         }
         router.push("/bills");
     }

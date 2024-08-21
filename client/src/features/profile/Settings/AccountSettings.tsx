@@ -1,6 +1,7 @@
 import { Card, Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { supportApi } from "src/utils/api";
+import { trackPromise } from 'react-promise-tracker';
 import { useEffect } from "react";
 import { useUserContext } from "src/context/UserContext";
 import { useAuth } from "src/context/AuthContext";
@@ -16,7 +17,7 @@ const AccountSettings = ({ readonly, readonlyUser }) => {
 
     const onChangeSettings = async () => {
         const watchAccountSettings = watch();
-        await supportApi.put(`/user/${user.emailAddress}/accountSettings`, watchAccountSettings)
+        await trackPromise(supportApi.put(`/user/${user.emailAddress}/accountSettings`, watchAccountSettings))
             .then(result => setUserDetails(result.data));
     }
 

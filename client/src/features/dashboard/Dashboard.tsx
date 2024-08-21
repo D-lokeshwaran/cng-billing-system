@@ -7,6 +7,7 @@ import Overview from './Overview';
 import { coreApi } from 'src/utils/api';
 import { useState, useEffect } from 'react';
 import SimpleTable from 'src/components/table/SimpleTable';
+import { trackPromise } from 'react-promise-tracker';
 import {
    Coins01Icon,
    UserMultiple02Icon,
@@ -34,7 +35,7 @@ const Dashboard = () => {
     }, [])
 
     const retrieveDashboardInfo = async () => {
-        const dashboardResult = await coreApi.get("/cng/dashboard")
+        const dashboardResult = await trackPromise(coreApi.get("/cng/dashboard"));
         let dashboardInfo = dashboardResult.data;
         setDashboardInfo(dashboardInfo);
     }

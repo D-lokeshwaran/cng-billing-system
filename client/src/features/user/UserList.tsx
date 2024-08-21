@@ -7,6 +7,7 @@ import ExportData from "src/components/common/ExportData";
 import { Button, Card, Row, Col } from "react-bootstrap";
 import { useRouter, useTableAdapter } from "src/hooks";
 import userSlice, { User } from "./userSlice";
+import { trackPromise } from 'react-promise-tracker';
 import { supportApi } from "src/utils/api";
 
 const UserList = () => {
@@ -19,7 +20,7 @@ const UserList = () => {
     }, [])
 
     const retrieveAllUsers = async () => {
-        await supportApi.get("/user")
+        await trackPromise(supportApi.get("/user"))
             .then(res => {
                 setData(res.data)
             })

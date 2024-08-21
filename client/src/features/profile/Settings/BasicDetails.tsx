@@ -7,6 +7,7 @@ import AvatarUploadInput from "./AvatarUploadInput";
 import { useAuth } from "src/context/AuthContext";
 import { useUserContext } from "src/context/UserContext";
 import { supportApi } from "src/utils/api";
+import { trackPromise } from 'react-promise-tracker';
 
 interface BasicDetailsType {
     emailAddress: string,
@@ -42,14 +43,14 @@ const BasicDetails = ({ readonly, readonlyUser }) => {
             profileData.append("status", status);
             profileData.append("aboutMe", aboutMe);
 
-            const result = await supportApi({
+            const result = await trackPromise(supportApi({
                 url: `user/${user.emailAddress}/profile`,
                 method: "PUT",
                 headers: {
                     "Content-Type": "multipart/form-data"
                 },
                 data: profileData
-            });
+            }));
             setUserDetails(result.data);
         } catch (err) {
             console.log(err)

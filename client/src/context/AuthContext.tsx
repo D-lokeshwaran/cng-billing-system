@@ -2,8 +2,11 @@ import { InternalAxiosRequestConfig } from "axios";
 import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import { supportApi } from "src/utils/api";
 import { loginMethod } from "src/config";
+import { useLocation } from "react-router-dom";
 import ROLES from "src/constants/ROLES";
+import { useRouter } from "src/hooks";
 import { getDefaultRoute } from "src/utils/navigation";
+import { trackPromise } from 'react-promise-tracker';
 
 type user = {
     emailAddress: String,
@@ -36,18 +39,22 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
 
     const [ user, setUser ] = useState<user>(initialUser);
     const [ token, setToken ] = useState<any>(null);
+    const router = useRouter();
+    const path = useLocation().pathname;
 
     // Refresh token if user loggedin.
     useEffect(() => {
         const fetchMe = async () => {
             try {
-                const response = await supportApi.get('/refresh', { withCredentials: true });
+                const response = await trackPromise(supportApi.get('/refresh', { withCredentials: true }));
                 const { emailAddress, accessToken, role } = response.data;
                 console.log(role)
                 setToken(accessToken);
-                setUser({ emailAddress, role, isAuthenticated: true })
+                setUser({ ...user, emailAddress, role, isAuthenticated: true });
+                router.push(path || getDefaultRoute(role))
             } catch {
                 setToken(null);
+                router.push("/login");
             }
         }
         fetchMe();
@@ -81,7 +88,7 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
                     error.response.data.message === "Unauthorized"
                 ) {
                     try {
-                        const response = await supportApi.get('/refresh', { withCredentials: true });
+                        const response = await trackPromise(supportApi.get('/refresh', { withCredentials: true }));
                         
                         setToken(response.data.accessToken);
 
@@ -89,7 +96,7 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
                                 `Bearer ${response.data.accessToken}`;
                         originalRequest._retry = true;
 
-                        return supportApi(originalRequest);
+                        return trackPromise(supportApi(originalRequest));
                     } catch (error) {
                         setToken(null);
                     }
@@ -103,11 +110,7 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
 
     const logIn = async (emailAddress: any, password: any) => {
         try {
-            if (loginMethod == 'fake') {
-                setUser({ ...user, isAuthenticated: true});
-                return true;
-            }
-            const response = await supportApi.post('/auth', {emailAddress, password});
+            const response = await trackPromise(supportApi.post('/auth', {emailAddress, password}));
             const { accessToken, ...userData } = response.data;
             if (accessToken) {
                 setToken(accessToken);
@@ -118,7 +121,7 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
                     role: userData.role,
                     isAuthenticated: true
                 });
-                return getDefaultRoute(loggedUser?.role)
+                return getDefaultRoute(userData?.role)
             } else {
                 setUser({
                     ...user,
@@ -144,7 +147,7 @@ function AuthContextPovider({ children }: {children: React.ReactNode}) {
 
     const logOut = async (callback: VoidFunction) => {
         try {
-            await supportApi.get('/logout');
+            await trackPromise(supportApi.get('/logout'));
             setToken(null);
 
         } catch (error) { 

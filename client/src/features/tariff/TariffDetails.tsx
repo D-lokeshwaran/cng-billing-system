@@ -12,6 +12,7 @@ import moment from "moment";
 import ErrorMessage from "src/components/form/ErrorMessage";
 import { ACTIONS } from 'src/constants/labels';
 import { coreApi } from 'src/utils/api';
+import { trackPromise } from 'react-promise-tracker';
 
 const defaultTariffUnits = [
    {
@@ -45,7 +46,7 @@ const TariffDetails = () => {
     }, [tariffId])
 
     const retrieveTariff = async (tariffId: number) => {
-        const tariffResult = await coreApi.get(`/cng/tariffs/${tariffId}`)
+        const tariffResult = await trackPromise(coreApi.get(`/cng/tariffs/${tariffId}`))
         let tariff = tariffResult.data;
         setTariff(tariff);
     }
@@ -60,13 +61,13 @@ const TariffDetails = () => {
 
         const duplicated = await validateDuplicateTariff(tariff);
         if (tariffId > 0 && duplicated) {
-            const newTariff = await coreApi.put(`/cng/tariffs/${tariffId}`, tariff)
+            const newTariff = await trackPromise(coreApi.put(`/cng/tariffs/${tariffId}`, tariff))
                 .catch(error => console.log("Failed to update tariff:", error))
             if (newTariff) router.back();
             return;
         }
         if (!duplicated) {
-            const newTariff = await coreApi.post("/cng/tariffs", tariff)
+            const newTariff = await trackPromise(coreApi.post("/cng/tariffs", tariff))
                 .catch(error => console.log("Failed to create tariff:", error))
             if (newTariff) router.back();
         }
@@ -76,9 +77,9 @@ const TariffDetails = () => {
     const validateDuplicateTariff = async (tariff) => {
         // formatted because using Rest resource unable to format in server...
         const formattedDate = moment(tariff.fromDate).format("YYYY-MM-DD");
-        const duplicateResult = await coreApi.get(
+        const duplicateResult = await trackPromise(coreApi.get(
             `/cng/tariffs/search/checkDuplicate?fromDate=${formattedDate}`
-        )
+        ))
         // validate duplicate tariff;
         var duplicate = duplicateResult.data._embedded.tariffs.length > 0;
         return duplicate;

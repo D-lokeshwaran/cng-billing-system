@@ -5,6 +5,7 @@ import HookForm from "src/components/form/HookForm";
 import Input from "src/components/form/Input";
 import { useAuth } from "src/context/AuthContext";
 import { supportApi } from "src/utils/api";
+import { trackPromise } from 'react-promise-tracker';
 import { useRouter } from "src/hooks";
 import { Link } from "react-router-dom";
 import { getDefaultRoute } from "src/utils/navigation";
@@ -15,10 +16,10 @@ const UpdatePassword = () => {
     const router = useRouter();
 
     const handleUpdatePassword = async (data) => {
-        const result = await supportApi.post('/update-password', {
+        const result = await trackPromise(supportApi.post('/update-password', {
             newPassword: data.newPassword,
             emailAddress: emailAddress
-        }).catch(err => console.log(err));
+        })).catch(err => console.log(err));
         router.push(getDefaultRoute(role));
     }
 

@@ -6,6 +6,7 @@ import { useToggle, useRouter } from 'src/hooks';
 import TariffDetails from './TariffDetails';
 import { useTableAdapter } from 'src/hooks';
 import { coreApi } from "src/utils/api";
+import { trackPromise } from 'react-promise-tracker';
 import TanStackTable from "src/components/table/TanStackTable";
 import FeatureHeader from "src/components/structure/FeatureHeader";
 import Pagination from "src/components/table/Pagination";
@@ -24,7 +25,7 @@ const TariffList: FC = () => {
     }, [refresh])
 
     const refreshTariffs = async () => {
-        const result = await coreApi.get("/cng/tariffs");
+        const result = await trackPromise(coreApi.get("/cng/tariffs"));
         const tariffs = result.data.tariffs || result.data._embedded.tariffs;
         setData(tariffs);
     }
