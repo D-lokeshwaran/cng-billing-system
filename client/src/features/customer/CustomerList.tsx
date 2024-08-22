@@ -73,7 +73,14 @@ const CustomerList: FC = () => {
 
     return (
         <div>
-            <FeatureHeader title="Customers" className="justify-content-between">
+            <FeatureHeader
+                title="Customers"
+                className="justify-content-between"
+                breadcrumbs={[
+                    { title: "Customer", path: "/customers"},
+                    { title: "List", disabled: true}
+                ]}
+            >
                 <Button
                     variant="success"
                     onClick={handleAddCustomer}

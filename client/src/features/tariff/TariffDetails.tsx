@@ -7,6 +7,7 @@ import HookForm from "src/components/form/HookForm";
 import { Tariff } from "./tariffSlice";
 import DatePickerInput from "src/components/form/DatePickerInput";
 import FeatureHeader from "src/components/structure/FeatureHeader";
+import { useBillContext } from "src/context/BillContext";
 import UnitsAndRates from "./UnitsAndRates";
 import moment from "moment";
 import ErrorMessage from "src/components/form/ErrorMessage";
@@ -33,6 +34,7 @@ const defaultTariffUnits = [
 const TariffDetails = () => {
 
     const [ tariff, setTariff ] = useState();
+    const { billDetails } = useBillContext();
     const [ duplicated, setDuplicated ] = useState();
     const { tariffId } = useParams();
     const router = useRouter();
@@ -104,7 +106,19 @@ const TariffDetails = () => {
     return (
         <div id="tariff-details">
             <HookForm onSubmit={handleTariffSubmit} defaultValues={{...tariffDetails}} >
-                <FeatureHeader title="Create Tariff" className="justify-content-between">
+                <FeatureHeader
+                    title="Create Tariff"
+                    className="justify-content-between"
+                    breadcrumbs={[
+                        { title: `Bill`, path: "/bills", hidden: !billDetails},
+                        { title: `${billDetails?.billId ? '#'+billDetails?.billId : 'New'}`, path:`/bills/${billDetails?.billId || "new"}` ,hidden: !billDetails},
+                        { title: "Tariff", path: "/tariffs"},
+                        {
+                            title: tariffId && tariffId !== "new" ? `${tariff?.fromDate} to ${tariff?.toDate}`: "New",
+                            disabled: true
+                        }
+                    ]}
+                >
                     <Button variant="primary" type="submit">
                         {tariffId ? ACTIONS.UPDATE : ACTIONS.CREATE}
                     </Button>

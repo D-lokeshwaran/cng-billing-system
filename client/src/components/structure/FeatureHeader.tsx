@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Breadcrumb, Row, Col } from 'react-bootstrap';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useMatches } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
 import FlexBox from "src/components/common/FlexBox";
 
@@ -9,7 +9,9 @@ interface FeatureHeaderProps {
     className: String,
     breadcrumbs: {
         title: String,
-        path: String
+        path?: String,
+        disabled?: boolean,
+        hidden?: boolean
     }[],
     children?: React.ReactNode
 }
@@ -17,11 +19,19 @@ interface FeatureHeaderProps {
 const FeatureHeader: React.FC<FeatureHeaderProps> = ({
     title,
     className,
-    breadcrumbs,
+    breadcrumbs=[],
     children,
 }) => {
 
     const location = useLocation();
+    let basePath = "/"+location.pathname.split("/")[1];
+    const defaultCrumbs = [{
+            title: "Dashboard",
+            path: "/dashboard"
+        }
+    ]
+    const alteredBreadcrumbs = [ ...defaultCrumbs, ...breadcrumbs].filter(c => !c.hidden);
+    const size = alteredBreadcrumbs.length;
 
     return (
         <header className="mb-3">
@@ -37,12 +47,15 @@ const FeatureHeader: React.FC<FeatureHeaderProps> = ({
                 </Col>
             </Row>
             <FlexBox>
-                {breadcrumbs ?
-                    breadcrumbs.map(crumb =>
-                        <Link to={crumb.path}>{crumb.title}</Link>
-                    )
-                    : <Link to="/dashboard">Dashboard</Link>
-                }
+                {alteredBreadcrumbs?.filter(c => !c.hidden).map((crumb, index) =>
+                    <>
+                        {index == size -1 ?
+                            <span className="anker-text anker-text__disabled">{crumb?.title}</span>
+                            :<Link to={crumb?.path} className="anker-text">{crumb?.title}</Link>
+                        }
+                        {index < size -1 && !crumb.hidden && <span className="px-1">.</span>}
+                    </>
+                )}
             </FlexBox>
         </header>
     )

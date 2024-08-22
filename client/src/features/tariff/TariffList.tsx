@@ -45,7 +45,14 @@ const TariffList: FC = () => {
 
     return (
         <div>
-            <FeatureHeader title="Tariffs" className="justify-content-between">
+            <FeatureHeader
+                title="Tariffs"
+                className="justify-content-between"
+                breadcrumbs={[
+                    { title: "Tariff", path: "/tariffs"},
+                    { title: "List", disabled: true}
+                ]}
+            >
                 <Button
                     variant="success"
                     onClick={() => router.push(`/tariffs/new`)}

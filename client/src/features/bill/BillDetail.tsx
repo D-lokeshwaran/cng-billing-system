@@ -112,7 +112,14 @@ const BillDetail = () => {
     return (
         <div id="cng-bill-details">
             <HookForm onSubmit={createOrUpdateBill} defaultValues={bill}>
-                <FeatureHeader title="Bill" className="justify-content-between">
+                <FeatureHeader
+                    title="Bill"
+                    className="justify-content-between"
+                    breadcrumbs={[
+                        { title: "Bill", path: "/bills"},
+                        { title: billId === "new" ? "New" : `${billDetails?.billId ? '#'+billDetails?.billId : 'New'}`, disabled: true}
+                    ]}
+                >
                     <FlexBox className="justify-content-between">
                         <Badge pill bg="" className={`text-${paymentStatus.type} border border-${paymentStatus.type} d-flex align-items-center`}>
                             {startCase(paymentStatus.name)}

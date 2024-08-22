@@ -58,8 +58,6 @@ $brand-facebook: #3b5998 !default;
 // Set Contrast Threshold
 $yiq-contrasted-threshold: 195 !default;
 
-$font-family-sans-serif: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", 'Noto Color Emoji' !default;
-
 $font-weight-light: 300 !default;
 // $font-weight-base: 400;
 $headings-font-weight: 400 !default;
@@ -114,5 +112,7 @@ $navbar-light-hover-color: $navbar-light-color;
 // body
 $body-bg-light: rgb(222 231 230 / 10%);
 $body-bg-dark: rgb(20 26 33) !default;
-$font-family-base: "Public Sans Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+$font-family-base: "Libre Franklin", sans-serif !default;
+// font-optical-sizing: auto;
+// font-weight: <weight>;
+// font-style: normal;

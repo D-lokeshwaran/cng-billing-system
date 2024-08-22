@@ -72,7 +72,16 @@ const CustomerForm = () => {
     return (
         <div>
             <HookForm onSubmit={onSubmitCustomer} defaultValues={customerDetails}>
-                <FeatureHeader title="Create Customer" className="justify-content-between">
+                <FeatureHeader
+                    title="Create Customer"
+                    className="justify-content-between"
+                    breadcrumbs={[
+                        { title: `Bill`, path: "/bills", hidden: !billDetails},
+                        { title: `${billDetails?.billId ? '#'+billDetails?.billId : 'New'}`, path:`/bills/${billDetails?.billId || "new"}` ,hidden: !billDetails},
+                        { title: "Customer", path: "/customers"},
+                        { title: customerId === "new" ? "New" : customerDetails?.fullName}
+                    ]}
+                >
                     <Button variant="primary" type="submit">
                         {customerId !== "new" ? ACTIONS.UPDATE : ACTIONS.CREATE}
                     </Button>
