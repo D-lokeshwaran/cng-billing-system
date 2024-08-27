@@ -7,5 +7,14 @@
 .bg-glass {
     background-color: rgb(20 26 33 / 53%);
 }
+#global-search-container {
+    position: relative;
 
+    &.search-icon {
+        position: absolute;
+    }
+    &.search-input {
+        padding-left: 2rem;
+    }
+}
 

@@ -4,9 +4,11 @@ import com.cng_billing_system.core_api.bill.Bill;
 import com.cng_billing_system.core_api.document.Document;
 import com.cng_billing_system.core_api.enums.States;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.IdGeneratorType;
 
 import java.util.List;
 
@@ -20,11 +22,9 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "customer_id_seq")
-//    @SequenceGenerator(name = "customer_id_seq", sequenceName = "customer_id_seq", allocationSize = 1, initialValue = 1200)
     private Long id;
 
-    @Column(name = "account_number", length = 16)
+    @Column(name = "account_number")
     private String accountNumber;
 
     @Column(name = "full_name")
@@ -55,10 +55,13 @@ public class Customer {
     @JsonIgnore
     private List<Document> documents;
 
-    @PrePersist // TODO: Later implement in separate IdentifierGenerator
+    @PostPersist
+    @PostLoad
     private void generateAccountNumber() {
-        String PREFIX = "CG";
-        this.setAccountNumber(PREFIX + id);
+        if (this.accountNumber == null) {
+            String PREFIX = "G";
+            this.accountNumber = PREFIX + this.id;
+        }
     }
 
 }

@@ -49,15 +49,25 @@ public class CommonController {
         return allBills;
     }
 
-    @GetMapping("/global-search/{searchText}")
-    public Map<String, Object> retrieveSearchResult(@PathVariable String searchText) {
+    @GetMapping("/search/{searchText}")
+    public Map<String, Object> retrieveSearchResult(@PathVariable String searchText, @RequestParam String inEntity) {
         Map<String, Object> searchResult = new LinkedHashMap<>();
-        List<Bill> searchedBills = billRepository.searchByText(searchText);
-        searchResult.put("bills", searchedBills);
-        List<Customer> searchedCustomers = customerRepository.searchByText(searchText);
-        searchResult.put("customers", searchedCustomers);
-        List<Tariff> searchedTariffs = tariffRepository.searchByText(searchText);
-        searchResult.put("tariffs", searchedTariffs);
+        if (inEntity != null) {
+            // perform entity search
+            switch (inEntity) {
+                case "bill": searchResult.put("bills", billRepository.searchByText(searchText));
+                case "customer": searchResult.put("customers", customerRepository.searchByText(searchText));
+                case "tariff": searchResult.put("tariffs", tariffRepository.searchByText(searchText));
+            }
+        } else {
+            // perform global search
+            List<Bill> searchedBills = billRepository.searchByText(searchText);
+            searchResult.put("bills", searchedBills);
+            List<Customer> searchedCustomers = customerRepository.searchByText(searchText);
+            searchResult.put("customers", searchedCustomers);
+            List<Tariff> searchedTariffs = tariffRepository.searchByText(searchText);
+            searchResult.put("tariffs", searchedTariffs);
+        }
         return searchResult;
     }
 

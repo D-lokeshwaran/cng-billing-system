@@ -11,6 +11,7 @@ const bcrypt = require('bcrypt');
 
 const handleRetrieveAllUsers = async (req, res) => {
     const foundUsers = await User.find({});
+    console.log(foundUsers);
     if (!foundUsers) {
         res.sendStatus(401);
         return;
@@ -20,17 +21,18 @@ const handleRetrieveAllUsers = async (req, res) => {
         let foundUser = foundUsers[i];
         const fileName = foundUser.profile.avatarFileName;
         const avatar = await getAvatarURLByFileName(fileName);
+        const { password, emailAddress, profile, accountSettings, role} = foundUser;
+        let alteredFoundUser = {
+             "emailAddress": emailAddress,
+             "profile": profile,
+             "accountSettings": accountSettings,
+             "role": role
+         }
         if (avatar) {
-            foundUser.avatar = avatar;
-            const { password, emailAddress, profile, accountSettings, role} = foundUser;
-            allUsers.push({
-                "avatar": avatar,
-                "emailAddress": emailAddress,
-                "profile": profile,
-                "accountSettings": accountSettings,
-                "role": role
-            })
+            alteredFoundUser.avatar = avatar;
         }
+        allUsers.push(alteredFoundUser);
+
     }
     res.status(200).json(allUsers);
 }
@@ -55,16 +57,19 @@ const handleRetrieveUser = async (req, res) => {
     try {
         const { password, emailAddress, profile, accountSettings, role} = foundUser;
         const avatar = await getAvatarURLByFileName(avatarFileName);
+        const userDetails = {
+            "emailAddress": emailAddress,
+            "profile": profile,
+            "accountSettings": accountSettings,
+            "role": role
+        }
         if (avatar) {
             res.status(200).json({
                 "avatar": avatar,
-                "emailAddress": emailAddress,
-                "profile": profile,
-                "accountSettings": accountSettings,
-                "role": role
+                ...userDetails
             });
         } else {
-            res.sendStatus(400);
+            res.status(200).json(userDetails);
         }
     } catch (err) {
         res.status(500).json({ "message": err.message });

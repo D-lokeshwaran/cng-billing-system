@@ -45,7 +45,8 @@ const CustomerForm = () => {
             await trackPromise(supportApi.post("/register", {
                 emailAddress: customer.emailAddress,
                 role: "Customer",
-                ...customer
+                fullName: customer.fullName,
+                phoneNumber: customer.contactNumber
             }));
         }
         const customerResult = await trackPromise(coreApi({

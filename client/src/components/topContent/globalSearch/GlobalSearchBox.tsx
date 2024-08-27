@@ -35,7 +35,7 @@ const GlobalSearchBox = () => {
     const handleSearch = async (value) => {
         setValue(value);
         if (value) {
-            await coreApi.get(`/cng/global-search/${value}`)
+            await coreApi.get(`/cng/search/${value}`)
                 .then(res => setSearchResult(res.data))
                 .catch(error => console.log(error));
         }
