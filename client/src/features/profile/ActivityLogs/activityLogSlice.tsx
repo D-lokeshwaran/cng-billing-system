@@ -23,15 +23,17 @@ const activityLogSlice: SliceProps = {
     columns: [
         columnHelper.accessor('createdAt', {
             header: "Created At",
-            filterFn: "dateBetween",
             cell: ({ row }) => formateDate(row.original.createdAt)
         }),
         columnHelper.accessor('entityName', {
             header: "Category",
-            filterFn: "skipAllFilter"
         }),
         columnHelper.accessor('action', {
             header: "Action"
+        }),
+        columnHelper.accessor('changes', {
+            header: "Changes",
+            cell: ({ row }) => row.original?.changes
         })
     ],
 }

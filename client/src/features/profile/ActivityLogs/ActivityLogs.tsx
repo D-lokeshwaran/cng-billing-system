@@ -16,13 +16,18 @@ import Input from "src/components/form/Input";
 import Pagination from "src/components/table/Pagination";
 import { formateDate } from "src/utils/date";
 
-const dateBetweenFilter = (row, id, filterValue) => {
-    const rowDate = new Date(row.getValue(id));
-    const [ startDate, endDate ] = filterValue;
-    return (
-        (!startDate || rowDate >= new Date(startDate)) &&
-        (!endDate || rowDate <= new Date(endDate))
-    );
+const logGlobalFilter = (row, columnIds, filterValue) => {
+    const rowDate = new Date(row.getValue('createdAt'));
+    let validEntity = false, validDate = false;
+    if (rowDate) {
+        const [ startDate, endDate ] = filterValue.dateRange;
+        validDate = (
+            (!startDate || rowDate >= new Date(startDate)) &&
+            (!endDate || rowDate <= new Date(endDate))
+        );
+    }
+    validEntity = entityNameFilter(row, 'entityName', filterValue.entityName);
+    return validDate && validEntity;
 }
 
 const entityNameFilter = (row, id, filterValue) => {
@@ -37,13 +42,11 @@ const ActivityLogs = () => {
 
     const [ logDetails, setLogDetails ] = useState();
     const [ dateRange, setDateRange ] = useState([null, null]);
+    const [ entity, setEntity ] = useState('All');
     const [ startDate, endDate ] = dateRange;
     const { table, setData, refreshData } = useTableAdapter({
         ...activityLogSlice,
-        filterFns: { // add a custom global filter function
-            dateBetween: dateBetweenFilter,
-            skipAllFilter: entityNameFilter
-        },
+        globalFilterFn: logGlobalFilter
     })
 
     const getRowProps = (row: any) => {
@@ -95,20 +98,23 @@ const ActivityLogs = () => {
                                 endDate={endDate}
                                 onChange={(update) => {
                                     setDateRange(update);
-                                    table.setColumnFilters([{
-                                        id: 'createdAt',
-                                        value: update
-                                    }]);
+                                    table.setGlobalFilter({
+                                        dateRange: update,
+                                        entityName: entity
+                                    });
                                 }}
                             />
                             <div className="ms-3">
                                 <FormSelect
                                     field={{state: "category", type: "select"}}
                                     required={false}
-                                    onChange={event => table.setColumnFilters([{
-                                        id: 'entityName',
-                                        value: event.target.value
-                                    }])}
+                                    onChange={event => {
+                                        setEntity(event.target.value);
+                                        table.setGlobalFilter({
+                                            dateRange: dateRange,
+                                            entityName: event.target.value
+                                        });
+                                    }}
                                 >
                                     <option>All</option>
                                     <option>Bill</option>

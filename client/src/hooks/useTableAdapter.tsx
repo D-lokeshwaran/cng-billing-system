@@ -37,6 +37,7 @@ export const useTableAdapter = <T,>({
     params,
     columnVisibility,
     filterFns,
+    globalFilterFn,
     _mock,
     options={enableRowSelection: true}
 }: UseTableAdapterProps<T>): Table<T> => {
@@ -106,6 +107,7 @@ export const useTableAdapter = <T,>({
             columnVisibility
         },
         filterFns: filterFns,
+        globalFilterFn: globalFilterFn,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
