@@ -38,14 +38,10 @@ const FeatureHeader: React.FC<FeatureHeaderProps> = ({
             <Helmet>
                 <title>CNG {title || "Billing System"}</title>
             </Helmet>
-            <Row className={className}>
-                <Col sm='auto' xs>
-                    <h3 className="mb-0">{title}</h3>
-                </Col>
-                <Col sm='auto' xs>
-                    {children}
-                </Col>
-            </Row>
+            <FlexBox justify="between">
+                <h3 className="mb-0">{title}</h3>
+                {children}
+            </FlexBox>
             <FlexBox>
                 {alteredBreadcrumbs?.filter(c => !c.hidden).map((crumb, index) =>
                     <>

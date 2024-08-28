@@ -36,6 +36,7 @@ export const useTableAdapter = <T,>({
     name,
     params,
     columnVisibility,
+    filterFns,
     _mock,
     options={enableRowSelection: true}
 }: UseTableAdapterProps<T>): Table<T> => {
@@ -44,27 +45,31 @@ export const useTableAdapter = <T,>({
 
     useEffect(() => {
         if (params && data.length === 0) {
-            trackPromise(
-                coreApi({
-                    url: params.url,
-                    method: params.method || "GET"
-                })
-            ).then(
-                res => {
-                    const result = res.data?._embedded[name];
-                    if (!result) {
-                        console.log("Server response: ", res.data)
-                        throw new Error("Invalid attribute: ");
-                    }
-                    setData(result);
-                }
-            ).catch(
-                error => {
-                    console.error("Failed to fetch data:", error);
-                }
-            );
+            refreshData();
         }
     }, [params]);
+
+    const refreshData = async () => {
+        await trackPromise(
+            coreApi({
+                url: params.url,
+                method: params.method || "GET"
+            })
+        ).then(
+            res => {
+                const result = res.data?._embedded[name];
+                if (!result) {
+                    console.log("Server response: ", res.data)
+                    throw new Error("Invalid attribute: ");
+                }
+                setData(result);
+            }
+        ).catch(
+            error => {
+                console.error("Failed to fetch data:", error);
+            }
+        );
+    }
 
     const updatedColumns = useMemo(() => {
         const columnHelper = createColumnHelper<any>();
@@ -100,6 +105,7 @@ export const useTableAdapter = <T,>({
         initialState: {
             columnVisibility
         },
+        filterFns: filterFns,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -109,5 +115,5 @@ export const useTableAdapter = <T,>({
         // debugColumns: false
     });
 
-    return { table, setData };
+    return { table, setData, refreshData };
 }

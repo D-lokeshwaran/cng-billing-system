@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import CustomRoute from "./components/CustomRoute"
 import ROLES from "src/constants/ROLES";
 import DashboardLayout from "src/layouts/DashboardLayout";
 import Layout from "src/layouts/Layout";

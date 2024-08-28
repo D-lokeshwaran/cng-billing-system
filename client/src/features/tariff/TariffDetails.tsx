@@ -138,6 +138,7 @@ const TariffDetails = () => {
                                         return true;
                                     }
                                 }}
+                                filterDate={(date) => moment(date).add(1, "days").isAfter(new Date()) }
                                 disabled={tariffId}
                             />
                         </Col>
@@ -153,7 +154,7 @@ const TariffDetails = () => {
     )
 }
 
-const ToDateWithValidation = ({ disabled }) => {
+export const ToDateWithValidation = ({ disabled, ...props }) => {
     const { watch } = useFormContext();
     const fromDate = watch("fromDate");
 
@@ -161,6 +162,9 @@ const ToDateWithValidation = ({ disabled }) => {
         <DatePickerInput
             field={{ title: "To date", state: "toDate"}}
             disabled={disabled}
+            {...props}
+            filterDate={(date) => moment(date).add(1, "days").isAfter(fromDate) }
+            highlightDates={[fromDate]}
             validate={{
                 afterFromDate: (value: any) => {
                     if (!disabled) {
@@ -168,7 +172,6 @@ const ToDateWithValidation = ({ disabled }) => {
                         return afterFromDate || "To Date should be after from date";
                     }
                 },
-
             }}
         />
     )

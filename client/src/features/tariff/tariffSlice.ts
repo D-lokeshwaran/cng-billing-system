@@ -23,10 +23,12 @@ const tariffSlice: SliceProps = {
   columns: [
     columnHelper.accessor('fromDate', {
       header: TARIFF_LIST.FROM_DATE,
-      enableHiding: false
+      enableHiding: false,
+      filterFn: 'dateBetween'
     }),
     columnHelper.accessor('toDate', {
-      header: TARIFF_LIST.TO_DATE
+      header: TARIFF_LIST.TO_DATE,
+      filterFn: 'dateBetween'
     }),
     columnHelper.display({
       header: "#Units and Rate"
