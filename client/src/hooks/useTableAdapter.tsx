@@ -92,7 +92,8 @@ export const useTableAdapter = <T,>({
                             indeterminate: row.getIsSomeSelected(),
                             onChange: row.getToggleSelectedHandler(),
                         }}
-                    />
+                    />,
+                    enableHiding: false
                 }),
                 ...columns,
             ]

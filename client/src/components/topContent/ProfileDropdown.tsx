@@ -27,7 +27,7 @@ const ProfileDropdown = () => {
     return (
         <Dropdown>
             <Dropdown.Toggle as="div" className="py-2">
-                <FlexBox className="cursor-pointer">
+                <FlexBox className="cursor-pointer border-start border-2 ps-3">
                     <span className="me-2">{userDetails?.profile?.fullName}</span>
                     {userDetails?.avatar ?
                         <img
@@ -40,7 +40,7 @@ const ProfileDropdown = () => {
                     }
                 </FlexBox>
             </Dropdown.Toggle>
-            <Dropdown.Menu align="end">
+            <Dropdown.Menu align="end" className="animated--grow-in">
                 {!isCustomer && <Dropdown.Item as={Link} to="/profile">
                     <UserIcon size="18" className="me-2"/> My Profile
                 </Dropdown.Item>}

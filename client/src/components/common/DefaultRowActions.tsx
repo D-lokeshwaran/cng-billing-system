@@ -3,6 +3,8 @@ import { Delete02Icon, MoreHorizontalCircle01Icon, PencilEdit01Icon } from "huge
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "react-bootstrap";
 import { useRouter } from "src/hooks";
 import { coreApi } from "src/utils/api";
+import FlexBox from "src/components/common/FlexBox";
+import IconButton from "src/components/common/IconButton";
 import React from "react";
 
 interface DefaultRowActionsProps {
@@ -13,21 +15,23 @@ interface DefaultRowActionsProps {
 const DefaultRowActions: React.FC<DefaultRowActionsProps> = ({ row, onEdit, onDelete }) => {
 
   return (
-    <Dropdown onDoubleClick={(e) => e.stopPropagation()} drop="start">
-      <DropdownToggle>
-        <MoreHorizontalCircle01Icon/>
-      </DropdownToggle>
-      <DropdownMenu>
-        <DropdownItem onClick={onEdit}>
-          <PencilEdit01Icon/>
-          Edit
-        </DropdownItem>
-        <DropdownItem onClick={() => onDelete(row.original)}>
-          <Delete02Icon/>
-          Delete
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
+    <FlexBox justify="end">
+        <Dropdown onDoubleClick={(e) => e.stopPropagation()} drop="start">
+          <Dropdown.Toggle size="sm" variant="default">
+            <MoreHorizontalCircle01Icon size="18"/>
+          </Dropdown.Toggle>
+          <DropdownMenu>
+            <DropdownItem onClick={onEdit}>
+              <PencilEdit01Icon size="18"/>
+              <span className="ms-2">Edit</span>
+            </DropdownItem>
+            <DropdownItem onClick={() => onDelete(row.original)}>
+              <Delete02Icon size="18"/>
+              <span className="ms-2">Delete</span>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+    </FlexBox>
   )
 
 }

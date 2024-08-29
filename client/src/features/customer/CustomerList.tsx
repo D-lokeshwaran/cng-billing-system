@@ -89,30 +89,34 @@ const CustomerList: FC = () => {
                 </Button>
             </FeatureHeader>
             <Card>
-                <div className="py-2">
+                <Card.Header className="py-3">
                     {selectedRowsCount > 0  ?
-                        <Card.Header as={FlexBox} justify="between">
-                            <div>{`${selectedRowsCount} Rows selected`}</div>
-                            <Delete02Icon onClick={handleBulkDelete}/>
-                        </Card.Header> :
-                        <Card.Header as={Row} className="justify-content-between mb-0">
-                            <Col lg="4" md="3">
+                        <FlexBox justify="between">
+                            <div className="fw-semibold">{`${selectedRowsCount} Selected rows`}</div>
+                            <Button variant="default-danger" className="text-white" onClick={handleBulkDelete}>
+                                <Delete02Icon size="18"/>
+                                <span className="ms-1">Delete</span>
+                            </Button>
+                        </FlexBox> :
+                        <Row className="justify-content-between align-items-center mb-0 g-0">
+                            <Col lg={3} sm={1}>
                                 <SearchBoxInput
                                     value={table.getState().globalFilter ?? ''}
                                     onChange={(value) => table.setGlobalFilter(String(value))}
                                     debounce={200}
                                 />
                             </Col>
-                            <Col sm="auto" xs className="d-flex">
+                            <Col xs sm="auto" as={FlexBox} justify="end">
                                 <ColumnChooser
                                     table={table}
                                     displayColumns={["rowSelect", "actions"]}
+                                    className="me-2"
                                 />
                                 <ExportData filename="customers" table={table}/>
                             </Col>
-                        </Card.Header>
+                        </Row>
                     }
-                </div>
+                </Card.Header>
                 <Card.Body className="p-0 table-container">
                     <TanStackTable table={table} rowProps={getRowProps}/>
                 </Card.Body>

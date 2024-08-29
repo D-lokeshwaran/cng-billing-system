@@ -83,6 +83,11 @@ $sidebar-collapsed-width: 15.673rem !default;
 $card-cap-bg: $gray-100 !default;
 $card-border-color: $border-color !default;
 $card-bg-dark: rgb(37 43 51) !default;
+$card-border-width: 0px !default;
+$card-border-color: #ebf1f6 !default;
+$card-border-radius: 7px;
+$card-box-shadow: rgb(145 158 171 / 20%) 0px 0px 2px 0px,
+  rgb(145 158 171 / 12%) 0px 12px 24px -4px !default;
 
 // Adjust column spacing for symmetry
 $spacer: 1rem !default;
@@ -94,6 +99,16 @@ $transition-collapse: height .15s ease !default;
 // Dropdowns
 $dropdown-font-size: 0.85rem !default;
 $dropdown-border-color: $border-color !default;
+$dropdown-padding-x: 0.5rem !default;
+$dropdown-box-shadow: $box-shadow;
+$dropdown-link-active-bg: shade-color($gray-900, 10%) !default;
+$dropdown-item-border-radius: 0.25rem !default;
+
+// Buttons
+$btn-focus-box-shadow: none;
+$btn-font-weight: 700;
+$btn-font-size: 0.8125rem;
+$btn-line-height: 1.71429;
 
 // Images
 $login-image: 'https://source.unsplash.com/K4mSJ7kc0As/600x800' !default;
@@ -108,6 +123,22 @@ $navbar-dark-active-color: rgb(0 167 111);
 $navbar-light-active-background-color: rgb(0 167 111 / 8%);
 $navbar-light-hover-background-color: rgb(145 158 171 / 8%);
 $navbar-light-hover-color: $navbar-light-color;
+
+// Table
+$table-cell-padding-y: 0.75rem !default;
+$table-cell-padding-x: 1rem !default;
+
+$table-bg: transparent !default;
+$table-color: $gray-700 !default;
+$table-border-color: var(--#{$prefix}body-bg) !default;
+
+$table-active-color: var(--#{$prefix}body-color) !default;
+$table-hover-color: var(--#{$prefix}body-color) !default;
+$table-striped-order: even !default;
+$table-striped-bg: var(--#{$prefix}gray-100) !default;
+$table-group-separator-color: inherit !default;
+$table-caption-color: $gray-500 !default;
+$table-bg-scale: -80% !default;
 
 // body
 $body-bg-light: rgb(222 231 230 / 10%);

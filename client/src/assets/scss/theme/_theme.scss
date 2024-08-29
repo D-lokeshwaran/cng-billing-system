@@ -2,14 +2,22 @@
     Custom Theme
 ----------------------------- */
 
-@import "helpers";
-@import "card";
-@import "button";
-@import "dropdown";
-@import "loader";
+// Helpers
+@import 'helpers/flex';
+@import 'helpers/common';
+@import 'helpers/browser';
 
-@import "navLayout";
-@import "topContents";
+// Components
+@import "components/card";
+@import "components/button";
+@import "components/dropdown";
+@import "components/loader";
+@import "components/table";
+
+// Layout
+@import "layout/mainLayout";
+@import "layout/topBar";
+
 @import "plugins/plugins";
 
 // utilities

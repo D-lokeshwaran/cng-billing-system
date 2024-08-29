@@ -2,6 +2,8 @@ import { Table } from '@tanstack/react-table';
 import React from 'react';
 import { Button, Dropdown, FormCheck } from 'react-bootstrap';
 import FlexBox from "src/components/common/FlexBox";
+import { ViewIcon } from 'hugeicons-react';
+import { startCase } from "lodash";
 
 interface ColumnChooserProps {
     table: Table<any>,
@@ -10,16 +12,17 @@ interface ColumnChooserProps {
 
 const ColumnChooser: React.FC<ColumnChooserProps> = ({
     table,
-    displayColumns=["rowSelect", "actions"]
+    displayColumns=["rowSelect", "actions"],
+    ...props
 }) => {
 
     return (
-        <div>
-            <Dropdown size="sm">
-                <Dropdown.Toggle size="sm" variant="ghost">
-                    columns
+            <Dropdown {...props}>
+                <Dropdown.Toggle variant="ghost">
+                    <ViewIcon size="18"/>
+                    <span className="ms-1">columns</span>
                 </Dropdown.Toggle>
-                <Dropdown.Menu className="w-50">
+                <Dropdown.Menu align="end" className="animated--fade-in pt-3">
                      {table.getAllColumns().map(column =>
                          <React.Fragment key={column.id}>
                              {!displayColumns?.includes(column.id) &&
@@ -29,20 +32,25 @@ const ColumnChooser: React.FC<ColumnChooserProps> = ({
                                      disabled={!column.getCanHide()}
                                      onChange={column.getToggleVisibilityHandler()}
                                      className="me-2"
-                                 />{column.id}
+                                     type="checkbox"
+                                     id={startCase(column.id)}
+                                     label={startCase(column.id)}
+                                 />
                              </Dropdown.Item> }
                          </React.Fragment>
                      )}
                      <Dropdown.Divider />
                      <Dropdown.Header as={FlexBox} justify="between">
-                         <div className="d-flex">
+                         <div className="d-flex me-5">
                              <FormCheck
                                  {...{
                                      checked: table.getIsAllColumnsVisible(),
                                      onChange: table.getToggleAllColumnsVisibilityHandler()
                                  }}
                                  className="me-2"
-                             /> show/hide All
+                                 id="toggleAll"
+                                 label="Toggle All"
+                             />
                          </div>
                          <Button
                              variant='default-button'
@@ -53,7 +61,6 @@ const ColumnChooser: React.FC<ColumnChooserProps> = ({
                      </Dropdown.Header>
                 </Dropdown.Menu>
             </Dropdown>
-        </div>
     )
 
 }

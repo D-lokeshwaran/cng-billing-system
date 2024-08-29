@@ -1,15 +1,11 @@
 // Sidebar default scss
 
-[data-bs-theme="dark"] .sidebar-container {
-    border-color: $gray-700 !important;
-}
-
 .sidebar-container {
     min-height: 100vh;
     width: $sidebar-collapsed-width;
     @extend .container-fluid;
     @extend .sticky-top;
-    border-right: 1px dashed $gray-400;
+    border-right: 1px solid #d1d3e259;
 
     .sidebar {
         .navbar-brand {

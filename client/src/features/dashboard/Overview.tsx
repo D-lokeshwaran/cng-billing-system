@@ -71,7 +71,7 @@ const Overview = ({ data }) => {
 
 return (
   <Card>
-    <Card.Header>
+    <Card.Header className="border-0">
       <FlexBox justify="between">
         <div>Overview</div>
         <div>

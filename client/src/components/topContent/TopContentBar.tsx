@@ -17,8 +17,7 @@ const TopContentBar = () => {
                 </div>
                 <FlexBox id="right">
                     <ToggleTheme/>
-                    <Notification/>
-                    <div className="px-2 border-1">|</div>
+                    <Notification className="mx-2"/>
                     <ProfileDropdown/>
                 </FlexBox>
             </Container>

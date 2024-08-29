@@ -1,0 +1,17 @@
+$dropDirection: "start", "end", "up", "down";
+
+.dropdown .dropdown-toggle:after, .dropdown .dropdown-toggle:before {
+  display: none;
+}
+
+@each $dir in $dropDirection {
+    .drop#{$dir} .dropdown-toggle:after, .drop#{$dir} .dropdown-toggle:before {
+        display: none;
+    }
+}
+
+.dropdown {
+    .dropdown-item {
+        border-radius: $dropdown-item-border-radius;
+    }
+}

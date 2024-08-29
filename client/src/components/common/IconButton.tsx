@@ -5,6 +5,7 @@ interface IconButtonProps {
     children: ReactNode;
     icon: ReactNode;
     className: string;
+    label: string;
     [int:string]: any;
 }
 
@@ -12,9 +13,10 @@ const IconButton: React.FC<IconButtonProps> = ({
     children,
     icon,
     className,
+    label,
     ...props
 }) => {
-    const HugIcon = icon;
+    const HugeIcon = icon;
     return (
         <Button
             variant="icon-button"
@@ -23,7 +25,8 @@ const IconButton: React.FC<IconButtonProps> = ({
             {...props}
         >
             <div className="d-flex align-items-center justify-content-center">
-                {children || <HugIcon size="22"/>}
+                {icon && <HugeIcon size="20"/>}
+                {label && <span className="ms-1">{label}</span>}
             </div>
         </Button>
     )

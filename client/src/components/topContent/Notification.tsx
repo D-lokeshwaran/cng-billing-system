@@ -3,11 +3,11 @@ import { Dropdown, Modal } from "react-bootstrap";
 import IconButton from "../common/IconButton";
 import FlexBox from "../common/FlexBox";
 
-const Notification = () => {
+const Notification = (props) => {
     return (
         <Dropdown>
             <Dropdown.Toggle as="div">
-                <IconButton icon={Notification02Icon}/>
+                <IconButton icon={Notification02Icon} {...props}/>
             </Dropdown.Toggle>
             <Dropdown.Menu align="end" className="p-3">
                 <FlexBox justify="between">

@@ -74,6 +74,7 @@ const GlobalSearchBox = () => {
                 value={value}
                 addons={addons}
                 closeMenu={() => setMenu(false)}
+                className="animated--grow-in"
             >
                 <SearchResultItems searchResult={searchResult}/>
             </Dropdown.Menu>

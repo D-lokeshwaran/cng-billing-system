@@ -1,0 +1,21 @@
+.table {
+    thead > tr > th {
+        background-color: $gray-200;
+        padding: 0.5rem 1rem;
+    }
+    thead > tr > :not(th:first-child) {
+            width: 100%;
+            white-space: nowrap;
+    }
+    tbody > tr > :not(td:first-child) {
+            width: 100%;
+            white-space: nowrap;
+    }
+}
+
+[data-bs-theme="dark"]
+.table {
+    thead > tr > th {
+        background-color: $gray-800
+    }
+}

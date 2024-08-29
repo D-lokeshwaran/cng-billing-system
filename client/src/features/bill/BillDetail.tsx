@@ -83,6 +83,7 @@ const BillDetail = () => {
     }
     const handleStatusChange = async (status: string) => {
         const updatedBill = { ...bill, paymentStatus: status }
+        console.log(bill);
         const updateResult = await trackPromise(coreApi.put(`/cng/bills/${bill.id}`, updatedBill));
         const newBill = updateResult.data;
         if (billDetails?.customerId) {
