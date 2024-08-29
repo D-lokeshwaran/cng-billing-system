@@ -34,7 +34,7 @@ const Overview = () => {
 
     return (
         <Row>
-            <Col sm={6} lg={7}>
+            <Col>
                 <Card>
                     <Card.Header><h3 className="mb-0">Details</h3></Card.Header>
                     <Card.Body>

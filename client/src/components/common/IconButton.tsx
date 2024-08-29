@@ -19,7 +19,7 @@ const IconButton: React.FC<IconButtonProps> = ({
     const HugeIcon = icon;
     return (
         <Button
-            variant="icon-button"
+            variant={props.variant || "icon-button"}
             className={`cursor-pointer ${className}`}
             size="sm"
             {...props}

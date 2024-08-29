@@ -31,6 +31,12 @@ const userSlice: SliceProps = {
                 </FlexBox>
             )
         }),
+        columnHelper.accessor('fullName', {
+            header: "Phone Number"
+        }),
+        columnHelper.accessor('emailAddress', {
+            header: "Phone Number"
+        }),
         columnHelper.accessor('profile.phoneNumber', {
             header: "Phone Number"
         }),
@@ -41,7 +47,11 @@ const userSlice: SliceProps = {
         columnHelper.accessor('createdAt', {
             header: "Created At"
         })
-    ]
+    ],
+    columnVisibility: {
+        "fullName": false,
+        "emailAddress": false
+    }
 }
 
 export default userSlice;

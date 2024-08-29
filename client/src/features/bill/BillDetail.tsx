@@ -121,8 +121,8 @@ const BillDetail = () => {
                         { title: billId === "new" ? "New" : `${billDetails?.billId ? '#'+billDetails?.billId : 'New'}`, disabled: true}
                     ]}
                 >
-                    <FlexBox className="justify-content-between">
-                        <Badge pill bg="" className={`text-${paymentStatus.type} border border-${paymentStatus.type} d-flex align-items-center`}>
+                    <FlexBox className="justify-content-between w-100">
+                        <Badge pill bg="none" className={`ms-3 text-${paymentStatus.type} border border-${paymentStatus.type} d-flex align-items-center`}>
                             {startCase(paymentStatus.name)}
                         </Badge>
                         <div>

@@ -16,10 +16,12 @@ import { trackPromise } from 'react-promise-tracker';
 import FlexBox from 'src/components/common/FlexBox';
 import { Delete02Icon } from "hugeicons-react";
 import StatusFilter from './StatusFilter';
+import { useAuth } from "src/context/AuthContext";
 
 const CustomerList: FC = () => {
 
     const router = useRouter();
+    const { isCustomer } = useAuth()
     const columnHelper = createColumnHelper<Customer>();
     const { 
         name,
@@ -38,7 +40,7 @@ const CustomerList: FC = () => {
                     return (
                         <div>
                            <p className="mb-0">{customer?.fullName}</p>
-                           <p>{customer?.accountNumber}</p>
+                           <p className="mb-0">{customer?.accountNumber}</p>
                         </div>
                     )
                 },
@@ -109,31 +111,33 @@ const CustomerList: FC = () => {
                     { title: "List", disabled: true}
                 ]}
             >
-                <Button
+                {!isCustomer && <Button
                     variant="success"
                     onClick={handleAddCustomer}
                 >
                     + {ACTIONS.BILL}
-                </Button>
+                </Button>}
             </FeatureHeader>
             <section className="mt-3">
                 <Card>
-                    {selectedRowsCount > 0  ?
-                        <Card.Header as={FlexBox} justify="between">
-                            <div>{`${selectedRowsCount} Rows selected`}</div>
-                            <Delete02Icon onClick={handleBulkDelete}/>
-                        </Card.Header>
-                        : <Card.Header as={Row}>
-                            <Col>
-                                <StatusFilter table={table}/>
-                            </Col>
-                            <Col>
-                                <ColumnChooser table={table} />
-                                <ExportData filename={name} table={table}/>
-                            </Col>
-                        </Card.Header>
-                    }
-                    <Card.Body>
+                    <Card.Header className="py-3">
+                        {selectedRowsCount > 0  ?
+                            <FlexBox justify="between">
+                                <div>{`${selectedRowsCount} Rows selected`}</div>
+                                <Delete02Icon onClick={handleBulkDelete}/>
+                            </FlexBox>
+                            :   <Row className="justify-content-between">
+                                    <Col xs lg="auto" sm={1}>
+                                        <StatusFilter table={table}/>
+                                    </Col>
+                                    <Col xs sm="auto" as={FlexBox} justify="end">
+                                        <ColumnChooser table={table} />
+                                        <ExportData filename={name} table={table}/>
+                                    </Col>
+                                </Row>
+                        }
+                    </Card.Header>
+                    <Card.Body className="p-0">
                         <TanStackTable table={table} rowProps={getRowProps}/>
                     </Card.Body>
                     <Card.Footer>

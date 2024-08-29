@@ -84,10 +84,10 @@ const TariffList: FC = () => {
                 </Button>
             </FeatureHeader>
             <Card>
-                <Card.Header as={FlexBox} justify="between">
+                <Card.Header as={FlexBox} justify="between" className="py-3">
                     <DatePicker
-                        placeholderText="Search by date..."
-                        className="form-control form-control-sm"
+                        placeholderText="search by date..."
+                        className="form-control"
                         isClearable={true}
                         selectsRange={true}
                         startDate={startDate}

@@ -1,0 +1,39 @@
+$item-gap: 0.25rem;
+$list-group-bg: $gray-200;
+$list-group-dark-bg: $gray-900;
+
+.list-group .list-group-item {
+    transition: background-color 0.3s;
+}
+[data-bs-theme="dark"]
+.list-group {
+    background-color: $list-group-dark-bg;
+    .list-group-item {
+        background-color: $list-group-dark-bg;
+        color: $gray-600;
+        &.active {
+            background-color: $body-bg-dark;
+            color: $gray-100;
+            box-shadow: $box-shadow-straight;
+        }
+    }
+}
+
+.list-group {
+    background-color: $list-group-bg;
+
+    .list-group-item {
+        border-radius: $border-radius-md !important;
+        border: none;
+        margin: $item-gap !important;
+        padding: 0.20rem 0.5rem;
+        background-color: $list-group-bg;
+        color: $gray-700;
+        font-size: .875rem;
+        &.active {
+            background-color: $white;
+            color: $gray-900;
+            box-shadow: $box-shadow-straight;
+        }
+    }
+}

@@ -108,11 +108,11 @@ export const useTableAdapter = <T,>({
             columnVisibility
         },
         filterFns: filterFns,
-        globalFilterFn: globalFilterFn,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        ...globalFilterFn && {globalFilterFn}, // pass only the fn available
         // debugTable: process.env.NODE_ENV === "development",
         // debugRows: process.env.NODE_ENV === "development",
         // debugColumns: false

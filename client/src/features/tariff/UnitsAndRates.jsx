@@ -1,5 +1,6 @@
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { Button, FormControl } from "react-bootstrap"
+import IconButton from "src/components/common/IconButton";
 import { Delete02Icon } from "hugeicons-react";
 import ErrorMessage from "src/components/form/ErrorMessage";
 
@@ -16,7 +17,7 @@ const UnitsAndRates = ({ maxUnitRate }) => {
     const fieldError = errors?.unitsAndRates?.filter(field => field?.toUnit !== null)?.[0];
 
     return (
-        <table>
+        <table className="w-100">
             <thead><tr className="m-4 p-5">
                 <th>From Unit</th>
                 <th>To Unit</th>
@@ -64,9 +65,11 @@ const UnitsAndRates = ({ maxUnitRate }) => {
                                 />
                             </td>
                             {index > 2 && <td className="ps-3 pe-2">
-                                <Delete02Icon
-                                    size={18}
+                                <IconButton
+                                    icon={Delete02Icon}
                                     onClick={() => remove(index)}
+                                    variant="default-danger"
+                                    className="p-2"
                                 />
                             </td>}
                         </tr>
@@ -82,7 +85,7 @@ const UnitsAndRates = ({ maxUnitRate }) => {
                     <td>
                         <Button
                             size="sm"
-                            variant="light"
+                            variant="default"
                             onClick={() => {
                                 trigger("unitsAndRates")
                                 if (fieldError || !lastField.toUnit || !lastField.ratePerUnit) {

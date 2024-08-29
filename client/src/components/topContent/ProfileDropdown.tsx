@@ -51,7 +51,7 @@ const ProfileDropdown = () => {
                     <LeftToRightListBulletIcon size="18" className="me-2"/> Activity log
                 </Dropdown.Item>
                 <Dropdown.Divider/>
-                <Dropdown.Item onClick={_handleLogout}>
+                <Dropdown.Item onClick={_handleLogout} className="text-danger">
                     <Logout03Icon size="18" className="me-2"/> Logout
                 </Dropdown.Item>
             </Dropdown.Menu>

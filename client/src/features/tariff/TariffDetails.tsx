@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect }from "react";
-import { Button, Col, Modal, ModalProps, Row } from "react-bootstrap";
+import { Button, Col, Modal, ModalProps, Row, Card } from "react-bootstrap";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { useRouter } from "src/hooks";
 import { useParams } from "react-router-dom";
@@ -123,32 +123,34 @@ const TariffDetails = () => {
                         {tariffId ? ACTIONS.UPDATE : ACTIONS.CREATE}
                     </Button>
                 </FeatureHeader>
-                <div className="mb-3">
-                    <Row>
-                        <Col>
-                            <DatePickerInput
-                                field={{ title: "From date", state: "fromDate"}}
-                                validate={{
-                                    pastDate: (value: any) => {
-                                        if (!tariffId) {
-                                            let yesterday = moment(new Date()).subtract(1, "d");
-                                            let past = moment(yesterday).isBefore(value);
-                                            return past || "From Date should not be at past";
+                <Card body>
+                    <div className="mb-3">
+                        <Row>
+                            <Col>
+                                <DatePickerInput
+                                    field={{ title: "From date", state: "fromDate"}}
+                                    validate={{
+                                        pastDate: (value: any) => {
+                                            if (!tariffId) {
+                                                let yesterday = moment(new Date()).subtract(1, "d");
+                                                let past = moment(yesterday).isBefore(value);
+                                                return past || "From Date should not be at past";
+                                            }
+                                            return true;
                                         }
-                                        return true;
-                                    }
-                                }}
-                                filterDate={(date) => moment(date).add(1, "days").isAfter(new Date()) }
-                                disabled={tariffId}
-                            />
-                        </Col>
-                        <Col>
-                            <ToDateWithValidation disabled={tariffId}/>
-                        </Col>
-                    </Row>
-                    {duplicated && <ErrorMessage errorMessage="Duplicate Tariff exists on these date's" />}
-                </div>
-                <UnitsAndRates maxUnitRate={maxUnitRate}/>
+                                    }}
+                                    filterDate={(date) => moment(date).add(1, "days").isAfter(new Date()) }
+                                    disabled={tariffId}
+                                />
+                            </Col>
+                            <Col>
+                                <ToDateWithValidation disabled={tariffId}/>
+                            </Col>
+                        </Row>
+                        {duplicated && <ErrorMessage errorMessage="Duplicate Tariff exists on these date's" />}
+                    </div>
+                    <UnitsAndRates maxUnitRate={maxUnitRate}/>
+                </Card>
             </HookForm>
         </div>
     )

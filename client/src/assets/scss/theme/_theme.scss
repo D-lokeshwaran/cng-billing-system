@@ -2,6 +2,8 @@
     Custom Theme
 ----------------------------- */
 
+@import "mixins";
+
 // Helpers
 @import 'helpers/flex';
 @import 'helpers/common';
@@ -13,6 +15,8 @@
 @import "components/dropdown";
 @import "components/loader";
 @import "components/table";
+@import "components/listGroup";
+@import "components/badge";
 
 // Layout
 @import "layout/mainLayout";

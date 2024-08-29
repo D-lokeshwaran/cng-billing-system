@@ -1,5 +1,6 @@
 import { Table } from '@tanstack/react-table';
 import { Badge, ListGroup } from 'react-bootstrap';
+import FlexBox from "src/components/common/FlexBox";
 import { startCase } from "lodash";
 import { Bill } from './billSlice';
 
@@ -30,18 +31,31 @@ const StatusFilter = ({
             value: status
         }]);
     }
-
+    const getVariant = (status) => {
+        switch (status) {
+            case "All": return "dark"
+            case "Pending": return "warning"
+            case "Completed": return "success"
+            case "Overdue": return "danger"
+        }
+    }
     return (
-        <ListGroup horizontal>
+        <ListGroup horizontal className="flex-wrap" defaultActiveKey="All">
             {filterItems.map(item => 
                 <ListGroup.Item 
                     key={item.status}
                     onClick= {() => handleStatusClick(item.status)}
                     className="cursor-pointer"
                     eventKey={item.status}
+                    as={FlexBox}
                 >
-                    <span className='me-2'>{item.status}</span>
-                    <Badge>{item.count}</Badge>
+                    <span className='me-2 fw-medium'>{item.status}</span>
+                    <Badge
+                        className={"badge-" + (getVariant(item.status) || "secondary")}
+                        bg="none"
+                    >
+                        {item.count}
+                    </Badge>
                 </ListGroup.Item>
             )}
         </ListGroup>

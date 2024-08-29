@@ -19,7 +19,7 @@ const CustomerList: FC = () => {
 
     const router = useRouter();
     const columnHelper = createColumnHelper<Customer>();
-    const { table, setData } = useTableAdapter({
+    const { table, refreshData } = useTableAdapter({
         ...customerSlice,
         columns: useMemo(() => [
             ...customerSlice.columns,
@@ -49,13 +49,6 @@ const CustomerList: FC = () => {
         }
     }
 
-    // Delete features
-    const refreshData = async () => {
-        const updatedData = await trackPromise(coreApi.get("/cng/customers"));
-        const customers = updatedData.data._embedded.customers;
-        setData(customers);
-        table.reset();
-    }
     const handleDelete = async (customer) => {
         await trackPromise(coreApi.delete(`/cng/customers/${customer.id}`));
         refreshData();

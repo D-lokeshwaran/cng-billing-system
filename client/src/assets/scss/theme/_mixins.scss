@@ -1,0 +1,6 @@
+@mixin badge-variant($variant, $value) {
+    .badge-#{$variant} {
+         background-color: mix($value, transparent, 15%) !important;
+         color: $value !important;
+    }
+}

@@ -10,8 +10,11 @@ $dropDirection: "start", "end", "up", "down";
     }
 }
 
-.dropdown {
-    .dropdown-item {
-        border-radius: $dropdown-item-border-radius;
-    }
+.dropdown .dropdown-item {
+    border-radius: $dropdown-item-border-radius;
+}
+[data-bs-theme="dark"]
+.dropdown .dropdown-item:active {
+    background-color: $dropdown-dark-link-active-bg;
+    color: $dropdown-dark-link-active-color;
 }
