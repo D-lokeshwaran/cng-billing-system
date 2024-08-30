@@ -50,14 +50,19 @@ public class CommonController {
     }
 
     @GetMapping("/search/{searchText}")
-    public Map<String, Object> retrieveSearchResult(@PathVariable String searchText, @RequestParam String inEntity) {
+    public Map<String, Object> retrieveSearchResult(
+            @PathVariable String searchText,
+            @RequestParam(required = false) String[] entities
+    ) {
         Map<String, Object> searchResult = new LinkedHashMap<>();
-        if (inEntity != null) {
+        if (entities.length > 0) {
             // perform entity search
-            switch (inEntity) {
-                case "bill": searchResult.put("bills", billRepository.searchByText(searchText));
-                case "customer": searchResult.put("customers", customerRepository.searchByText(searchText));
-                case "tariff": searchResult.put("tariffs", tariffRepository.searchByText(searchText));
+            for (String entity : entities) {
+                switch (entity) {
+                    case "Bill" -> searchResult.put("bills", billRepository.searchByText(searchText));
+                    case "Customer"-> searchResult.put("customers", customerRepository.searchByText(searchText));
+                    case "Tariff"-> searchResult.put("tariffs", tariffRepository.searchByText(searchText));
+                }
             }
         } else {
             // perform global search

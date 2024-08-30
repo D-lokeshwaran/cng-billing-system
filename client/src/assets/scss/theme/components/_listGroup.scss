@@ -6,7 +6,7 @@ $list-group-dark-bg: $gray-900;
     transition: background-color 0.3s;
 }
 [data-bs-theme="dark"]
-.list-group {
+.list-group-tabs {
     background-color: $list-group-dark-bg;
     .list-group-item {
         background-color: $list-group-dark-bg;
@@ -19,7 +19,7 @@ $list-group-dark-bg: $gray-900;
     }
 }
 
-.list-group {
+.list-group-tabs {
     background-color: $list-group-bg;
 
     .list-group-item {
@@ -36,4 +36,21 @@ $list-group-dark-bg: $gray-900;
             box-shadow: $box-shadow-straight;
         }
     }
+}
+
+.list-group-pills {
+    .list-group-item {
+        background-color: $gray-200;
+        color: $gray-900;
+        box-shadow: $box-shadow-straight;
+        padding: .25rem;
+        @extend .px-3, .cursor-pointer, .mx-1, .rounded-4, .fs-6;
+        border: none !important;
+        &.active {
+            background-color: $green;
+            color: $gray-100;
+            box-shadow: $box-shadow-straight;
+        }
+    }
+
 }

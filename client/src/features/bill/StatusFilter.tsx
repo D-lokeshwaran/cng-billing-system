@@ -40,7 +40,7 @@ const StatusFilter = ({
         }
     }
     return (
-        <ListGroup horizontal className="flex-wrap" defaultActiveKey="All">
+        <ListGroup horizontal className="flex-wrap list-group-tabs" defaultActiveKey="All">
             {filterItems.map(item => 
                 <ListGroup.Item 
                     key={item.status}

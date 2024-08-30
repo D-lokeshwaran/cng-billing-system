@@ -10,7 +10,7 @@ $dropDirection: "start", "end", "up", "down";
     }
 }
 
-.dropdown .dropdown-item {
+.dropdown-item {
     border-radius: $dropdown-item-border-radius;
 }
 [data-bs-theme="dark"]

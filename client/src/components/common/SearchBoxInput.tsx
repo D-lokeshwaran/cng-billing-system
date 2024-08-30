@@ -30,7 +30,7 @@ const SearchBoxInput = ({
 
     return (
         <FormControl
-            type='string'
+            type='search'
             placeholder='search...'
             value={value ?? ''}
             onChange={(e) => setValue(e.target.value)}

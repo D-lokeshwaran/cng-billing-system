@@ -1,0 +1,75 @@
+.button-search {
+    background-color: $gray-200 !important;
+    color: $gray-600;
+    padding-inline-start: 0.5rem;
+    padding-inline-end: 0.5rem;
+    border: none;
+    &:hover {
+        box-shadow: none;
+    }
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: between;
+    .button-container {
+        display: flex;
+        align-items: center;
+        .button-placeholder {
+            font-size: 1rem;
+            margin-inline: .25rem;
+            &:hover {
+                color: $gray-600;
+            }
+        }
+    }
+    .button-keys {
+        display: none;
+        margin-inline-start: .5rem;
+    }
+}
+.button-key {
+    background-color: $white;
+    border-radius: $border-radius-md;
+    color: $gray-600;
+    padding: .25rem;
+    margin: .15rem;
+}
+@include media-breakpoint-up(lg) {
+    .button-keys {
+        display: block !important;
+    }
+    .search-modal {
+        .modal-dialog {
+            max-width: 560px;
+        }
+    }
+}
+
+.search-modal {
+    .search-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        .search-icon {
+            position: absolute;
+            margin-inline: .5rem;
+        }
+        .search-input {
+            padding-inline-start: 3rem;
+            font-size: 1rem;
+            box-shadow: none !important;
+        }
+    }
+}
+
+@include color-mode(dark) {
+    .button-search {
+        background-color: $gray-900 !important;
+        color: $gray-600;
+    }
+    .button-key {
+        background-color: $body-bg-dark;
+        color: $gray-400;
+    }
+}

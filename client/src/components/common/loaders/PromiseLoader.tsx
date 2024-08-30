@@ -10,7 +10,7 @@ const PromiseLoader = () => {
 
     useEffect(() => {
         let isMounted = true;
-        const delay = promiseInProgress ? 780 : 480;
+        const delay = promiseInProgress ? 680 : 380;
         const task = new Promise((resolve) => {
             setTimeout(resolve, delay);
         });
