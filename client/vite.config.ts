@@ -16,7 +16,7 @@ export default defineConfig(({ command, mode }) => {
         react(),
         tsPaths(),
       ],
-      base: env.BASE_URL,
+      base: '/cng-billing-system/',
       server: {
         port: 3003,
       },
