@@ -12,7 +12,7 @@ const App: React.FC = () => {
     return (
         <HelmetProvider>
             <AppContextProvider>
-                <Router basename={import.meta.env.BASE_URL}>
+                <Router basename="/cng-billing-system/">
                     <AuthContextPovider>
                         <AppRoutes/>
                     </AuthContextPovider>
