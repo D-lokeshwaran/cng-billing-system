@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const supportApi = axios.create({
-    baseURL: "http://localhost:3600",
+    baseURL: "https://cng-billing-system.onrender.com",
     headers: {
         "Content-Type": "application/json",
     },
@@ -10,5 +10,5 @@ export const supportApi = axios.create({
 });
 
 export const coreApi = axios.create({
-    baseURL: "http://localhost:8008",
+    baseURL: "http://192.168.29.68:8008",
 });
