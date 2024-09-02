@@ -42,6 +42,16 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Map<BigDecimal, Integer>> getWeeklyRevenue();
 
     @Query(nativeQuery = true, value =
+            "SELECT sum(bill_amount) as \"revenue\", " +
+                    "year(updated_at) as \"week\" " +
+                    "FROM bills " +
+                    "WHERE dateAdd('year', -1, updated_at) = dateAdd('year', -1, curDate()) " +
+                    "AND payment_status = 'Completed' " +
+                    "GROUP BY dateAdd('year', -1, updated_at) "
+    )
+    List<Map<BigDecimal, Integer>> getYearlyBreakups();
+
+    @Query(nativeQuery = true, value =
             "SELECT c.full_name, c.account_number, b.payment_status, b.bill_amount " +
                 "FROM bills b, customers c\n" +
             "WHERE b.customer_id = c.id\n" +

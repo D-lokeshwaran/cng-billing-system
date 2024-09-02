@@ -52,9 +52,34 @@
     }
 }
 
+.sidebar-collapse {
+    .offcanvas-start {
+        width: fit-content;
+        .offcanvas-body {
+            width: fit-content;
+        }
+    }
+    .sidebar-container {
+        display: none;
+    }
+}
+.offcanvas-start .sidebar-container {
+    border: none !important;
+    margin: 0px !important;
+    width: 100%;
+}
+
+
+.collapse-button  {
+    display: none;
+}
+
 @media (max-width: 992px) {
     .sidebar-wrapper {
         display:none;
+    }
+    .collapse-button {
+        display: block;
     }
     .outlet-container {
         margin-left: 0px !important;

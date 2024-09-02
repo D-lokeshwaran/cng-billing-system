@@ -79,7 +79,7 @@ const Overview = () => {
                                             }
                                         </td>
                                         <td className="ps-3 text-dark">
-                                            <h6 className="mb-0">{log.message}</h6>
+                                            <h6 className="mb-0 text-truncate">{log.message}</h6>
                                             <small className="text-secondary">{log.createdAt}</small>
                                         </td>
                                     </tr>

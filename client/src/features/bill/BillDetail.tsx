@@ -146,7 +146,7 @@ const BillDetail = () => {
                         <DetailsCard tariff={billTariff} setBillTariff={setBillTariff}/>
                         <CurrentTariffList data={billTariff} />
                     </Col>
-                    <Col>
+                    <Col xs={12} lg={6} className="mt-3 mt-lg-0">
                         <BillCustomerInfo/>
                     </Col>
                 </Row>

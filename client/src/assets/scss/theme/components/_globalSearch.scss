@@ -63,6 +63,14 @@
     }
 }
 
+@include media-breakpoint-down(sm) {
+    .button-key {
+        display: none
+    }
+    .close-des {
+        display: none;
+    }
+}
 @include color-mode(dark) {
     .button-search {
         background-color: $gray-900 !important;

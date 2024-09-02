@@ -46,7 +46,7 @@ const UnitsAndRates = ({ maxUnitRate }) => {
                                 <FormControl
                                     {...register(`unitsAndRates.${index}.toUnit`, {
                                         required: {value: true, message: "To unit(s) are required."},
-                                        min: {value: parseInt(previousField?.toUnit), message: "To unit should be greater than from unit."},
+                                        min: {value: (parseInt(currentField?.fromUnit) +1), message: "To unit should be greater than from unit."},
                                     })}
                                     isInvalid={errors?.unitsAndRates?.[index]?.toUnit?.message}
                                     type="number"

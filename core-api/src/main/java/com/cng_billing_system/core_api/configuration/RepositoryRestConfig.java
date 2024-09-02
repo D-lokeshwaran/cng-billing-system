@@ -28,7 +28,7 @@ public class RepositoryRestConfig {
 
                 cors.addMapping("/**")
                     .allowedMethods("*")
-                    .allowedOrigins("http://localhost:3003");
+                    .allowedOrigins("http://localhost:3003", "http://192.168.29.68:3003/");
 
                 config.exposeIdsFor(
                     Customer.class,

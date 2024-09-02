@@ -47,16 +47,15 @@ const Dashboard = () => {
             </Helmet>
             <div>
                 <Row className="mb-3 g-3">
-                    <Col>
+                    <Col xs={6} lg={3}>
                         <Card body>
                             <FlexBox justify='between'>
-                                <div>Total Revenue</div>
+                                <div>Revenue</div>
                                 <Coins01Icon/>
                             </FlexBox>
                             <h2>
                                 ₹ {dashboardInfo?.totalRevenue}
                             </h2>
-                            <small>+40% from last month </small>
                         </Card>
                     </Col>
                     <Col>
@@ -68,7 +67,6 @@ const Dashboard = () => {
                             <h2>
                                 {dashboardInfo?.customers}
                             </h2>
-                            <small>+2% from last month</small>
                         </Card>
                     </Col>
                     <Col>
@@ -80,7 +78,6 @@ const Dashboard = () => {
                             <h2>
                                 {dashboardInfo?.sales}
                             </h2>
-                            <small>+21% from last month</small>
                         </Card>
                     </Col>
                     <Col>
@@ -92,7 +89,6 @@ const Dashboard = () => {
                             <h2>
                                 {dashboardInfo?.activeBills}
                             </h2>
-                            <small>+10 from last month</small>
                         </Card>
                     </Col>
                 </Row>

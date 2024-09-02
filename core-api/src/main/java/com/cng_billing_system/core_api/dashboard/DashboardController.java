@@ -40,6 +40,10 @@ public class DashboardController {
         overview.put("sales", billRepository.findAllByPaymentStatus(PaymentStatus.Completed).size());
         overview.put("activeBills", billRepository.findAllByPaymentStatus(PaymentStatus.Pending).size());
 
+        // yearly breakups
+        List<Map<BigDecimal, Integer>> yearlyBreakups = billRepository.getYearlyBreakups();
+        System.out.println(yearlyBreakups);
+
         // revenue overview Monthly and weekly
         List<Map<BigDecimal, Integer>> monthlyRevenue = billRepository.getMonthlyRevenue();
         overview.put("monthlyRevenue", monthlyRevenue);

@@ -2,6 +2,7 @@ import FlexBox from "src/components/common/FlexBox";
 import GlobalSearchBox from "./globalSearch";
 import ToggleTheme from "./ToggleTheme";
 import Notification from "./Notification";
+import SideBarCollapse from "./SideBarCollapse";
 import ProfileDropdown from "./ProfileDropdown";
 import { Navbar, Container } from "react-bootstrap";
 import { useAuth } from "src/context/AuthContext";
@@ -12,9 +13,10 @@ const TopContentBar = () => {
     return (
         <Navbar sticky="top" className="justify-content-between bg-glass py-3">
             <Container fluid className="px-3">
-                <div id="left">
+                <FlexBox id="left">
+                    <SideBarCollapse/>
                     {!auth?.isCustomer && <GlobalSearchBox />}
-                </div>
+                </FlexBox>
                 <FlexBox id="right">
                     <ToggleTheme/>
                     <Notification className="mx-2"/>

@@ -9,7 +9,7 @@ import { useRouter, useToggle } from "src/hooks";
 import CNGLogo from "src/assets/img/cng-logo.svg";
 // ------------------------------------
 
-const SideBar = () => {
+const SideBar = ({ onNavClick }) => {
     const { user, verifyRole } = useAuth();
     const { config: { theme }} = useAppContext();
     const pathname = useLocation().pathname;
@@ -37,7 +37,10 @@ const SideBar = () => {
                             key={i}
                             path={nav.path}
                             className="mx-1"
-                            onClick={() => router.push(nav.path)}
+                            onClick={() => {
+                                router.push(nav.path)
+                                onNavClick(nav.path)
+                            }}
                         >
                             <Nav.Link eventKey={nav.path} className="d-flex align-items-center">
                                 <nav.icon className="me-3 ms-1" size={21} strokeWidth={2}/>

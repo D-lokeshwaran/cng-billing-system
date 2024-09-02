@@ -21,7 +21,7 @@ export const SimpleTable: React.FC<SimpleTableProps> = ({
     const { config: { theme }} = useAppContext();
 
     return (
-        <BSTable striped bordered hover variant={theme}>
+        <BSTable striped variant={theme}>
             <thead>
                 <tr>
                     {columns?.map(col => (

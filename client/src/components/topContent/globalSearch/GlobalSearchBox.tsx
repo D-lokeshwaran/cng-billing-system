@@ -144,7 +144,7 @@ const GlobalSearchBox = () => {
                     </Dropdown.Menu>
                 </Modal.Body>
                 <Modal.Footer>
-                    <span>
+                    <span className="close-des">
                         <kdb className="button-key border">Esc</kdb>
                         <span> to Close</span>
                     </span>
